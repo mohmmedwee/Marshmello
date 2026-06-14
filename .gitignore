@@ -1,0 +1,32 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Training artifacts (use Hugging Face Hub for weights)
+*.pt
+*.pth
+*.ckpt
+
+# Generated pipeline outputs (keep raw/ samples)
+14_dataset_pipeline/cleaned/
+14_dataset_pipeline/deduped/
+14_dataset_pipeline/shards/
+14_dataset_pipeline/reports/
+14_dataset_pipeline/ingested/
+
+# Generated eval reports
+16_evaluation_suite/reports/*.json
+
+# Instruction dataset processed output (regenerate locally)
+17_instruction_dataset/processed/
+17_instruction_dataset/reports/

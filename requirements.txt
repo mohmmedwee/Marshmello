@@ -1,0 +1,13 @@
+# Phases 01-05: pure Python / NumPy only
+# Pin <2 for PyTorch CPU wheels built against NumPy 1.x
+numpy>=1.24.0,<2.0.0
+
+# Phases 06-07: PyTorch (install a CPU build on a normal laptop)
+torch>=2.0.0
+
+# Phase 17B: online Hugging Face instruction dataset import
+datasets>=2.18.0
+
+# Hub upload/download (Marshmello models)
+huggingface_hub>=0.24.0
+safetensors>=0.4.0

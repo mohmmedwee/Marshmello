@@ -1,0 +1,5 @@
+Software engineering teams refactor modules to reduce coupling and improve testability.
+Engineers write unit tests and integration tests before shipping features to production.
+Git branches isolate work while pull requests document design decisions for reviewers.
+Docker packages services with reproducible dependencies across laptop and cloud environments.
+Kubernetes orchestrates containers with health checks, autoscaling, and rolling updates.

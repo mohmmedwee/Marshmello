@@ -1,0 +1,5 @@
+Deep learning models learn hierarchical features through stacked nonlinear transformations.
+Attention mechanisms let each token aggregate context from prior tokens in a sequence.
+Pretraining on large corpora teaches general language patterns before task-specific fine-tuning.
+Evaluation benchmarks measure reasoning, coding, retrieval, and multilingual capabilities.
+Responsible deployment requires monitoring drift, bias, and failure modes in real usage.
