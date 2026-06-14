@@ -30,6 +30,8 @@ Each folder is a self-contained lesson. Read the code top to bottom — comments
 | [15_scale_to_50m](15_scale_to_50m/) | Scale GPT pretraining to ~50M on MPS (grad accum, OOM fallback) | PyTorch |
 | [16_evaluation_suite](16_evaluation_suite/) | Compare Marshmello-8M vs 45M; detect memorization | PyTorch |
 | [17_instruction_dataset](17_instruction_dataset/) | Build instruction JSONL for Marshmello-45M-Instruct | Pure Python |
+| [18A_large_pretraining_corpus](18A_large_pretraining_corpus/) | Build larger local corpus for Marshmello-45M-Base-v2 | Pure Python |
+| [18B_marshmello_instruct](18B_marshmello_instruct/) | Fine-tune Marshmello-45M-Base-v2 into Instruct | PyTorch |
 
 ---
 
@@ -106,6 +108,15 @@ python 16_evaluation_suite/evaluate.py
 # Phase 17 — prepare instruction tuning JSONL
 python 17_instruction_dataset/import_hf_datasets.py --max-examples 50000
 python 17_instruction_dataset/process_instructions.py
+
+# Phase 18A — larger base pretraining corpus
+python 18A_large_pretraining_corpus/build_corpus.py --target-words 1000000
+python 13_gpt_pretraining/tokenizer/train_bpe.py
+python 13_gpt_pretraining/training/trainer.py --config large_50m --steps 3000
+
+# Phase 18B — instruction fine-tuning
+python 18B_marshmello_instruct/train_instruct.py --config large_50m --steps 1000
+python 18B_marshmello_instruct/chat.py --prompt "Explain database indexes"
 ```
 
 ---
@@ -162,6 +173,10 @@ dataset pipeline      →  ingest, clean, dedupe, quality, shard (real LLM data 
 evaluation suite      →  8M vs 45M, memorization metrics, side-by-side outputs
      ↓
 instruction dataset   →  instruction/response/domain JSONL for SFT
+     ↓
+larger base corpus    →  improve Marshmello-45M-Base before SFT
+     ↓
+instruct fine-tuning  →  teach prompt-following on top of the better base
 ```
 
 Work through the folders in order. Each phase reuses ideas from the previous one.

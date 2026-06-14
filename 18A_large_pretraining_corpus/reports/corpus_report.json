@@ -1,0 +1,17 @@
+{
+  "total_words": 1000027,
+  "estimated_bpe_tokens": 1350036,
+  "domain_distribution": {
+    "ai_ml": 3080,
+    "cybersecurity": 3054,
+    "databases": 3076,
+    "existing_phase13": 189,
+    "instruction_format": 1,
+    "python_api": 3040,
+    "software_engineering": 3040
+  },
+  "duplicate_ratio": 0.0076,
+  "unique_paragraph_count": 15343,
+  "target_words": 1000000,
+  "generated_cycles": 77
+}
