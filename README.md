@@ -165,3 +165,35 @@ instruction dataset   →  instruction/response/domain JSONL for SFT
 ```
 
 Work through the folders in order. Each phase reuses ideas from the previous one.
+
+---
+
+## Marshmello models
+
+Decoder-only GPT models trained from scratch in this repo.
+
+| Model | Parameters | Hugging Face | Config |
+|-------|------------|--------------|--------|
+| **Marshmello-8M** | ~8M | [ostah-1010/Marshmello-8M](https://huggingface.co/ostah-1010/Marshmello-8M) | `default` |
+| **Marshmello-45M** | ~45M | [ostah-1010/Marshmello](https://huggingface.co/ostah-1010/Marshmello) | `large_50m` |
+
+**GitHub:** https://github.com/mohmmedwee/Marshmello
+
+### Download weights from Hugging Face
+
+```bash
+git clone https://github.com/mohmmedwee/Marshmello.git
+cd Marshmello
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+python 13_gpt_pretraining/hub/download_from_hub.py --repo-id ostah-1010/Marshmello
+python 13_gpt_pretraining/generate.py --config large_50m --prompt "Database systems"
+```
+
+### Push updated weights to Hub
+
+```bash
+hf auth login --token hf_xxx   # write token for ostah-1010
+python 13_gpt_pretraining/hub/push_to_hub.py --config large_50m --repo-id ostah-1010/Marshmello
+```

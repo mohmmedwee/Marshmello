@@ -20,6 +20,35 @@ DEFAULT_REPOS = {
 }
 
 
+def upload_readme_only(
+    *,
+    config_name: str,
+    repo_id: str,
+    checkpoint: Path | None = None,
+) -> None:
+    """Upload only README.md to Hub (fast model card update)."""
+    import tempfile
+
+    from huggingface_hub import HfApi
+
+    with tempfile.TemporaryDirectory(prefix="marshmello_readme_") as tmp:
+        export_dir = Path(tmp) / "export"
+        export_model(
+            config_name=config_name,
+            output_dir=export_dir,
+            checkpoint_path=checkpoint,
+        )
+        api = HfApi()
+        api.upload_file(
+            path_or_fileobj=str(export_dir / "README.md"),
+            path_in_repo="README.md",
+            repo_id=repo_id,
+            repo_type="model",
+            commit_message="Update model card with GitHub repo link",
+        )
+        print(f"README updated → https://huggingface.co/{repo_id}")
+
+
 def push_to_hub(
     *,
     config_name: str,
@@ -89,22 +118,33 @@ def main() -> None:
         action="store_true",
         help="Push both Marshmello-8M and Marshmello-45M to their default repos",
     )
+    parser.add_argument(
+        "--readme-only",
+        action="store_true",
+        help="Upload only README.md (model card update)",
+    )
     args = parser.parse_args()
 
     if args.all:
         for config_name, repo_id in DEFAULT_REPOS.items():
             print(f"\n=== {config_name} → {repo_id} ===")
-            push_to_hub(
-                config_name=config_name,
-                repo_id=repo_id,
-                checkpoint=None,
-                private=args.private,
-                dry_run=args.dry_run,
-            )
+            if args.readme_only:
+                upload_readme_only(config_name=config_name, repo_id=repo_id, checkpoint=None)
+            else:
+                push_to_hub(
+                    config_name=config_name,
+                    repo_id=repo_id,
+                    checkpoint=None,
+                    private=args.private,
+                    dry_run=args.dry_run,
+                )
         return
 
     config_name = args.config
     repo_id = args.repo_id or DEFAULT_REPOS.get(config_name, "ostah-1010/Marshmello")
+    if args.readme_only:
+        upload_readme_only(config_name=config_name, repo_id=repo_id, checkpoint=args.checkpoint)
+        return
     push_to_hub(
         config_name=config_name,
         repo_id=repo_id,

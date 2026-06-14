@@ -60,65 +60,77 @@ library_name: pytorch
 
 # {alias}
 
-**{alias}** is a decoder-only GPT language model trained from scratch in the
-[mini-transformer-from-scratch](https://github.com/) educational project.
+**{alias}** is a decoder-only GPT language model trained from scratch in
+[**Marshmello**](https://github.com/mohmmedwee/Marshmello) — a step-by-step project
+that builds transformers from one weight to a ~45M GPT on Apple Silicon.
 
 | | |
 |--|--|
-| Parameters | ~{param_count / 1e6:.1f}M ({param_count:,}) |
-| Architecture | GPT (causal self-attention, learned positional embeddings) |
+| **GitHub** | [mohmmedwee/Marshmello](https://github.com/mohmmedwee/Marshmello) |
+| **Parameters** | ~{param_count / 1e6:.1f}M ({param_count:,}) |
+| **Architecture** | GPT (causal self-attention, learned positional embeddings) |
 | `d_model` | {cfg.d_model} |
-| Layers | {cfg.num_layers} |
-| Heads | {cfg.num_heads} |
-| FFN dim | {cfg.d_ff} |
-| Context | {cfg.block_size} tokens |
-| Tokenizer | BPE (~{vocab_size:,} vocab) |
-| Config key | `{cfg.config_name}` |
+| **Layers** | {cfg.num_layers} |
+| **Heads** | {cfg.num_heads} |
+| **FFN dim** | {cfg.d_ff} |
+| **Context** | {cfg.block_size} tokens |
+| **Tokenizer** | BPE (~{vocab_size:,} vocab) |
+| **Config key** | `{cfg.config_name}` |
 {train_note}
-## Load in this project
+## Quick start
 
 ```bash
-git clone <your-repo> mini-transformer-from-scratch
-cd mini-transformer-from-scratch
+git clone https://github.com/mohmmedwee/Marshmello.git
+cd Marshmello
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt huggingface_hub safetensors
 
-# Download weights into checkpoints/
+# Download weights from this Hub repo into checkpoints/
 python 13_gpt_pretraining/hub/download_from_hub.py --repo-id {repo_id}
 
-# Generate
+# Generate text
 python 13_gpt_pretraining/generate.py --config {cfg.config_name} --prompt "Database systems"
-```
-
-## Load with Python (Hub)
-
-```python
-from pathlib import Path
-from huggingface_hub import snapshot_download
-
-local = Path(snapshot_download("{repo_id}"))
-# Use files: config.json, model.safetensors, tokenizer.json
 ```
 
 ## Marshmello family
 
-| Model | Hub repo | Params |
-|-------|----------|--------|
-| Marshmello-8M | `ostah-1010/Marshmello-8M` | ~8M |
-| Marshmello-45M | `ostah-1010/Marshmello` | ~45M |
+| Model | Hugging Face | Params | GitHub config |
+|-------|--------------|--------|---------------|
+| Marshmello-8M | [ostah-1010/Marshmello-8M](https://huggingface.co/ostah-1010/Marshmello-8M) | ~8M | `default` |
+| Marshmello-45M | [ostah-1010/Marshmello](https://huggingface.co/ostah-1010/Marshmello) | ~45M | `large_50m` |
 
-Both models share the same BPE tokenizer and demo corpus. See Phase 16 evaluation for memorization analysis on small data.
+Full source, training pipeline, and evaluation suite:
+**https://github.com/mohmmedwee/Marshmello**
+
+## Learning path (GitHub repo)
+
+```text
+Linear model → Attention → Transformer → BPE LM → GPT pretraining
+→ Dataset pipeline → 50M scaling → Evaluation → Instruction dataset
+```
+
+Phases 01–17 in the repo walk through every layer of the stack with readable Python.
+
+## Files in this repo
+
+| File | Description |
+|------|-------------|
+| `model.safetensors` | Model weights |
+| `config.json` | Architecture + parameter breakdown |
+| `tokenizer.json` | BPE tokenizer (`</w>` word boundaries) |
+| `generation_config.json` | Default sampling settings |
+| `training_meta.json` | Training step, losses, hyperparameters |
 
 ## Limitations
 
 - Trained on a **small educational corpus** (not web-scale pretraining)
-- Outputs may **memorize** training paragraphs
-- Not instruction-tuned — use Phase 17+ for chat behavior
-- Custom PyTorch implementation (not `transformers` AutoModel)
+- Outputs may **memorize** training paragraphs (see Phase 16 evaluation in GitHub repo)
+- Not instruction-tuned — Phase 17 prepares SFT data; chat tuning is next
+- Custom PyTorch GPT (not `transformers` AutoModel)
 
 ## Citation
 
-Built with the mini-transformer-from-scratch learning path (Phases 01–17).
+Built with the [Marshmello](https://github.com/mohmmedwee/Marshmello) learning project (Phases 01–17).
 """
 
 
