@@ -55,6 +55,12 @@ The training loss:
 
 ```bash
 python 18B_marshmello_instruct/train_instruct.py --config large_50m --steps 1000
+
+# Use a specific base checkpoint (e.g. step 1000 pretrain)
+python 18B_marshmello_instruct/train_instruct.py \
+  --config large_50m \
+  --base-checkpoint 13_gpt_pretraining/checkpoints/large_50m/step_001000.pt \
+  --steps 1000
 ```
 
 Checkpoint output:

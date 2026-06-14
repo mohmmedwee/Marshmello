@@ -27,6 +27,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "09_bpe_tokenizer_demo"))
 from config import GPTConfig, latest_checkpoint_for, resolve_config  # noqa: E402
 from model.gpt import GPT, count_parameters  # noqa: E402
 from tokenizer.bpe_io import load_tokenizer  # noqa: E402
+from tokenizer.encode import corpus_to_ids_safe  # noqa: E402
 from training.trainer import load_checkpoint, pick_device  # noqa: E402
 
 TOKENIZER_PATH = PHASE13_ROOT / "tokenizer" / "tokenizer.json"
@@ -49,14 +50,26 @@ def find_subsequence(values: list[int], needle: list[int]) -> int | None:
 
 
 def encode_text(bpe, text: str) -> list[int]:
-    try:
-        return bpe.corpus_to_ids(text)
-    except KeyError as exc:
-        raise RuntimeError(
-            "Tokenizer cannot encode SFT text. Rebuild the tokenizer after running "
-            "18A_large_pretraining_corpus/build_corpus.py so chat tags and technical "
-            f"characters are present. Missing token: {exc}"
-        ) from exc
+    """Encode SFT text, stripping characters missing from the BPE vocab."""
+    return corpus_to_ids_safe(bpe, text)
+
+
+class CachedBPEEncoder:
+    """Small word-level cache around the educational BPE encoder."""
+
+    def __init__(self, bpe) -> None:
+        self.bpe = bpe
+        self.cache: dict[str, list[int]] = {}
+
+    def encode(self, text: str) -> list[int]:
+        ids: list[int] = []
+        for word in text.split():
+            cached = self.cache.get(word)
+            if cached is None:
+                cached = corpus_to_ids_safe(self.bpe, word)
+                self.cache[word] = cached
+            ids.extend(cached)
+        return ids
 
 
 class SFTDataset:
@@ -75,12 +88,13 @@ class SFTDataset:
         self.block_size = block_size
         self.pad_id = pad_id
         self.vocab_size = bpe.vocab_size
-        self.assistant_ids = encode_text(bpe, ASSISTANT_TAG)
-        self.end_ids = encode_text(bpe, END_TAG)
+        encoder = CachedBPEEncoder(bpe)
+        self.assistant_ids = encoder.encode(ASSISTANT_TAG)
+        self.end_ids = encoder.encode(END_TAG)
         self.examples: list[tuple[torch.Tensor, torch.Tensor, torch.Tensor]] = []
 
         for text in texts:
-            ids = encode_text(bpe, text)
+            ids = encoder.encode(text)
             if len(ids) < 2:
                 continue
             ids = ids[: block_size + 1]
@@ -214,9 +228,10 @@ def train(args: argparse.Namespace) -> None:
 
     if not TOKENIZER_PATH.exists():
         raise FileNotFoundError(f"Tokenizer not found: {TOKENIZER_PATH}")
+    print(f"Loading tokenizer: {TOKENIZER_PATH}", flush=True)
     bpe = load_tokenizer(TOKENIZER_PATH)
 
-    base_checkpoint = latest_checkpoint_for(cfg)
+    base_checkpoint = Path(args.base_checkpoint) if args.base_checkpoint else latest_checkpoint_for(cfg)
     if not base_checkpoint.exists():
         raise FileNotFoundError(
             f"Base checkpoint not found: {base_checkpoint}\n"
@@ -226,11 +241,15 @@ def train(args: argparse.Namespace) -> None:
             "  python 13_gpt_pretraining/training/trainer.py --config large_50m --steps 3000"
         )
 
+    print(f"Building model on {device}...", flush=True)
     model = build_model(bpe.vocab_size, cfg, device)
+    print(f"Loading base checkpoint: {base_checkpoint}", flush=True)
     load_checkpoint(base_checkpoint, model, optimizer=None, device=device)
 
+    print(f"Loading chat data: {args.data}", flush=True)
     texts = load_chat_texts(args.data)
     train_texts, val_texts = split_texts(texts, val_ratio=0.05)
+    print("Encoding SFT datasets...", flush=True)
     train_set = SFTDataset(train_texts, bpe, cfg.block_size)
     val_set = SFTDataset(val_texts, bpe, cfg.block_size)
 
@@ -265,9 +284,10 @@ def train(args: argparse.Namespace) -> None:
 
         tokens_sec = cfg.batch_size * cfg.block_size / max(time.perf_counter() - step_t0, 1e-6)
         if step % args.log_every == 0 or step == 1:
-            print(f"step {step:5d} | train loss {loss.item():.4f} | {tokens_sec:,.0f} tok/s")
+            print(f"step {step:5d} | train loss {loss.item():.4f} | {tokens_sec:,.0f} tok/s", flush=True)
 
-        if step % args.eval_every == 0 or step == cfg.max_steps:
+        if not args.no_eval and (step % args.eval_every == 0 or step == cfg.max_steps):
+            print("  running eval...", flush=True)
             last_train_loss, last_val_loss = estimate_loss(
                 model, train_set, val_set, cfg.batch_size, device, batches=args.eval_batches
             )
@@ -275,12 +295,14 @@ def train(args: argparse.Namespace) -> None:
             avg_tps = step * cfg.batch_size * cfg.block_size / max(elapsed, 1e-6)
             print(
                 f"  eval step {step} | train loss {last_train_loss:.4f} | "
-                f"val loss {last_val_loss:.4f} | avg {avg_tps:,.0f} tok/s"
+                f"val loss {last_val_loss:.4f} | avg {avg_tps:,.0f} tok/s",
+                flush=True,
             )
 
-        if step % args.checkpoint_every == 0 or step == cfg.max_steps:
+        if not args.no_save and (step % args.checkpoint_every == 0 or step == cfg.max_steps):
+            print("  saving checkpoint...", flush=True)
             size = save_checkpoint(LATEST_CHECKPOINT, model, optimizer, step, cfg, last_train_loss, last_val_loss)
-            print(f"  checkpoint path: {LATEST_CHECKPOINT} ({size / 1024**2:.1f} MB)")
+            print(f"  checkpoint path: {LATEST_CHECKPOINT} ({size / 1024**2:.1f} MB)", flush=True)
 
     print("\nTraining complete.")
     print(f"Latest checkpoint: {LATEST_CHECKPOINT}")
@@ -289,6 +311,12 @@ def train(args: argparse.Namespace) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fine-tune Marshmello-45M-Instruct.")
     parser.add_argument("--config", default="large_50m")
+    parser.add_argument(
+        "--base-checkpoint",
+        type=Path,
+        default=None,
+        help="Path to base model checkpoint (default: latest for --config)",
+    )
     parser.add_argument("--steps", type=int, default=1000)
     parser.add_argument("--data", type=Path, default=CHAT_DATA_PATH)
     parser.add_argument("--lr", type=float, default=None)
@@ -297,6 +325,8 @@ def main() -> None:
     parser.add_argument("--eval-every", type=int, default=100)
     parser.add_argument("--eval-batches", type=int, default=10)
     parser.add_argument("--checkpoint-every", type=int, default=250)
+    parser.add_argument("--no-eval", action="store_true", help="Skip eval, useful for one-step smoke tests")
+    parser.add_argument("--no-save", action="store_true", help="Skip checkpoint save, useful for one-step smoke tests")
     args = parser.parse_args()
     train(args)
 
