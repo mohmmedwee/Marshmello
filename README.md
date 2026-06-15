@@ -132,6 +132,7 @@ Each phase folder is a self-contained lesson. Read the code top to bottom — co
 | [16_evaluation_suite](16_evaluation_suite/) | Compare 8M vs 45M; detect memorization | PyTorch |
 | [17_instruction_dataset](17_instruction_dataset/) | Build instruction JSONL for SFT | Pure Python |
 | [18A_large_pretraining_corpus](18A_large_pretraining_corpus/) | Larger corpus for Marshmello-45M-Base-v2 | Pure Python |
+| [18C_base_chat_adaptation](18C_base_chat_adaptation/) | Continued base pretraining on raw+chat text | PyTorch |
 | [18B_marshmello_instruct](18B_marshmello_instruct/) | Fine-tune base → Marshmello-45M-Instruct | PyTorch |
 
 Work through the folders in order. Each phase reuses ideas from the previous one.
@@ -174,6 +175,7 @@ Marshmello/
 ├── 16_evaluation_suite/                             # 8M vs 45M eval + memorization
 ├── 17_instruction_dataset/                          # Alpaca-style JSONL builder
 ├── 18A_large_pretraining_corpus/                    # ~1M-word base corpus
+├── 18C_base_chat_adaptation/                        # Chat-format continued pretraining
 ├── 18B_marshmello_instruct/                         # SFT + chat CLI
 └── requirements.txt
 ```
@@ -198,11 +200,38 @@ python 13_gpt_pretraining/training/trainer.py --config large_50m --steps 1000
 python 17_instruction_dataset/import_hf_datasets.py --max-examples 50000
 python 17_instruction_dataset/process_instructions.py
 
+# Phase 18C — adapt base to chat boundary tokens with next-token prediction
+python 18C_base_chat_adaptation/build_chat_mixed_corpus.py \
+  --chat-ratio 0.2 \
+  --max-chat-examples 10000
+python 13_gpt_pretraining/training/trainer.py \
+  --config large_50m \
+  --resume 13_gpt_pretraining/checkpoints/large_50m/latest.pt \
+  --corpus 13_gpt_pretraining/data/corpus_chat_mixed.txt \
+  --steps 1000 \
+  --lr 5e-5
+python 18C_base_chat_adaptation/eval_chat_format.py
+
+# If corpus_chat_mixed.txt is copied to corpus.txt, use:
+python 13_gpt_pretraining/training/trainer.py \
+  --config large_50m \
+  --resume 13_gpt_pretraining/checkpoints/large_50m/latest.pt \
+  --steps 1000 \
+  --lr 5e-5
+
 # Phase 18B — instruction fine-tuning
 python 18B_marshmello_instruct/train_instruct.py \
   --config large_50m \
   --base-checkpoint 13_gpt_pretraining/checkpoints/large_50m/step_001000.pt \
-  --steps 1000
+  --steps 500 \
+  --lr 1e-5 \
+  --freeze-backbone
+
+# Optional SFT diagnostic — verify the model can overfit 20 examples
+python 18B_marshmello_instruct/train_instruct.py \
+  --mode overfit \
+  --max-examples 20 \
+  --steps 300
 
 # Chat with the instruct checkpoint
 python 18B_marshmello_instruct/chat.py --prompt "What is a database index?"
@@ -263,6 +292,8 @@ evaluation suite      →  8M vs 45M, memorization metrics
 instruction dataset   →  instruction/response JSONL for SFT
      ↓
 larger base corpus    →  Marshmello-45M-Base-v2
+     ↓
+base chat adaptation  →  next-token pretraining on raw text + chat boundaries
      ↓
 instruct fine-tuning  →  Marshmello-45M-Instruct
 ```

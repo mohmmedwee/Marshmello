@@ -10,9 +10,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import torch
@@ -27,8 +28,9 @@ sys.path.insert(0, str(PROJECT_ROOT / "09_bpe_tokenizer_demo"))
 from config import GPTConfig, latest_checkpoint_for, resolve_config  # noqa: E402
 from model.gpt import GPT, count_parameters  # noqa: E402
 from tokenizer.bpe_io import load_tokenizer  # noqa: E402
+from tokenizer.decode import decode_ids_pretty  # noqa: E402
 from tokenizer.encode import corpus_to_ids_safe  # noqa: E402
-from training.trainer import load_checkpoint, pick_device  # noqa: E402
+from training.trainer import pick_device  # noqa: E402
 
 TOKENIZER_PATH = PHASE13_ROOT / "tokenizer" / "tokenizer.json"
 CHAT_DATA_PATH = PROJECT_ROOT / "17_instruction_dataset" / "processed" / "chat.jsonl"
@@ -38,6 +40,26 @@ LATEST_CHECKPOINT = CHECKPOINT_DIR / "latest.pt"
 USER_TAG = "<USER>"
 ASSISTANT_TAG = "<ASSISTANT>"
 END_TAG = "<END>"
+SFT_DEFAULT_LR = 1e-5
+SFT_GRAD_CLIP = 1.0
+GENERATION_EVAL_PROMPTS = (
+    "What is AI?",
+    "Explain database indexes.",
+)
+TRANSFORMER_KEY_PREFIXES = (
+    "token_emb.",
+    "pos_emb.",
+    "blocks.",
+    "norm.",
+    "lm_head.",
+)
+
+
+@dataclass(frozen=True)
+class ChatExample:
+    text: str
+    instruction: str
+    response: str
 
 
 def find_subsequence(values: list[int], needle: list[int]) -> int | None:
@@ -52,6 +74,33 @@ def find_subsequence(values: list[int], needle: list[int]) -> int | None:
 def encode_text(bpe, text: str) -> list[int]:
     """Encode SFT text, stripping characters missing from the BPE vocab."""
     return corpus_to_ids_safe(bpe, text)
+
+
+def one_line(text: str, max_chars: int = 260) -> str:
+    cleaned = re.sub(r"\s+", " ", text).strip()
+    if len(cleaned) <= max_chars:
+        return cleaned
+    return f"{cleaned[: max_chars - 3]}..."
+
+
+def normalize_exact(text: str) -> str:
+    """Whitespace-normalize text for strict answer matching diagnostics."""
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def parse_chat_text(text: str) -> tuple[str, str]:
+    user_start = text.find(USER_TAG)
+    assistant_start = text.find(ASSISTANT_TAG)
+    end_start = text.rfind(END_TAG)
+    if user_start < 0 or assistant_start < 0 or end_start < 0:
+        raise ValueError(f"Chat example is missing one of {USER_TAG}, {ASSISTANT_TAG}, {END_TAG}")
+    if not (user_start < assistant_start < end_start):
+        raise ValueError("Chat example tags are not in <USER> ... <ASSISTANT> ... <END> order")
+    instruction = text[user_start + len(USER_TAG) : assistant_start].strip()
+    response = text[assistant_start + len(ASSISTANT_TAG) : end_start].strip()
+    if not instruction or not response:
+        raise ValueError("Chat example has empty instruction or response")
+    return instruction, response
 
 
 class CachedBPEEncoder:
@@ -153,8 +202,8 @@ class SFTDataset:
         return torch.stack(xs).to(device), torch.stack(ys).to(device), torch.stack(ws).to(device)
 
 
-def load_chat_texts(path: Path) -> list[str]:
-    texts: list[str] = []
+def load_chat_examples(path: Path) -> list[ChatExample]:
+    examples: list[ChatExample] = []
     with path.open("r", encoding="utf-8") as f:
         for line in f:
             if not line.strip():
@@ -162,15 +211,34 @@ def load_chat_texts(path: Path) -> list[str]:
             record = json.loads(line)
             text = str(record.get("text", "")).strip()
             if text:
-                texts.append(text)
-    if not texts:
+                instruction = str(record.get("instruction", "")).strip()
+                response = str(record.get("response", "")).strip()
+                if not instruction or not response:
+                    instruction, response = parse_chat_text(text)
+                examples.append(ChatExample(text=text, instruction=instruction, response=response))
+    if not examples:
         raise ValueError(f"No chat texts found in {path}")
-    return texts
+    return examples
 
 
-def split_texts(texts: list[str], val_ratio: float = 0.05) -> tuple[list[str], list[str]]:
-    split_at = max(1, int(len(texts) * (1.0 - val_ratio)))
-    return texts[:split_at], texts[split_at:] or texts[-1:]
+def limit_examples(examples: list[ChatExample], max_examples: int | None) -> list[ChatExample]:
+    if max_examples is None:
+        return examples
+    if max_examples <= 0:
+        raise ValueError("--max-examples must be positive when provided")
+    return examples[:max_examples]
+
+
+def split_examples(
+    examples: list[ChatExample],
+    val_ratio: float = 0.05,
+) -> tuple[list[ChatExample], list[ChatExample]]:
+    split_at = max(1, int(len(examples) * (1.0 - val_ratio)))
+    return examples[:split_at], examples[split_at:] or examples[-1:]
+
+
+def example_texts(examples: list[ChatExample]) -> list[str]:
+    return [example.text for example in examples]
 
 
 def weighted_cross_entropy(logits: torch.Tensor, targets: torch.Tensor, weights: torch.Tensor) -> torch.Tensor:
@@ -221,9 +289,239 @@ def build_model(vocab_size: int, cfg: GPTConfig, device: torch.device) -> GPT:
     ).to(device)
 
 
+def total_parameters(model: GPT) -> int:
+    return sum(p.numel() for p in model.parameters())
+
+
+def format_keys(keys: list[str] | tuple[str, ...], *, max_keys: int = 12) -> str:
+    if not keys:
+        return "none"
+    shown = ", ".join(keys[:max_keys])
+    if len(keys) > max_keys:
+        shown += f", ... (+{len(keys) - max_keys} more)"
+    return shown
+
+
+def checkpoint_model_state(checkpoint: dict[str, object]) -> dict[str, torch.Tensor]:
+    state = checkpoint.get("model_state", checkpoint)
+    if not isinstance(state, dict):
+        raise TypeError("Checkpoint does not contain a model_state dict")
+    return state  # type: ignore[return-value]
+
+
+def verify_tokenizer_checkpoint_compatibility(
+    *,
+    bpe,
+    model: GPT,
+    checkpoint_state: dict[str, torch.Tensor],
+) -> None:
+    token_emb = checkpoint_state.get("token_emb.weight")
+    if token_emb is None:
+        raise KeyError("Checkpoint is missing token_emb.weight")
+    if token_emb.ndim != 2:
+        raise ValueError(f"Checkpoint token_emb.weight must be 2D, got shape {tuple(token_emb.shape)}")
+
+    lm_head = checkpoint_state.get("lm_head.weight")
+    checkpoint_vocab_size = int(token_emb.shape[0])
+    print("Tokenizer/checkpoint compatibility:")
+    print(f"  tokenizer vocab size:          {bpe.vocab_size:,}")
+    print(f"  model vocab size:              {model.vocab_size:,}")
+    print(f"  checkpoint token_emb.weight:   {tuple(token_emb.shape)}")
+    if lm_head is not None:
+        print(f"  checkpoint lm_head.weight:     {tuple(lm_head.shape)}")
+
+    assert bpe.vocab_size == checkpoint_vocab_size, (
+        f"Tokenizer vocab size {bpe.vocab_size} does not match checkpoint embedding "
+        f"rows {checkpoint_vocab_size}"
+    )
+    assert model.vocab_size == checkpoint_vocab_size, (
+        f"Model vocab size {model.vocab_size} does not match checkpoint embedding "
+        f"rows {checkpoint_vocab_size}"
+    )
+    assert tuple(model.token_emb.weight.shape) == tuple(token_emb.shape), (
+        f"Model token embedding shape {tuple(model.token_emb.weight.shape)} does not "
+        f"match checkpoint shape {tuple(token_emb.shape)}"
+    )
+    if lm_head is not None:
+        assert lm_head.shape[0] == checkpoint_vocab_size, (
+            f"Checkpoint lm_head rows {lm_head.shape[0]} do not match token embedding "
+            f"rows {checkpoint_vocab_size}"
+        )
+        assert tuple(model.lm_head.weight.shape) == tuple(lm_head.shape), (
+            f"Model lm_head shape {tuple(model.lm_head.weight.shape)} does not match "
+            f"checkpoint shape {tuple(lm_head.shape)}"
+        )
+
+
+def load_base_checkpoint_verified(
+    path: Path,
+    model: GPT,
+    bpe,
+) -> int:
+    checkpoint = torch.load(path, map_location="cpu", weights_only=False)
+    checkpoint_state = checkpoint_model_state(checkpoint)
+    verify_tokenizer_checkpoint_compatibility(
+        bpe=bpe,
+        model=model,
+        checkpoint_state=checkpoint_state,
+    )
+
+    before_norm = float(model.token_emb.weight[0].detach().norm().item())
+    incompatible = model.load_state_dict(checkpoint_state, strict=False)
+    missing_keys = list(incompatible.missing_keys)
+    unexpected_keys = list(incompatible.unexpected_keys)
+    after_norm = float(model.token_emb.weight[0].detach().norm().item())
+
+    print("Checkpoint load verification:")
+    print(f"  missing keys:                 {format_keys(missing_keys)}")
+    print(f"  unexpected keys:              {format_keys(unexpected_keys)}")
+    print(f"  first embedding norm before:  {before_norm:.6f}")
+    print(f"  first embedding norm after:   {after_norm:.6f}")
+    print(f"  first embedding norm delta:   {after_norm - before_norm:+.6f}")
+
+    missing_transformer_keys = [
+        key for key in missing_keys if key.startswith(TRANSFORMER_KEY_PREFIXES)
+    ]
+    assert not missing_transformer_keys, (
+        "Missing transformer keys after checkpoint load: "
+        f"{format_keys(missing_transformer_keys)}"
+    )
+    return int(checkpoint.get("step", 0)) if isinstance(checkpoint, dict) else 0
+
+
+def run_decode_sanity_check(bpe, examples: list[ChatExample], *, limit: int = 3) -> None:
+    print("Decode sanity check:")
+    for idx, example in enumerate(examples[:limit], start=1):
+        ids = encode_text(bpe, example.text)
+        decoded = decode_ids_pretty(bpe, ids)
+        print(f"  example {idx}:")
+        print(f"    original: {one_line(example.text)}")
+        print(f"    decoded:  {one_line(decoded)}")
+
+        positions = [decoded.find(tag) for tag in (USER_TAG, ASSISTANT_TAG, END_TAG)]
+        assert all(pos >= 0 for pos in positions), (
+            f"Decoded example {idx} lost one of {USER_TAG}, {ASSISTANT_TAG}, {END_TAG}"
+        )
+        assert positions == sorted(positions), (
+            f"Decoded example {idx} changed chat tag order: {positions}"
+        )
+        print(f"    tags:     {USER_TAG}=ok {ASSISTANT_TAG}=ok {END_TAG}=ok")
+
+
+def set_trainable_parameters(model: GPT, *, freeze_backbone: bool) -> None:
+    for parameter in model.parameters():
+        parameter.requires_grad = True
+
+    if freeze_backbone:
+        for parameter in model.parameters():
+            parameter.requires_grad = False
+        for parameter in model.blocks[-1].parameters():
+            parameter.requires_grad = True
+        for parameter in model.lm_head.parameters():
+            parameter.requires_grad = True
+
+    trainable = count_parameters(model)
+    total = total_parameters(model)
+    if trainable == 0:
+        raise RuntimeError("No trainable parameters selected")
+    if freeze_backbone:
+        print("Freeze mode: trainable modules are lm_head + last transformer block")
+    print(f"Trainable parameters: {trainable:,} / {total:,} ({trainable / total * 100:.2f}%)")
+
+
+def repeated_ngram(text: str, *, n: int = 3) -> tuple[str, ...] | None:
+    words = re.findall(r"\S+", text.lower())
+    if len(words) < n * 2:
+        return None
+    seen: set[tuple[str, ...]] = set()
+    for start in range(0, len(words) - n + 1):
+        ngram = tuple(words[start : start + n])
+        if ngram in seen:
+            return ngram
+        seen.add(ngram)
+    return None
+
+
+@torch.no_grad()
+def generate_assistant_reply(
+    model: GPT,
+    bpe,
+    prompt: str,
+    *,
+    max_new_tokens: int = 120,
+) -> str:
+    was_training = model.training
+    model.eval()
+    prefix = f"{USER_TAG}\n{prompt}\n{ASSISTANT_TAG}\n"
+    ids = encode_text(bpe, prefix) or [0]
+    end_ids = encode_text(bpe, END_TAG)
+    prompt_len = len(ids)
+    device = next(model.parameters()).device
+
+    for _ in range(max_new_tokens):
+        context = torch.tensor([ids[-model.block_size :]], dtype=torch.long, device=device)
+        logits = model.generate_step_logits(context)[0]
+        next_id = int(torch.argmax(logits).item())
+        ids.append(next_id)
+        if end_ids and len(ids) >= len(end_ids) and ids[-len(end_ids) :] == end_ids:
+            break
+
+    if was_training:
+        model.train()
+
+    answer_ids = ids[prompt_len:]
+    text = decode_ids_pretty(bpe, answer_ids)
+    return text.split(END_TAG, 1)[0].strip()
+
+
+def run_generation_eval(model: GPT, bpe, *, step: int) -> bool:
+    print(f"  generation eval step {step}:")
+    is_safe = True
+    for prompt in GENERATION_EVAL_PROMPTS:
+        reply = generate_assistant_reply(model, bpe, prompt, max_new_tokens=120)
+        print(f"    Q: {prompt}")
+        print(f"    A: {one_line(reply)}")
+        repeated = repeated_ngram(reply, n=3)
+        if repeated is not None:
+            print(f"  WARNING: repeated 3-gram detected: {' '.join(repeated)!r}", flush=True)
+            is_safe = False
+    return is_safe
+
+
+def evaluate_exact_answer_match(
+    model: GPT,
+    bpe,
+    examples: list[ChatExample],
+) -> tuple[int, int]:
+    matches = 0
+    total = len(examples)
+    for example in examples:
+        expected_ids = encode_text(bpe, example.response)
+        expected_text = decode_ids_pretty(bpe, expected_ids)
+        max_new_tokens = max(32, min(len(expected_ids) + len(encode_text(bpe, END_TAG)) + 8, 256))
+        generated = generate_assistant_reply(
+            model,
+            bpe,
+            example.instruction,
+            max_new_tokens=max_new_tokens,
+        )
+        if normalize_exact(generated) == normalize_exact(expected_text):
+            matches += 1
+    return matches, total
+
+
 def train(args: argparse.Namespace) -> None:
+    for interval_name in ("log_every", "eval_every", "generation_every", "checkpoint_every"):
+        if getattr(args, interval_name) <= 0:
+            raise ValueError(f"--{interval_name.replace('_', '-')} must be positive")
+
     cfg = resolve_config(args.config)
-    cfg = replace(cfg, max_steps=args.steps, learning_rate=args.lr or cfg.learning_rate)
+    cfg = replace(
+        cfg,
+        max_steps=args.steps,
+        learning_rate=args.lr,
+        grad_clip=SFT_GRAD_CLIP,
+    )
     device = pick_device(force_cpu=args.cpu)
 
     if not TOKENIZER_PATH.exists():
@@ -244,26 +542,45 @@ def train(args: argparse.Namespace) -> None:
     print(f"Building model on {device}...", flush=True)
     model = build_model(bpe.vocab_size, cfg, device)
     print(f"Loading base checkpoint: {base_checkpoint}", flush=True)
-    load_checkpoint(base_checkpoint, model, optimizer=None, device=device)
+    checkpoint_step = load_base_checkpoint_verified(base_checkpoint, model, bpe)
 
     print(f"Loading chat data: {args.data}", flush=True)
-    texts = load_chat_texts(args.data)
-    train_texts, val_texts = split_texts(texts, val_ratio=0.05)
-    print("Encoding SFT datasets...", flush=True)
-    train_set = SFTDataset(train_texts, bpe, cfg.block_size)
-    val_set = SFTDataset(val_texts, bpe, cfg.block_size)
+    examples = load_chat_examples(args.data)
+    max_examples = args.max_examples
+    if args.mode == "overfit" and max_examples is None:
+        max_examples = 20
+    examples = limit_examples(examples, max_examples)
+    run_decode_sanity_check(bpe, examples)
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=cfg.learning_rate, weight_decay=0.01)
+    if args.mode == "overfit":
+        train_examples = examples
+        val_examples = examples
+    else:
+        train_examples, val_examples = split_examples(examples, val_ratio=0.05)
+
+    print("Encoding SFT datasets...", flush=True)
+    train_set = SFTDataset(example_texts(train_examples), bpe, cfg.block_size)
+    val_set = SFTDataset(example_texts(val_examples), bpe, cfg.block_size)
+
+    set_trainable_parameters(model, freeze_backbone=args.freeze_backbone)
+    trainable_params = [parameter for parameter in model.parameters() if parameter.requires_grad]
+    optimizer = torch.optim.AdamW(trainable_params, lr=cfg.learning_rate, weight_decay=0.01)
+
     print("Phase 18B: Marshmello-45M-Instruct SFT")
     print("=" * 60)
     print(f"Config:          {cfg.config_name}")
+    print(f"Mode:            {args.mode}")
     print(f"Device:          {device}")
     print(f"Base checkpoint: {base_checkpoint}")
+    print(f"Base step:       {checkpoint_step}")
     print(f"Tokenizer:       {TOKENIZER_PATH}")
     print(f"Chat data:       {args.data}")
     print(f"Train examples:  {len(train_set):,}")
     print(f"Val examples:    {len(val_set):,}")
-    print(f"Parameters:      {count_parameters(model):,}")
+    print(f"Learning rate:   {cfg.learning_rate:.2e}")
+    print(f"Grad clip norm:  {cfg.grad_clip:.1f}")
+    print(f"Parameters:      {total_parameters(model):,}")
+    print(f"Trainable:       {count_parameters(model):,}")
     print(f"Checkpoint path: {LATEST_CHECKPOINT}")
     print()
 
@@ -271,6 +588,19 @@ def train(args: argparse.Namespace) -> None:
     t0 = time.perf_counter()
     last_train_loss = 0.0
     last_val_loss = 0.0
+    baseline_exact_matches = 0
+    best_exact_matches = 0
+    stop_reason: str | None = None
+
+    if args.mode == "overfit" and not args.no_eval:
+        baseline_exact_matches, exact_total = evaluate_exact_answer_match(model, bpe, train_examples)
+        best_exact_matches = baseline_exact_matches
+        print(
+            f"Overfit exact answer match before training: "
+            f"{baseline_exact_matches}/{exact_total}",
+            flush=True,
+        )
+
     for step in range(1, cfg.max_steps + 1):
         step_t0 = time.perf_counter()
         x, y, weights = train_set.get_batch(cfg.batch_size, device)
@@ -279,7 +609,7 @@ def train(args: argparse.Namespace) -> None:
 
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.grad_clip)
+        torch.nn.utils.clip_grad_norm_(trainable_params, cfg.grad_clip)
         optimizer.step()
 
         tokens_sec = cfg.batch_size * cfg.block_size / max(time.perf_counter() - step_t0, 1e-6)
@@ -299,18 +629,49 @@ def train(args: argparse.Namespace) -> None:
                 flush=True,
             )
 
+            if args.mode == "overfit":
+                exact_matches, exact_total = evaluate_exact_answer_match(model, bpe, train_examples)
+                print(
+                    f"  overfit exact answer match {exact_matches}/{exact_total} "
+                    f"(best {best_exact_matches}/{exact_total})",
+                    flush=True,
+                )
+                if exact_matches > best_exact_matches:
+                    best_exact_matches = exact_matches
+                    print("  overfit exact answer match improved", flush=True)
+                if exact_matches > baseline_exact_matches:
+                    stop_reason = "overfit exact answer match improved"
+
+        if not args.no_eval and step % args.generation_every == 0:
+            generation_safe = run_generation_eval(model, bpe, step=step)
+            if not generation_safe:
+                stop_reason = "generated text became repetitive"
+
         if not args.no_save and (step % args.checkpoint_every == 0 or step == cfg.max_steps):
             print("  saving checkpoint...", flush=True)
             size = save_checkpoint(LATEST_CHECKPOINT, model, optimizer, step, cfg, last_train_loss, last_val_loss)
             print(f"  checkpoint path: {LATEST_CHECKPOINT} ({size / 1024**2:.1f} MB)", flush=True)
 
-    print("\nTraining complete.")
+        if stop_reason is not None:
+            print(f"WARNING: stopping early at step {step}: {stop_reason}", flush=True)
+            break
+
+    if stop_reason is None:
+        print("\nTraining complete.")
+    else:
+        print(f"\nStopped early: {stop_reason}")
     print(f"Latest checkpoint: {LATEST_CHECKPOINT}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fine-tune Marshmello-45M-Instruct.")
     parser.add_argument("--config", default="large_50m")
+    parser.add_argument(
+        "--mode",
+        choices=("train", "overfit"),
+        default="train",
+        help="train: full SFT; overfit: use a tiny subset and track exact answer match",
+    )
     parser.add_argument(
         "--base-checkpoint",
         type=Path,
@@ -319,10 +680,17 @@ def main() -> None:
     )
     parser.add_argument("--steps", type=int, default=1000)
     parser.add_argument("--data", type=Path, default=CHAT_DATA_PATH)
-    parser.add_argument("--lr", type=float, default=None)
+    parser.add_argument("--max-examples", type=int, default=None)
+    parser.add_argument("--lr", type=float, default=SFT_DEFAULT_LR)
+    parser.add_argument(
+        "--freeze-backbone",
+        action="store_true",
+        help="Train only lm_head and the final transformer block",
+    )
     parser.add_argument("--cpu", action="store_true")
     parser.add_argument("--log-every", type=int, default=10)
     parser.add_argument("--eval-every", type=int, default=100)
+    parser.add_argument("--generation-every", type=int, default=100)
     parser.add_argument("--eval-batches", type=int, default=10)
     parser.add_argument("--checkpoint-every", type=int, default=250)
     parser.add_argument("--no-eval", action="store_true", help="Skip eval, useful for one-step smoke tests")

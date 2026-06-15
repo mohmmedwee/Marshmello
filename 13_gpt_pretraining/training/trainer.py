@@ -38,6 +38,7 @@ from config import (  # noqa: E402
 from data.prepare_corpus import prepare_corpus  # noqa: E402
 from model.gpt import GPT, count_parameters  # noqa: E402
 from tokenizer.bpe_io import load_tokenizer  # noqa: E402
+from tokenizer.encode import corpus_to_ids_safe  # noqa: E402
 from tokenizer.train_bpe import train_bpe  # noqa: E402
 from training.dataset import GPTDataset, split_token_ids  # noqa: E402
 
@@ -223,10 +224,18 @@ def build_model(vocab_size: int, cfg: GPTConfig, device: torch.device) -> GPT:
     return model
 
 
-def apply_config_overrides(cfg: GPTConfig, *, quick: bool = False, max_steps: int | None = None) -> GPTConfig:
+def apply_config_overrides(
+    cfg: GPTConfig,
+    *,
+    quick: bool = False,
+    max_steps: int | None = None,
+    learning_rate: float | None = None,
+) -> GPTConfig:
     updates: dict[str, object] = {}
     if max_steps is not None:
         updates["max_steps"] = max_steps
+    if learning_rate is not None:
+        updates["learning_rate"] = learning_rate
     if quick:
         updates.update(
             {
@@ -250,9 +259,17 @@ def train(
     *,
     auto_batch_size: bool = True,
     max_steps: int | None = None,
+    learning_rate: float | None = None,
+    corpus_path: Path | None = None,
 ) -> None:
     torch.manual_seed(cfg.seed)
-    cfg = apply_config_overrides(cfg, quick=quick, max_steps=max_steps)
+    explicit_step_budget = max_steps is not None
+    cfg = apply_config_overrides(
+        cfg,
+        quick=quick,
+        max_steps=max_steps,
+        learning_rate=learning_rate,
+    )
 
     device = pick_device(force_cpu=force_cpu)
     ckpt_dir = checkpoint_dir_for(cfg)
@@ -263,10 +280,14 @@ def train(
     print(f"Device:              {device}")
     print()
 
-    prepare_corpus()
+    if corpus_path is None:
+        corpus_path = prepare_corpus()
+    elif not corpus_path.exists():
+        raise FileNotFoundError(f"Corpus override not found: {corpus_path}")
+
     bpe = ensure_tokenizer(cfg)
-    text = CORPUS_PATH.read_text(encoding="utf-8")
-    all_ids = bpe.corpus_to_ids(text)
+    text = corpus_path.read_text(encoding="utf-8")
+    all_ids = corpus_to_ids_safe(bpe, text)
     train_ids, val_ids = split_token_ids(all_ids, val_ratio=cfg.val_ratio)
 
     train_set = GPTDataset(train_ids, bpe.vocab_size)
@@ -288,10 +309,12 @@ def train(
             print(f"Using batch_size={batch_size} after OOM fallback")
 
     print(f"BPE vocab size:     {bpe.vocab_size:,}")
+    print(f"Corpus path:        {corpus_path}")
     print(f"Train BPE tokens:   {len(train_ids):,}")
     print(f"Val BPE tokens:     {len(val_ids):,}")
     print(f"Block size:         {cfg.block_size}")
     print(f"Batch size:         {cfg.batch_size}")
+    print(f"Learning rate:      {cfg.learning_rate:.2e}")
     print(f"Grad accumulation:  {cfg.gradient_accumulation_steps}")
     print(f"Effective batch:    {cfg.effective_batch_size} sequences")
     print(f"Tokens / opt step:  {cfg.tokens_per_optimizer_step:,}")
@@ -317,6 +340,9 @@ def train(
     start_step = 0
     if resume_path and resume_path.exists():
         start_step = load_checkpoint(resume_path, model, optimizer, device)
+        if learning_rate is not None:
+            for group in optimizer.param_groups:
+                group["lr"] = cfg.learning_rate
         print(f"Resumed from {resume_path} at step {start_step}\n")
 
     model.train()
@@ -324,9 +350,12 @@ def train(
     tokens_per_step = cfg.tokens_per_optimizer_step
     accum = max(1, cfg.gradient_accumulation_steps)
     step = start_step
+    target_step = start_step + cfg.max_steps if resume_path and explicit_step_budget else cfg.max_steps
+    steps_to_run = max(0, target_step - start_step)
+    print(f"Training target step: {target_step:,} ({steps_to_run:,} optimizer steps to run)")
     t0 = time.perf_counter()
 
-    while step < cfg.max_steps:
+    while step < target_step:
         step += 1
         step_t0 = time.perf_counter()
 
@@ -372,7 +401,7 @@ def train(
                 f"bs={cfg.batch_size} accum={accum}"
             )
 
-        if step % cfg.eval_every == 0 or step == cfg.max_steps:
+        if step % cfg.eval_every == 0 or step == target_step:
             train_loss, val_loss = estimate_loss(model, train_set, val_set, cfg, device)
             elapsed = time.perf_counter() - t0
             avg_tps = (step - start_step) * tokens_per_step / max(elapsed, 1e-6)
@@ -384,7 +413,7 @@ def train(
             if val_loss < best_val:
                 best_val = val_loss
 
-        if step % cfg.checkpoint_every == 0 or step == cfg.max_steps:
+        if step % cfg.checkpoint_every == 0 or step == target_step:
             train_loss, val_loss = estimate_loss(model, train_set, val_set, cfg, device, batches=10)
             ckpt_path = ckpt_dir / f"step_{step:06d}.pt"
             size = save_checkpoint(ckpt_path, model, optimizer, step, cfg, train_loss, val_loss)
@@ -423,8 +452,20 @@ def main() -> None:
     )
     parser.add_argument("--resume", type=str, default=None, help="Checkpoint path")
     parser.add_argument("--quick", action="store_true", help="Short run for smoke tests")
-    parser.add_argument("--steps", type=int, default=None, help="Override max training steps")
+    parser.add_argument(
+        "--steps",
+        type=int,
+        default=None,
+        help="Override training steps; with --resume, run this many additional steps",
+    )
     parser.add_argument("--max-steps", type=int, default=None, help="Alias for --steps")
+    parser.add_argument("--lr", type=float, default=None, help="Override learning rate")
+    parser.add_argument(
+        "--corpus",
+        type=Path,
+        default=None,
+        help="Override training corpus path instead of 13_gpt_pretraining/data/corpus.txt",
+    )
     parser.add_argument("--cpu", action="store_true", help="Force CPU (debug)")
     parser.add_argument(
         "--no-auto-batch",
@@ -443,6 +484,8 @@ def main() -> None:
         force_cpu=args.cpu,
         auto_batch_size=not args.no_auto_batch,
         max_steps=max_steps,
+        learning_rate=args.lr,
+        corpus_path=args.corpus,
     )
 
 

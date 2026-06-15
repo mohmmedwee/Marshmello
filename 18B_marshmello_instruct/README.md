@@ -54,13 +54,12 @@ The training loss:
 ## Train
 
 ```bash
-python 18B_marshmello_instruct/train_instruct.py --config large_50m --steps 1000
-
-# Use a specific base checkpoint (e.g. step 1000 pretrain)
 python 18B_marshmello_instruct/train_instruct.py \
   --config large_50m \
   --base-checkpoint 13_gpt_pretraining/checkpoints/large_50m/step_001000.pt \
-  --steps 1000
+  --steps 500 \
+  --lr 1e-5 \
+  --freeze-backbone
 ```
 
 Checkpoint output:
@@ -70,7 +69,19 @@ Checkpoint output:
 ```
 
 The trainer prints train loss, validation loss, tokens/sec, and checkpoint path.
-It supports MPS automatically when available.
+It supports MPS automatically when available. Before training it verifies that
+the tokenizer vocab, model vocab, and checkpoint embedding shape match; it also
+prints missing/unexpected checkpoint keys and runs an encode/decode sanity check
+for `<USER>`, `<ASSISTANT>`, and `<END>`.
+
+Overfit diagnostic:
+
+```bash
+python 18B_marshmello_instruct/train_instruct.py \
+  --mode overfit \
+  --max-examples 20 \
+  --steps 300
+```
 
 ---
 
@@ -105,6 +116,10 @@ python 18A_large_pretraining_corpus/build_corpus.py --target-words 1000000
 python 13_gpt_pretraining/tokenizer/train_bpe.py
 python 13_gpt_pretraining/training/trainer.py --config large_50m --steps 3000
 
-python 18B_marshmello_instruct/train_instruct.py --config large_50m --steps 1000
+python 18B_marshmello_instruct/train_instruct.py \
+  --config large_50m \
+  --steps 500 \
+  --lr 1e-5 \
+  --freeze-backbone
 python 18B_marshmello_instruct/chat.py --prompt "Explain database indexes"
 ```

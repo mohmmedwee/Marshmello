@@ -52,9 +52,14 @@ tags:
 - pytorch
 - gpt
 - causal-lm
+- text-generation
+- language-model
 - decoder-only
 - from-scratch
+- education
 - marshmello
+- apple-silicon
+- mps
 library_name: pytorch
 ---
 
