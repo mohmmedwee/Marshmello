@@ -1,0 +1,206 @@
+{
+  "tokenizer": {
+    "output": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer_v2.json",
+    "target_vocab_size": 8000,
+    "minimum_vocab_size": 5000,
+    "initial_vocab_size": 1086,
+    "final_vocab_size": 8000,
+    "requested_unique_merges": 6914,
+    "learned_merges": 6914,
+    "duplicate_merge_tokens": 0,
+    "stop_reason": "target_vocab_reached"
+  },
+  "training_data": {
+    "base_corpus": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/data/corpus.txt",
+    "chat_jsonl": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/17_instruction_dataset/processed/chat.jsonl",
+    "chat_examples_used": 50000,
+    "base_words": 1000027,
+    "chat_words": 4442205,
+    "training_words": 5445832,
+    "training_chars": 33957102
+  },
+  "coverage": {
+    "examples_evaluated": 50000,
+    "parse_failures": 0,
+    "avg_tokens_per_instruction": 43.05,
+    "avg_tokens_per_response": 83.81,
+    "old_avg_tokens_per_instruction": 79.75,
+    "old_avg_tokens_per_response": 155.87,
+    "v2_total_chat_tokens": 6493181,
+    "old_total_chat_tokens": 12180932,
+    "compression_ratio_old_to_v2": 1.876,
+    "token_reduction_vs_old": 0.4669,
+    "unknown_or_skipped_characters": {
+      "v2_total": 0,
+      "old_total": 187021
+    },
+    "top_missing_chars": {
+      "v2": [],
+      "old": [
+        {
+          "char": "\"",
+          "repr": "'\"'",
+          "codepoint": "U+0022",
+          "count": 26577
+        },
+        {
+          "char": "'",
+          "repr": "\"'\"",
+          "codepoint": "U+0027",
+          "count": 25730
+        },
+        {
+          "char": ")",
+          "repr": "')'",
+          "codepoint": "U+0029",
+          "count": 22298
+        },
+        {
+          "char": "(",
+          "repr": "'('",
+          "codepoint": "U+0028",
+          "count": 21301
+        },
+        {
+          "char": "?",
+          "repr": "'?'",
+          "codepoint": "U+003F",
+          "count": 16268
+        },
+        {
+          "char": "/",
+          "repr": "'/'",
+          "codepoint": "U+002F",
+          "count": 8080
+        },
+        {
+          "char": "Y",
+          "repr": "'Y'",
+          "codepoint": "U+0059",
+          "count": 6265
+        },
+        {
+          "char": "=",
+          "repr": "'='",
+          "codepoint": "U+003D",
+          "count": 5525
+        },
+        {
+          "char": "_",
+          "repr": "'_'",
+          "codepoint": "U+005F",
+          "count": 4154
+        },
+        {
+          "char": "[",
+          "repr": "'['",
+          "codepoint": "U+005B",
+          "count": 3602
+        },
+        {
+          "char": "]",
+          "repr": "']'",
+          "codepoint": "U+005D",
+          "count": 3576
+        },
+        {
+          "char": "’",
+          "repr": "'’'",
+          "codepoint": "U+2019",
+          "count": 3520
+        },
+        {
+          "char": "!",
+          "repr": "'!'",
+          "codepoint": "U+0021",
+          "count": 3418
+        },
+        {
+          "char": "–",
+          "repr": "'–'",
+          "codepoint": "U+2013",
+          "count": 3179
+        },
+        {
+          "char": "|",
+          "repr": "'|'",
+          "codepoint": "U+007C",
+          "count": 2837
+        },
+        {
+          "char": "+",
+          "repr": "'+'",
+          "codepoint": "U+002B",
+          "count": 2434
+        },
+        {
+          "char": "%",
+          "repr": "'%'",
+          "codepoint": "U+0025",
+          "count": 2400
+        },
+        {
+          "char": "$",
+          "repr": "'$'",
+          "codepoint": "U+0024",
+          "count": 2089
+        },
+        {
+          "char": "#",
+          "repr": "'#'",
+          "codepoint": "U+0023",
+          "count": 2041
+        },
+        {
+          "char": "X",
+          "repr": "'X'",
+          "codepoint": "U+0058",
+          "count": 1415
+        }
+      ]
+    }
+  },
+  "required_symbols": {
+    "special_markers": [
+      "<USER>",
+      "<ASSISTANT>",
+      "<END>"
+    ],
+    "common_punctuation": [
+      "?",
+      ":",
+      ";",
+      "-",
+      "'",
+      "\"",
+      "(",
+      ")",
+      "[",
+      "]",
+      "{",
+      "}",
+      "/",
+      "\\",
+      "`"
+    ],
+    "common_punctuation_present_as_chars": {
+      "?": true,
+      ":": true,
+      ";": true,
+      "-": true,
+      "'": true,
+      "\"": true,
+      "(": true,
+      ")": true,
+      "[": true,
+      "]": true,
+      "{": true,
+      "}": true,
+      "/": true,
+      "\\": true,
+      "`": true
+    }
+  },
+  "old_tokenizer": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json",
+  "warning": "tokenizer_v2 changes token IDs and vocab size. Old checkpoints are not compatible; re-pretrain Marshmello base with the new vocab before SFT."
+}

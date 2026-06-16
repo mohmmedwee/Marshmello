@@ -36,12 +36,65 @@ TOKENIZER_PATH = PHASE13_ROOT / "tokenizer" / "tokenizer.json"
 CHAT_DATA_PATH = PROJECT_ROOT / "17_instruction_dataset" / "processed" / "chat.jsonl"
 CHECKPOINT_DIR = PHASE_ROOT / "checkpoints"
 LATEST_CHECKPOINT = CHECKPOINT_DIR / "latest.pt"
+CURATED_LATEST_CHECKPOINT = CHECKPOINT_DIR / "curated_latest.pt"
 
 USER_TAG = "<USER>"
 ASSISTANT_TAG = "<ASSISTANT>"
 END_TAG = "<END>"
 SFT_DEFAULT_LR = 1e-5
+CURATED_DEFAULT_LR = 2e-6
 SFT_GRAD_CLIP = 1.0
+CURATED_MAX_EXAMPLES = 2_000
+CURATED_MIN_INSTRUCTION_WORDS = 4
+CURATED_MAX_INSTRUCTION_WORDS = 25
+CURATED_MIN_RESPONSE_WORDS = 20
+CURATED_MAX_RESPONSE_WORDS = 90
+CURATED_BUCKETS = ("ai", "databases", "software_engineering", "cybersecurity_general")
+CURATED_TECHNICAL_KEYWORDS = (
+    "ai",
+    "artificial",
+    "intelligence",
+    "machine",
+    "learning",
+    "model",
+    "token",
+    "transformer",
+    "algorithm",
+    "data",
+    "database",
+    "index",
+    "sql",
+    "query",
+    "python",
+    "function",
+    "code",
+    "api",
+    "software",
+    "engineering",
+    "debug",
+    "test",
+    "security",
+    "cybersecurity",
+    "network",
+    "encryption",
+    "docker",
+)
+GENERIC_INSTRUCTION_PREFIXES = (
+    "describe a time",
+    "give three tips",
+    "write a story",
+    "write a poem",
+    "generate a poem",
+    "create a slogan",
+    "make a list",
+    "name three",
+    "translate",
+    "edit the following",
+    "classify the following",
+)
+GENERATION_EVAL_TEMPERATURE = 0.2
+GENERATION_EVAL_TOP_K = 10
+GENERATION_EVAL_REPETITION_PENALTY = 1.3
 GENERATION_EVAL_PROMPTS = (
     "What is AI?",
     "Explain database indexes.",
@@ -60,6 +113,8 @@ class ChatExample:
     text: str
     instruction: str
     response: str
+    domain: str = "unknown"
+    source: str = "unknown"
 
 
 def find_subsequence(values: list[int], needle: list[int]) -> int | None:
@@ -74,6 +129,18 @@ def find_subsequence(values: list[int], needle: list[int]) -> int | None:
 def encode_text(bpe, text: str) -> list[int]:
     """Encode SFT text, stripping characters missing from the BPE vocab."""
     return corpus_to_ids_safe(bpe, text)
+
+
+def collapse_spaces(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def format_chat_prompt(instruction: str) -> str:
+    return f"{USER_TAG} {collapse_spaces(instruction)} {ASSISTANT_TAG}"
+
+
+def format_sft_text(example: ChatExample) -> str:
+    return f"{format_chat_prompt(example.instruction)} {collapse_spaces(example.response)} {END_TAG}"
 
 
 def one_line(text: str, max_chars: int = 260) -> str:
@@ -215,7 +282,17 @@ def load_chat_examples(path: Path) -> list[ChatExample]:
                 response = str(record.get("response", "")).strip()
                 if not instruction or not response:
                     instruction, response = parse_chat_text(text)
-                examples.append(ChatExample(text=text, instruction=instruction, response=response))
+                domain = str(record.get("domain", "unknown")).strip() or "unknown"
+                source = str(record.get("source", "unknown")).strip() or "unknown"
+                examples.append(
+                    ChatExample(
+                        text=text,
+                        instruction=instruction,
+                        response=response,
+                        domain=domain,
+                        source=source,
+                    )
+                )
     if not examples:
         raise ValueError(f"No chat texts found in {path}")
     return examples
@@ -238,7 +315,121 @@ def split_examples(
 
 
 def example_texts(examples: list[ChatExample]) -> list[str]:
-    return [example.text for example in examples]
+    return [format_sft_text(example) for example in examples]
+
+
+def word_count(text: str) -> int:
+    return len(re.findall(r"\b[\w'-]+\b", text))
+
+
+def has_technical_keyword(text: str) -> bool:
+    lower = text.casefold()
+    return any(re.search(rf"\b{re.escape(keyword)}s?\b", lower) for keyword in CURATED_TECHNICAL_KEYWORDS)
+
+
+def is_overly_generic(example: ChatExample) -> bool:
+    instruction = collapse_spaces(example.instruction).casefold()
+    if any(instruction.startswith(prefix) for prefix in GENERIC_INSTRUCTION_PREFIXES):
+        return True
+    if example.domain == "general" and not has_technical_keyword(f"{example.instruction} {example.response}"):
+        return True
+    return False
+
+
+def response_has_repeated_phrase(response: str) -> bool:
+    return repeated_ngram(response, n=3) is not None or repeated_ngram(response, n=4) is not None
+
+
+def is_curated_candidate(example: ChatExample) -> bool:
+    instruction_words = word_count(example.instruction)
+    response_words = word_count(example.response)
+    if not CURATED_MIN_INSTRUCTION_WORDS <= instruction_words <= CURATED_MAX_INSTRUCTION_WORDS:
+        return False
+    if not CURATED_MIN_RESPONSE_WORDS <= response_words <= CURATED_MAX_RESPONSE_WORDS:
+        return False
+    if example.domain not in {"ai", "databases", "software_engineering", "cybersecurity", "general"}:
+        return False
+    if is_overly_generic(example):
+        return False
+    if response_has_repeated_phrase(example.response):
+        return False
+    return True
+
+
+def curated_bucket(example: ChatExample) -> str | None:
+    if example.domain in {"ai", "databases", "software_engineering"}:
+        return example.domain
+    if example.domain in {"cybersecurity", "general"}:
+        return "cybersecurity_general"
+    return None
+
+
+def take_evenly(examples: list[ChatExample], count: int) -> list[ChatExample]:
+    if count <= 0:
+        return []
+    if len(examples) <= count:
+        return examples[:]
+    if count == 1:
+        return [examples[0]]
+    step = (len(examples) - 1) / (count - 1)
+    indices = [round(i * step) for i in range(count)]
+    return [examples[index] for index in indices]
+
+
+def target_bucket_counts(max_examples: int) -> dict[str, int]:
+    base = max_examples // len(CURATED_BUCKETS)
+    remainder = max_examples % len(CURATED_BUCKETS)
+    return {
+        bucket: base + (1 if idx < remainder else 0)
+        for idx, bucket in enumerate(CURATED_BUCKETS)
+    }
+
+
+def build_curated_examples(
+    examples: list[ChatExample],
+    *,
+    max_examples: int = CURATED_MAX_EXAMPLES,
+) -> list[ChatExample]:
+    max_examples = min(max_examples, CURATED_MAX_EXAMPLES)
+    if max_examples <= 0:
+        raise ValueError("Curated max examples must be positive")
+
+    candidates = [example for example in examples if is_curated_candidate(example)]
+    buckets: dict[str, list[ChatExample]] = {bucket: [] for bucket in CURATED_BUCKETS}
+    for example in candidates:
+        bucket = curated_bucket(example)
+        if bucket is not None:
+            buckets[bucket].append(example)
+
+    selected: list[ChatExample] = []
+    used_ids: set[int] = set()
+    targets = target_bucket_counts(max_examples)
+    for bucket, target in targets.items():
+        bucket_examples = buckets[bucket]
+        if bucket == "cybersecurity_general":
+            cybersecurity = [example for example in bucket_examples if example.domain == "cybersecurity"]
+            general = [example for example in bucket_examples if example.domain == "general"]
+            chosen = take_evenly(cybersecurity, target)
+            if len(chosen) < target:
+                chosen.extend(take_evenly(general, target - len(chosen)))
+        else:
+            chosen = take_evenly(bucket_examples, target)
+
+        for example in chosen:
+            if id(example) not in used_ids:
+                selected.append(example)
+                used_ids.add(id(example))
+
+    if not selected:
+        raise ValueError("Curated mode found no examples after filtering")
+    return selected[:max_examples]
+
+
+def domain_counts(examples: list[ChatExample]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for example in examples:
+        counts[example.domain] = counts.get(example.domain, 0) + 1
+    return dict(sorted(counts.items()))
 
 
 def weighted_cross_entropy(logits: torch.Tensor, targets: torch.Tensor, weights: torch.Tensor) -> torch.Tensor:
@@ -392,10 +583,11 @@ def load_base_checkpoint_verified(
 def run_decode_sanity_check(bpe, examples: list[ChatExample], *, limit: int = 3) -> None:
     print("Decode sanity check:")
     for idx, example in enumerate(examples[:limit], start=1):
-        ids = encode_text(bpe, example.text)
+        formatted = format_sft_text(example)
+        ids = encode_text(bpe, formatted)
         decoded = decode_ids_pretty(bpe, ids)
         print(f"  example {idx}:")
-        print(f"    original: {one_line(example.text)}")
+        print(f"    original: {one_line(formatted)}")
         print(f"    decoded:  {one_line(decoded)}")
 
         positions = [decoded.find(tag) for tag in (USER_TAG, ASSISTANT_TAG, END_TAG)]
@@ -442,6 +634,33 @@ def repeated_ngram(text: str, *, n: int = 3) -> tuple[str, ...] | None:
     return None
 
 
+def apply_top_k(logits: torch.Tensor, top_k: int) -> torch.Tensor:
+    if top_k <= 0 or top_k >= logits.numel():
+        return logits
+    values, indices = torch.topk(logits, top_k)
+    filtered = torch.full_like(logits, float("-inf"))
+    filtered.scatter_(0, indices, values)
+    return filtered
+
+
+def apply_repetition_penalty(
+    logits: torch.Tensor,
+    token_ids: list[int],
+    *,
+    penalty: float,
+    window: int = 64,
+) -> torch.Tensor:
+    if penalty <= 1.0 or not token_ids:
+        return logits
+    adjusted = logits.clone()
+    for token_id in set(token_ids[-window:]):
+        if adjusted[token_id] > 0:
+            adjusted[token_id] /= penalty
+        else:
+            adjusted[token_id] *= penalty
+    return adjusted
+
+
 @torch.no_grad()
 def generate_assistant_reply(
     model: GPT,
@@ -449,10 +668,13 @@ def generate_assistant_reply(
     prompt: str,
     *,
     max_new_tokens: int = 120,
+    temperature: float = 0.0,
+    top_k: int = 0,
+    repetition_penalty: float = 1.0,
 ) -> str:
     was_training = model.training
     model.eval()
-    prefix = f"{USER_TAG}\n{prompt}\n{ASSISTANT_TAG}\n"
+    prefix = format_chat_prompt(prompt)
     ids = encode_text(bpe, prefix) or [0]
     end_ids = encode_text(bpe, END_TAG)
     prompt_len = len(ids)
@@ -461,7 +683,17 @@ def generate_assistant_reply(
     for _ in range(max_new_tokens):
         context = torch.tensor([ids[-model.block_size :]], dtype=torch.long, device=device)
         logits = model.generate_step_logits(context)[0]
-        next_id = int(torch.argmax(logits).item())
+        logits = apply_repetition_penalty(
+            logits,
+            ids[prompt_len:],
+            penalty=repetition_penalty,
+        )
+        if temperature <= 0:
+            next_id = int(torch.argmax(logits).item())
+        else:
+            logits = apply_top_k(logits / max(temperature, 1e-6), top_k)
+            probs = F.softmax(logits, dim=-1)
+            next_id = int(torch.multinomial(probs, num_samples=1).item())
         ids.append(next_id)
         if end_ids and len(ids) >= len(end_ids) and ids[-len(end_ids) :] == end_ids:
             break
@@ -478,7 +710,15 @@ def run_generation_eval(model: GPT, bpe, *, step: int) -> bool:
     print(f"  generation eval step {step}:")
     is_safe = True
     for prompt in GENERATION_EVAL_PROMPTS:
-        reply = generate_assistant_reply(model, bpe, prompt, max_new_tokens=120)
+        reply = generate_assistant_reply(
+            model,
+            bpe,
+            prompt,
+            max_new_tokens=120,
+            temperature=GENERATION_EVAL_TEMPERATURE,
+            top_k=GENERATION_EVAL_TOP_K,
+            repetition_penalty=GENERATION_EVAL_REPETITION_PENALTY,
+        )
         print(f"    Q: {prompt}")
         print(f"    A: {one_line(reply)}")
         repeated = repeated_ngram(reply, n=3)
@@ -515,11 +755,15 @@ def train(args: argparse.Namespace) -> None:
         if getattr(args, interval_name) <= 0:
             raise ValueError(f"--{interval_name.replace('_', '-')} must be positive")
 
+    learning_rate = args.lr
+    if learning_rate is None:
+        learning_rate = CURATED_DEFAULT_LR if args.mode == "curated" else SFT_DEFAULT_LR
+
     cfg = resolve_config(args.config)
     cfg = replace(
         cfg,
         max_steps=args.steps,
-        learning_rate=args.lr,
+        learning_rate=learning_rate,
         grad_clip=SFT_GRAD_CLIP,
     )
     device = pick_device(force_cpu=args.cpu)
@@ -547,9 +791,14 @@ def train(args: argparse.Namespace) -> None:
     print(f"Loading chat data: {args.data}", flush=True)
     examples = load_chat_examples(args.data)
     max_examples = args.max_examples
-    if args.mode == "overfit" and max_examples is None:
+    if args.mode == "curated":
+        curated_limit = max_examples or CURATED_MAX_EXAMPLES
+        examples = build_curated_examples(examples, max_examples=curated_limit)
+    elif args.mode == "overfit" and max_examples is None:
         max_examples = 20
-    examples = limit_examples(examples, max_examples)
+        examples = limit_examples(examples, max_examples)
+    else:
+        examples = limit_examples(examples, max_examples)
     run_decode_sanity_check(bpe, examples)
 
     if args.mode == "overfit":
@@ -565,6 +814,7 @@ def train(args: argparse.Namespace) -> None:
     set_trainable_parameters(model, freeze_backbone=args.freeze_backbone)
     trainable_params = [parameter for parameter in model.parameters() if parameter.requires_grad]
     optimizer = torch.optim.AdamW(trainable_params, lr=cfg.learning_rate, weight_decay=0.01)
+    checkpoint_path = CURATED_LATEST_CHECKPOINT if args.mode == "curated" else LATEST_CHECKPOINT
 
     print("Phase 18B: Marshmello-45M-Instruct SFT")
     print("=" * 60)
@@ -577,11 +827,13 @@ def train(args: argparse.Namespace) -> None:
     print(f"Chat data:       {args.data}")
     print(f"Train examples:  {len(train_set):,}")
     print(f"Val examples:    {len(val_set):,}")
+    if args.mode == "curated":
+        print(f"Curated domains: {domain_counts(examples)}")
     print(f"Learning rate:   {cfg.learning_rate:.2e}")
     print(f"Grad clip norm:  {cfg.grad_clip:.1f}")
     print(f"Parameters:      {total_parameters(model):,}")
     print(f"Trainable:       {count_parameters(model):,}")
-    print(f"Checkpoint path: {LATEST_CHECKPOINT}")
+    print(f"Checkpoint path: {checkpoint_path}")
     print()
 
     model.train()
@@ -590,6 +842,8 @@ def train(args: argparse.Namespace) -> None:
     last_val_loss = 0.0
     baseline_exact_matches = 0
     best_exact_matches = 0
+    best_val_loss = float("inf")
+    last_generation_safe = True
     stop_reason: str | None = None
 
     if args.mode == "overfit" and not args.no_eval:
@@ -603,6 +857,7 @@ def train(args: argparse.Namespace) -> None:
 
     for step in range(1, cfg.max_steps + 1):
         step_t0 = time.perf_counter()
+        val_improved = False
         x, y, weights = train_set.get_batch(cfg.batch_size, device)
         logits = model(x)
         loss = weighted_cross_entropy(logits, y, weights)
@@ -621,11 +876,15 @@ def train(args: argparse.Namespace) -> None:
             last_train_loss, last_val_loss = estimate_loss(
                 model, train_set, val_set, cfg.batch_size, device, batches=args.eval_batches
             )
+            if last_val_loss < best_val_loss:
+                best_val_loss = last_val_loss
+                val_improved = True
             elapsed = time.perf_counter() - t0
             avg_tps = step * cfg.batch_size * cfg.block_size / max(elapsed, 1e-6)
             print(
                 f"  eval step {step} | train loss {last_train_loss:.4f} | "
-                f"val loss {last_val_loss:.4f} | avg {avg_tps:,.0f} tok/s",
+                f"val loss {last_val_loss:.4f} | best val {best_val_loss:.4f} | "
+                f"avg {avg_tps:,.0f} tok/s",
                 flush=True,
             )
 
@@ -643,14 +902,25 @@ def train(args: argparse.Namespace) -> None:
                     stop_reason = "overfit exact answer match improved"
 
         if not args.no_eval and step % args.generation_every == 0:
-            generation_safe = run_generation_eval(model, bpe, step=step)
-            if not generation_safe:
+            last_generation_safe = run_generation_eval(model, bpe, step=step)
+            if not last_generation_safe and args.eval_generation_only_warn:
+                print(
+                    "  generation warning only: checkpoint overwrite requires val improvement",
+                    flush=True,
+                )
+            elif not last_generation_safe:
                 stop_reason = "generated text became repetitive"
 
         if not args.no_save and (step % args.checkpoint_every == 0 or step == cfg.max_steps):
+            if args.eval_generation_only_warn and not last_generation_safe and not val_improved:
+                print(
+                    "  skipping checkpoint: generation was repetitive and val did not improve",
+                    flush=True,
+                )
+                continue
             print("  saving checkpoint...", flush=True)
-            size = save_checkpoint(LATEST_CHECKPOINT, model, optimizer, step, cfg, last_train_loss, last_val_loss)
-            print(f"  checkpoint path: {LATEST_CHECKPOINT} ({size / 1024**2:.1f} MB)", flush=True)
+            size = save_checkpoint(checkpoint_path, model, optimizer, step, cfg, last_train_loss, last_val_loss)
+            print(f"  checkpoint path: {checkpoint_path} ({size / 1024**2:.1f} MB)", flush=True)
 
         if stop_reason is not None:
             print(f"WARNING: stopping early at step {step}: {stop_reason}", flush=True)
@@ -660,7 +930,7 @@ def train(args: argparse.Namespace) -> None:
         print("\nTraining complete.")
     else:
         print(f"\nStopped early: {stop_reason}")
-    print(f"Latest checkpoint: {LATEST_CHECKPOINT}")
+    print(f"Latest checkpoint: {checkpoint_path}")
 
 
 def main() -> None:
@@ -668,9 +938,12 @@ def main() -> None:
     parser.add_argument("--config", default="large_50m")
     parser.add_argument(
         "--mode",
-        choices=("train", "overfit"),
+        choices=("train", "overfit", "curated"),
         default="train",
-        help="train: full SFT; overfit: use a tiny subset and track exact answer match",
+        help=(
+            "train: full SFT; overfit: use a tiny subset and track exact answer "
+            "match; curated: filtered balanced small SFT set"
+        ),
     )
     parser.add_argument(
         "--base-checkpoint",
@@ -681,7 +954,12 @@ def main() -> None:
     parser.add_argument("--steps", type=int, default=1000)
     parser.add_argument("--data", type=Path, default=CHAT_DATA_PATH)
     parser.add_argument("--max-examples", type=int, default=None)
-    parser.add_argument("--lr", type=float, default=SFT_DEFAULT_LR)
+    parser.add_argument(
+        "--lr",
+        type=float,
+        default=None,
+        help="Learning rate (default: 1e-5 train/overfit, 2e-6 curated)",
+    )
     parser.add_argument(
         "--freeze-backbone",
         action="store_true",
@@ -693,6 +971,14 @@ def main() -> None:
     parser.add_argument("--generation-every", type=int, default=100)
     parser.add_argument("--eval-batches", type=int, default=10)
     parser.add_argument("--checkpoint-every", type=int, default=250)
+    parser.add_argument(
+        "--eval-generation-only-warn",
+        action="store_true",
+        help=(
+            "Treat repetitive generation as a warning; when warned, skip checkpoint "
+            "overwrite unless validation loss improved."
+        ),
+    )
     parser.add_argument("--no-eval", action="store_true", help="Skip eval, useful for one-step smoke tests")
     parser.add_argument("--no-save", action="store_true", help="Skip checkpoint save, useful for one-step smoke tests")
     args = parser.parse_args()

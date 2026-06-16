@@ -22,7 +22,13 @@ from model.gpt import GPT  # noqa: E402
 from tokenizer.bpe_io import load_tokenizer  # noqa: E402
 from tokenizer.decode import decode_ids_pretty  # noqa: E402
 from training.trainer import pick_device  # noqa: E402
-from train_instruct import CHECKPOINT_DIR, END_TAG, TOKENIZER_PATH, encode_text  # noqa: E402
+from train_instruct import (  # noqa: E402
+    CHECKPOINT_DIR,
+    END_TAG,
+    TOKENIZER_PATH,
+    encode_text,
+    format_chat_prompt,
+)
 
 USER_TAG = "<USER>"
 ASSISTANT_TAG = "<ASSISTANT>"
@@ -68,7 +74,7 @@ def generate_reply(
     top_k: int = 40,
     greedy: bool = False,
 ) -> str:
-    prefix = f"{USER_TAG} {prompt} {ASSISTANT_TAG}"
+    prefix = format_chat_prompt(prompt)
     ids = encode_text(bpe, prefix)
     end_ids = encode_text(bpe, END_TAG)
     prompt_len = len(ids)

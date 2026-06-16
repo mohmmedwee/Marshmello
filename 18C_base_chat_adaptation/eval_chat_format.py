@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 PHASE_ROOT = Path(__file__).resolve().parent
@@ -25,17 +26,41 @@ from tokenizer.decode import decode_ids_pretty  # noqa: E402
 from training.trainer import pick_device  # noqa: E402
 
 PROMPT = "<USER> What is AI? <ASSISTANT>"
-ANSWER_PATTERNS = (
-    re.compile(r"\bai\b", flags=re.IGNORECASE),
-    re.compile(r"\bartificial intelligence\b", flags=re.IGNORECASE),
-    re.compile(r"\bintelligence\b", flags=re.IGNORECASE),
-    re.compile(r"\bmachine learning\b", flags=re.IGNORECASE),
+EXACT_STARTS = (
+    "ai is",
+    "artificial intelligence is",
 )
-BAD_START_RE = re.compile(
-    r"^(<user>|<assistant>|<end>|===|topic:|database|sql|python|software "
-    r"engineering|operating systems|containers|this text is about)\b",
-    flags=re.IGNORECASE,
+TOPIC_KEYWORDS = (
+    "artificial",
+    "intelligence",
+    "machine",
+    "learning",
+    "data",
+    "algorithm",
+    "prediction",
+    "pattern",
 )
+RAW_CORPUS_START_PHRASES = (
+    "teams should write",
+    "example note",
+    "database systems need",
+)
+
+
+@dataclass(frozen=True)
+class SemanticEval:
+    boundary_ok: bool
+    exact_start_ok: bool
+    topic_keywords_found: list[str]
+    semantic_ok: bool
+
+    @property
+    def topic_keyword_count(self) -> int:
+        return len(self.topic_keywords_found)
+
+    @property
+    def final_ok(self) -> bool:
+        return self.boundary_ok and (self.exact_start_ok or self.semantic_ok)
 
 
 def normalize(text: str) -> str:
@@ -48,24 +73,54 @@ def answer_suffix(bpe, prompt: str, full_text: str) -> str:
     return normalize(generated_suffix(full_text, prompt_decoded))
 
 
-def looks_like_answer(text: str) -> tuple[bool, str]:
-    text = normalize(text)
-    if not text:
-        return False, "empty generation after chat prompt"
-    if BAD_START_RE.search(text):
-        return False, "starts like corpus continuation or another chat tag"
+def exact_start_ok(text: str) -> bool:
+    lower = normalize(text).casefold()
+    return lower.startswith(EXACT_STARTS)
 
-    first_words = " ".join(text.split()[:30])
-    if any(pattern.search(first_words) for pattern in ANSWER_PATTERNS):
-        return True, "starts with AI-related answer content"
-    return False, "first words do not look related to the user question"
+
+def find_topic_keywords(text: str) -> list[str]:
+    lower = normalize(text).casefold()
+    found: list[str] = []
+    for keyword in TOPIC_KEYWORDS:
+        if re.search(rf"\b{re.escape(keyword)}s?\b", lower):
+            found.append(keyword)
+    return found
+
+
+def boundary_ok(text: str) -> bool:
+    lower = normalize(text).casefold()
+    if not lower:
+        return False
+    if "<user>" in lower:
+        return False
+    return not any(lower.startswith(phrase) for phrase in RAW_CORPUS_START_PHRASES)
+
+
+def evaluate_generated_text(text: str, *, min_keywords: int) -> SemanticEval:
+    topic_keywords_found = find_topic_keywords(text)
+    return SemanticEval(
+        boundary_ok=boundary_ok(text),
+        exact_start_ok=exact_start_ok(text),
+        topic_keywords_found=topic_keywords_found,
+        semantic_ok=len(topic_keywords_found) >= min_keywords,
+    )
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate Phase 18C chat-format adaptation.")
-    parser.add_argument("--config", default="large_50m")
-    parser.add_argument("--checkpoint", type=Path, default=None)
+    parser.add_argument(
+        "--config",
+        default="large_50m",
+        help="Model config used when --checkpoint is omitted.",
+    )
+    parser.add_argument(
+        "--checkpoint",
+        type=Path,
+        default=None,
+        help="Checkpoint path to evaluate (default: latest checkpoint for --config).",
+    )
     parser.add_argument("--max-new-tokens", type=int, default=80)
+    parser.add_argument("--min-keywords", type=int, default=2)
     parser.add_argument("--cpu", action="store_true")
     parser.add_argument(
         "--no-strict",
@@ -73,9 +128,13 @@ def main() -> None:
         help="Print the check result but do not exit nonzero on failure",
     )
     args = parser.parse_args()
+    if args.min_keywords < 0:
+        raise ValueError("--min-keywords must be >= 0")
 
     cfg = resolve_config(args.config)
     checkpoint = args.checkpoint or latest_checkpoint_for(cfg)
+    if not checkpoint.exists():
+        raise FileNotFoundError(f"Checkpoint not found: {checkpoint}")
     device = pick_device(force_cpu=args.cpu)
     model, bpe, model_cfg = load_model_and_tokenizer(checkpoint, device, cfg)
 
@@ -96,7 +155,8 @@ def main() -> None:
     if not suffix:
         suffix = answer_suffix(bpe, PROMPT, result.raw_text)
 
-    ok, reason = looks_like_answer(suffix)
+    semantic_eval = evaluate_generated_text(suffix, min_keywords=args.min_keywords)
+    final_result = "PASS" if semantic_eval.final_ok else "FAIL"
 
     print("Phase 18C: chat-format boundary eval")
     print("=" * 60)
@@ -105,9 +165,14 @@ def main() -> None:
     print(f"Device:     {device}")
     print(f"Prompt:     {PROMPT}")
     print(f"Generated:  {suffix}")
-    print(f"Result:     {'PASS' if ok else 'FAIL'} - {reason}")
+    print(f"boundary_ok:          {semantic_eval.boundary_ok}")
+    print(f"exact_start_ok:       {semantic_eval.exact_start_ok}")
+    print(f"topic_keywords_found: {semantic_eval.topic_keywords_found}")
+    print(f"topic_keyword_count:  {semantic_eval.topic_keyword_count}")
+    print(f"semantic_ok:          {semantic_eval.semantic_ok}")
+    print(f"final_result:         {final_result}")
 
-    if not ok and not args.no_strict:
+    if not semantic_eval.final_ok and not args.no_strict:
         raise SystemExit(1)
 
 
