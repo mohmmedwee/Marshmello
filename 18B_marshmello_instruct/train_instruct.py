@@ -34,15 +34,21 @@ from training.trainer import pick_device  # noqa: E402
 
 TOKENIZER_PATH = PHASE13_ROOT / "tokenizer" / "tokenizer.json"
 CHAT_DATA_PATH = PROJECT_ROOT / "17_instruction_dataset" / "processed" / "chat.jsonl"
+TEACHER_PHASE_ROOT = PROJECT_ROOT / "18E_tiny_teacher_sft"
+TEACHER_DATA_PATH = TEACHER_PHASE_ROOT / "data" / "teacher.jsonl"
 CHECKPOINT_DIR = PHASE_ROOT / "checkpoints"
 LATEST_CHECKPOINT = CHECKPOINT_DIR / "latest.pt"
 CURATED_LATEST_CHECKPOINT = CHECKPOINT_DIR / "curated_latest.pt"
+TEACHER_LATEST_CHECKPOINT = TEACHER_PHASE_ROOT / "checkpoints" / "teacher_latest.pt"
 
 USER_TAG = "<USER>"
 ASSISTANT_TAG = "<ASSISTANT>"
 END_TAG = "<END>"
 SFT_DEFAULT_LR = 1e-5
 CURATED_DEFAULT_LR = 2e-6
+TEACHER_DEFAULT_LR = 5e-6
+SFT_DEFAULT_STEPS = 1000
+TEACHER_DEFAULT_STEPS = 500
 SFT_GRAD_CLIP = 1.0
 CURATED_MAX_EXAMPLES = 2_000
 CURATED_MIN_INSTRUCTION_WORDS = 4
@@ -99,6 +105,36 @@ GENERATION_EVAL_PROMPTS = (
     "What is AI?",
     "Explain database indexes.",
 )
+TEACHER_EVAL_PROMPTS = (
+    "What is AI?",
+    "Who are you?",
+    "Explain database indexes.",
+    "What is attention?",
+)
+KEYWORD_STOPWORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "by",
+    "can",
+    "for",
+    "from",
+    "in",
+    "is",
+    "it",
+    "of",
+    "or",
+    "that",
+    "the",
+    "to",
+    "use",
+    "uses",
+    "with",
+}
 TRANSFORMER_KEY_PREFIXES = (
     "token_emb.",
     "pos_emb.",
@@ -115,6 +151,12 @@ class ChatExample:
     response: str
     domain: str = "unknown"
     source: str = "unknown"
+
+
+@dataclass(frozen=True)
+class GenerationEvalResult:
+    is_safe: bool
+    teacher_keyword_score: float | None = None
 
 
 def find_subsequence(values: list[int], needle: list[int]) -> int | None:
@@ -277,22 +319,25 @@ def load_chat_examples(path: Path) -> list[ChatExample]:
                 continue
             record = json.loads(line)
             text = str(record.get("text", "")).strip()
-            if text:
-                instruction = str(record.get("instruction", "")).strip()
-                response = str(record.get("response", "")).strip()
-                if not instruction or not response:
-                    instruction, response = parse_chat_text(text)
-                domain = str(record.get("domain", "unknown")).strip() or "unknown"
-                source = str(record.get("source", "unknown")).strip() or "unknown"
-                examples.append(
-                    ChatExample(
-                        text=text,
-                        instruction=instruction,
-                        response=response,
-                        domain=domain,
-                        source=source,
-                    )
+            instruction = str(record.get("instruction", "")).strip()
+            response = str(record.get("response", "")).strip()
+            if not instruction or not response:
+                if not text:
+                    continue
+                instruction, response = parse_chat_text(text)
+            if not text:
+                text = f"{USER_TAG}\n{instruction}\n{ASSISTANT_TAG}\n{response}\n{END_TAG}"
+            domain = str(record.get("domain", "unknown")).strip() or "unknown"
+            source = str(record.get("source", "unknown")).strip() or "unknown"
+            examples.append(
+                ChatExample(
+                    text=text,
+                    instruction=instruction,
+                    response=response,
+                    domain=domain,
+                    source=source,
                 )
+            )
     if not examples:
         raise ValueError(f"No chat texts found in {path}")
     return examples
@@ -634,6 +679,41 @@ def repeated_ngram(text: str, *, n: int = 3) -> tuple[str, ...] | None:
     return None
 
 
+def keyword_set(text: str) -> set[str]:
+    words = re.findall(r"\b[a-zA-Z][a-zA-Z'-]*\b", text.casefold())
+    return {
+        word.rstrip("s")
+        for word in words
+        if len(word) >= 4 and word not in KEYWORD_STOPWORDS
+    }
+
+
+def exact_start_match(generated: str, target: str, *, words: int = 4) -> bool:
+    generated_words = re.findall(r"\b[\w'-]+\b", normalize_exact(generated).casefold())
+    target_words = re.findall(r"\b[\w'-]+\b", normalize_exact(target).casefold())
+    if not generated_words or not target_words:
+        return False
+    prefix = target_words[: min(words, len(target_words))]
+    return generated_words[: len(prefix)] == prefix
+
+
+def keyword_overlap(generated: str, target: str) -> tuple[int, int, float, list[str]]:
+    target_keywords = keyword_set(target)
+    generated_keywords = keyword_set(generated)
+    matched = sorted(target_keywords & generated_keywords)
+    total = len(target_keywords)
+    score = len(matched) / total if total else 0.0
+    return len(matched), total, score, matched
+
+
+def select_teacher_eval_examples(examples: list[ChatExample]) -> list[ChatExample]:
+    by_instruction = {example.instruction: example for example in examples}
+    missing = [prompt for prompt in TEACHER_EVAL_PROMPTS if prompt not in by_instruction]
+    if missing:
+        raise ValueError(f"Teacher eval prompts missing from data: {missing}")
+    return [by_instruction[prompt] for prompt in TEACHER_EVAL_PROMPTS]
+
+
 def apply_top_k(logits: torch.Tensor, top_k: int) -> torch.Tensor:
     if top_k <= 0 or top_k >= logits.numel():
         return logits
@@ -706,26 +786,70 @@ def generate_assistant_reply(
     return text.split(END_TAG, 1)[0].strip()
 
 
-def run_generation_eval(model: GPT, bpe, *, step: int) -> bool:
+def run_generation_eval(
+    model: GPT,
+    bpe,
+    *,
+    step: int,
+    teacher_examples: list[ChatExample] | None = None,
+) -> GenerationEvalResult:
     print(f"  generation eval step {step}:")
     is_safe = True
-    for prompt in GENERATION_EVAL_PROMPTS:
+    if teacher_examples is None:
+        for prompt in GENERATION_EVAL_PROMPTS:
+            reply = generate_assistant_reply(
+                model,
+                bpe,
+                prompt,
+                max_new_tokens=120,
+                temperature=GENERATION_EVAL_TEMPERATURE,
+                top_k=GENERATION_EVAL_TOP_K,
+                repetition_penalty=GENERATION_EVAL_REPETITION_PENALTY,
+            )
+            print(f"    Q: {prompt}")
+            print(f"    A: {one_line(reply)}")
+            repeated = repeated_ngram(reply, n=3)
+            if repeated is not None:
+                print(f"  WARNING: repeated 3-gram detected: {' '.join(repeated)!r}", flush=True)
+                is_safe = False
+        return GenerationEvalResult(is_safe=is_safe)
+
+    total_score = 0.0
+    for example in teacher_examples:
         reply = generate_assistant_reply(
             model,
             bpe,
-            prompt,
+            example.instruction,
             max_new_tokens=120,
             temperature=GENERATION_EVAL_TEMPERATURE,
             top_k=GENERATION_EVAL_TOP_K,
             repetition_penalty=GENERATION_EVAL_REPETITION_PENALTY,
         )
-        print(f"    Q: {prompt}")
-        print(f"    A: {one_line(reply)}")
         repeated = repeated_ngram(reply, n=3)
+        matched_count, target_count, score, matched_keywords = keyword_overlap(
+            reply,
+            example.response,
+        )
+        total_score += score
+        exact = exact_start_match(reply, example.response)
+        print(f"    Q: {example.instruction}")
+        print(f"    Target:    {one_line(example.response)}")
+        print(f"    Generated: {one_line(reply)}")
+        print(f"    exact_start_match: {exact}")
+        print(
+            f"    keyword_overlap:   {matched_count}/{target_count} "
+            f"({score:.2f}) {matched_keywords}"
+        )
+        print(f"    repeated_3gram:    {repeated is not None}")
         if repeated is not None:
             print(f"  WARNING: repeated 3-gram detected: {' '.join(repeated)!r}", flush=True)
             is_safe = False
-    return is_safe
+    average_score = total_score / len(teacher_examples) if teacher_examples else 0.0
+    print(f"  teacher keyword score: {average_score:.4f}")
+    return GenerationEvalResult(
+        is_safe=is_safe,
+        teacher_keyword_score=average_score,
+    )
 
 
 def evaluate_exact_answer_match(
@@ -755,14 +879,23 @@ def train(args: argparse.Namespace) -> None:
         if getattr(args, interval_name) <= 0:
             raise ValueError(f"--{interval_name.replace('_', '-')} must be positive")
 
+    max_steps = args.steps
+    if max_steps is None:
+        max_steps = TEACHER_DEFAULT_STEPS if args.mode == "teacher" else SFT_DEFAULT_STEPS
+
     learning_rate = args.lr
     if learning_rate is None:
-        learning_rate = CURATED_DEFAULT_LR if args.mode == "curated" else SFT_DEFAULT_LR
+        if args.mode == "teacher":
+            learning_rate = TEACHER_DEFAULT_LR
+        elif args.mode == "curated":
+            learning_rate = CURATED_DEFAULT_LR
+        else:
+            learning_rate = SFT_DEFAULT_LR
 
     cfg = resolve_config(args.config)
     cfg = replace(
         cfg,
-        max_steps=args.steps,
+        max_steps=max_steps,
         learning_rate=learning_rate,
         grad_clip=SFT_GRAD_CLIP,
     )
@@ -788,8 +921,11 @@ def train(args: argparse.Namespace) -> None:
     print(f"Loading base checkpoint: {base_checkpoint}", flush=True)
     checkpoint_step = load_base_checkpoint_verified(base_checkpoint, model, bpe)
 
-    print(f"Loading chat data: {args.data}", flush=True)
-    examples = load_chat_examples(args.data)
+    data_path = args.data
+    if data_path is None:
+        data_path = TEACHER_DATA_PATH if args.mode == "teacher" else CHAT_DATA_PATH
+    print(f"Loading SFT data: {data_path}", flush=True)
+    examples = load_chat_examples(data_path)
     max_examples = args.max_examples
     if args.mode == "curated":
         curated_limit = max_examples or CURATED_MAX_EXAMPLES
@@ -800,6 +936,7 @@ def train(args: argparse.Namespace) -> None:
     else:
         examples = limit_examples(examples, max_examples)
     run_decode_sanity_check(bpe, examples)
+    teacher_eval_examples = select_teacher_eval_examples(examples) if args.mode == "teacher" else None
 
     if args.mode == "overfit":
         train_examples = examples
@@ -814,7 +951,12 @@ def train(args: argparse.Namespace) -> None:
     set_trainable_parameters(model, freeze_backbone=args.freeze_backbone)
     trainable_params = [parameter for parameter in model.parameters() if parameter.requires_grad]
     optimizer = torch.optim.AdamW(trainable_params, lr=cfg.learning_rate, weight_decay=0.01)
-    checkpoint_path = CURATED_LATEST_CHECKPOINT if args.mode == "curated" else LATEST_CHECKPOINT
+    if args.mode == "teacher":
+        checkpoint_path = TEACHER_LATEST_CHECKPOINT
+    elif args.mode == "curated":
+        checkpoint_path = CURATED_LATEST_CHECKPOINT
+    else:
+        checkpoint_path = LATEST_CHECKPOINT
 
     print("Phase 18B: Marshmello-45M-Instruct SFT")
     print("=" * 60)
@@ -824,7 +966,7 @@ def train(args: argparse.Namespace) -> None:
     print(f"Base checkpoint: {base_checkpoint}")
     print(f"Base step:       {checkpoint_step}")
     print(f"Tokenizer:       {TOKENIZER_PATH}")
-    print(f"Chat data:       {args.data}")
+    print(f"SFT data:        {data_path}")
     print(f"Train examples:  {len(train_set):,}")
     print(f"Val examples:    {len(val_set):,}")
     if args.mode == "curated":
@@ -843,7 +985,10 @@ def train(args: argparse.Namespace) -> None:
     baseline_exact_matches = 0
     best_exact_matches = 0
     best_val_loss = float("inf")
+    best_teacher_keyword_score = -1.0
     last_generation_safe = True
+    pending_val_improved = False
+    pending_teacher_score_improved = False
     stop_reason: str | None = None
 
     if args.mode == "overfit" and not args.no_eval:
@@ -879,6 +1024,7 @@ def train(args: argparse.Namespace) -> None:
             if last_val_loss < best_val_loss:
                 best_val_loss = last_val_loss
                 val_improved = True
+                pending_val_improved = True
             elapsed = time.perf_counter() - t0
             avg_tps = step * cfg.batch_size * cfg.block_size / max(elapsed, 1e-6)
             print(
@@ -902,16 +1048,46 @@ def train(args: argparse.Namespace) -> None:
                     stop_reason = "overfit exact answer match improved"
 
         if not args.no_eval and step % args.generation_every == 0:
-            last_generation_safe = run_generation_eval(model, bpe, step=step)
+            generation_result = run_generation_eval(
+                model,
+                bpe,
+                step=step,
+                teacher_examples=teacher_eval_examples,
+            )
+            last_generation_safe = generation_result.is_safe
+            if args.mode == "teacher" and generation_result.teacher_keyword_score is not None:
+                score = generation_result.teacher_keyword_score
+                if score > best_teacher_keyword_score:
+                    previous = best_teacher_keyword_score
+                    best_teacher_keyword_score = score
+                    pending_teacher_score_improved = True
+                    if previous < 0:
+                        print(f"  teacher keyword score baseline set to {score:.4f}", flush=True)
+                    else:
+                        print(
+                            f"  teacher keyword score improved {previous:.4f} -> {score:.4f}",
+                            flush=True,
+                        )
             if not last_generation_safe and args.eval_generation_only_warn:
                 print(
                     "  generation warning only: checkpoint overwrite requires val improvement",
+                    flush=True,
+                )
+            elif not last_generation_safe and args.mode == "teacher":
+                print(
+                    "  teacher generation warning: checkpoint overwrite still requires teacher score or val improvement",
                     flush=True,
                 )
             elif not last_generation_safe:
                 stop_reason = "generated text became repetitive"
 
         if not args.no_save and (step % args.checkpoint_every == 0 or step == cfg.max_steps):
+            if args.mode == "teacher" and not (pending_teacher_score_improved or pending_val_improved):
+                print(
+                    "  skipping teacher checkpoint: teacher keyword score and val did not improve",
+                    flush=True,
+                )
+                continue
             if args.eval_generation_only_warn and not last_generation_safe and not val_improved:
                 print(
                     "  skipping checkpoint: generation was repetitive and val did not improve",
@@ -921,6 +1097,8 @@ def train(args: argparse.Namespace) -> None:
             print("  saving checkpoint...", flush=True)
             size = save_checkpoint(checkpoint_path, model, optimizer, step, cfg, last_train_loss, last_val_loss)
             print(f"  checkpoint path: {checkpoint_path} ({size / 1024**2:.1f} MB)", flush=True)
+            pending_val_improved = False
+            pending_teacher_score_improved = False
 
         if stop_reason is not None:
             print(f"WARNING: stopping early at step {step}: {stop_reason}", flush=True)
@@ -938,11 +1116,12 @@ def main() -> None:
     parser.add_argument("--config", default="large_50m")
     parser.add_argument(
         "--mode",
-        choices=("train", "overfit", "curated"),
+        choices=("train", "overfit", "curated", "teacher"),
         default="train",
         help=(
             "train: full SFT; overfit: use a tiny subset and track exact answer "
-            "match; curated: filtered balanced small SFT set"
+            "match; curated: filtered balanced small SFT set; teacher: tiny "
+            "direct-answer teacher set"
         ),
     )
     parser.add_argument(
@@ -951,14 +1130,24 @@ def main() -> None:
         default=None,
         help="Path to base model checkpoint (default: latest for --config)",
     )
-    parser.add_argument("--steps", type=int, default=1000)
-    parser.add_argument("--data", type=Path, default=CHAT_DATA_PATH)
+    parser.add_argument(
+        "--steps",
+        type=int,
+        default=None,
+        help="Training steps (default: 1000, or 500 in teacher mode)",
+    )
+    parser.add_argument(
+        "--data",
+        type=Path,
+        default=None,
+        help="Override SFT JSONL path (default: chat.jsonl, or teacher.jsonl in teacher mode)",
+    )
     parser.add_argument("--max-examples", type=int, default=None)
     parser.add_argument(
         "--lr",
         type=float,
         default=None,
-        help="Learning rate (default: 1e-5 train/overfit, 2e-6 curated)",
+        help="Learning rate (default: 1e-5 train/overfit, 2e-6 curated, 5e-6 teacher)",
     )
     parser.add_argument(
         "--freeze-backbone",

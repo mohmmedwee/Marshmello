@@ -1,0 +1,52 @@
+{
+  "output": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/data/corpus_chat_mixed_expanded.txt",
+  "target_words": 5000000,
+  "total_words": 5000125,
+  "requested_chat_ratio": 0.2,
+  "actual_chat_ratio": 0.200008,
+  "domain_distribution_words": {
+    "ai_basics": 348495,
+    "apis": 322929,
+    "base_corpus": 1000027,
+    "chat_ai": 75253,
+    "chat_cybersecurity": 23087,
+    "chat_databases": 32447,
+    "chat_general": 786589,
+    "chat_software_engineering": 82689,
+    "cybersecurity": 324925,
+    "databases": 330565,
+    "docker": 331651,
+    "machine_learning": 340778,
+    "python": 326058,
+    "software_engineering": 324619,
+    "transformers_llms": 350013
+  },
+  "domain_distribution_percent": {
+    "ai_basics": 0.069697,
+    "apis": 0.064584,
+    "base_corpus": 0.2,
+    "chat_ai": 0.01505,
+    "chat_cybersecurity": 0.004617,
+    "chat_databases": 0.006489,
+    "chat_general": 0.157314,
+    "chat_software_engineering": 0.016537,
+    "cybersecurity": 0.064983,
+    "databases": 0.066111,
+    "docker": 0.066329,
+    "machine_learning": 0.068154,
+    "python": 0.06521,
+    "software_engineering": 0.064922,
+    "transformers_llms": 0.070001
+  },
+  "chat_examples_count": 11224,
+  "total_blocks": 67203,
+  "duplicate_blocks": 137,
+  "duplicate_ratio": 0.002039,
+  "estimated_bpe_tokens": {
+    "estimated_tokens": 6560964,
+    "sample_words": 50000,
+    "sample_tokens": 65608,
+    "tokens_per_word": 1.3122,
+    "tokenizer": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json"
+  }
+}

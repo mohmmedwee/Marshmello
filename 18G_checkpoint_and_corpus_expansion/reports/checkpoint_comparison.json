@@ -1,0 +1,240 @@
+{
+  "device": "cpu",
+  "config": "large_50m",
+  "results": [
+    {
+      "summary": {
+        "checkpoint": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/step_001000.pt",
+        "step": 1000,
+        "train_loss": 1.074564415216446,
+        "val_loss": 1.2301629424095153,
+        "repetition_count": 1,
+        "average_topic_score": 0.1667,
+        "gibberish_count": 1,
+        "drift_count": 1,
+        "chat_format_successes": 1,
+        "recommendation_score": -1.3333
+      },
+      "prompts": [
+        {
+          "prompt": "Artificial intelligence",
+          "generated_text": "(AI) is a computer that can be used to detect and efficient appliances in the potential risks associated with other hand, are often used for tasks such as natural language processing and autonomous vehicle. <END> Documentation for serialization should explain the problem, the chosen design, alternatives that were rejected, and the risks that remain. Short examples help readers connect the concept to real code, real queries, real models, or real operations.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [
+            "computer",
+            "tasks"
+          ],
+          "topic_keyword_score": 0.25,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": false
+        },
+        {
+          "prompt": "Machine learning",
+          "generated_text": "models on data instead of hand-written rules. Supervised learning maps inputs to labels with cross-entropy or regression loss. Unsupervised learning discovers clusters, factors, or latent structure. Reinforcement learning optimizes policies from reward signals over time. Feature engineering, regularization, and validation splits reduce overfitting.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [
+            "data",
+            "learning",
+            "model"
+          ],
+          "topic_keyword_score": 0.375,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": false
+        },
+        {
+          "prompt": "Database systems",
+          "generated_text": "and analytics. <END> A common mistake with attention is optimizing the visible syntax while ignoring the data flow. Good technical design traces inputs, outputs, state changes, and ownership. That view makes it easier to test the system and to debug failures under load. Example note 44-2: teams should write this guidance in plain language, connect it to tests or metrics, and revisit it when the system or dataset changes.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [
+            "data"
+          ],
+          "topic_keyword_score": 0.125,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": false
+        },
+        {
+          "prompt": "<USER> What is AI? <ASSISTANT>",
+          "generated_text": "The main difference between a computer is a set of instructions that the process and a computer science that are used to create an algorithm for predictions. It involves the output of data, which can be used in order to detect patterns from its environment and make decisions based on their own data.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [
+            "computer",
+            "patterns"
+          ],
+          "topic_keyword_score": 0.25,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": true
+        },
+        {
+          "prompt": "<USER> Explain database indexes. <ASSISTANT>",
+          "generated_text": "The main difference between a computer is that are used to be able and the data from the output of a set of data, which can be used for predictions. It should include an algorithm to detect patterns in order to identify potential risks associated with each other methods such as well as rely on their own data.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [],
+          "topic_keyword_score": 0.0,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": false
+        },
+        {
+          "prompt": "<USER> Who are you? <ASSISTANT>",
+          "generated_text": "The main theme of the United States is a series of the United States in the American Civil War (181), and (48 billion by 1943 is 178, 65 billion in 1999 and (197).",
+          "repeated_3gram": true,
+          "repeated_phrase": "of the united",
+          "topic_keywords_found": [],
+          "topic_keyword_score": 0.0,
+          "gibberish_looking_word_count": 1,
+          "gibberish_words": [
+            "1999"
+          ],
+          "drift_to_unrelated_topics": true,
+          "unrelated_topics_found": [
+            "politics"
+          ],
+          "chat_format_response_ok": false
+        }
+      ]
+    },
+    {
+      "summary": {
+        "checkpoint": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/latest.pt",
+        "step": 4000,
+        "train_loss": 0.5442620247602463,
+        "val_loss": 1.2690665602684021,
+        "repetition_count": 1,
+        "average_topic_score": 0.25,
+        "gibberish_count": 0,
+        "drift_count": 1,
+        "chat_format_successes": 1,
+        "recommendation_score": 9.0
+      },
+      "prompts": [
+        {
+          "prompt": "Artificial intelligence",
+          "generated_text": "(AI) is a field that allows machines to learn from new applications and make decisions in order to create new products or services. Additionally, AI can be used for data and services like healthcare services for businesses with better understand customer feedback on creating personalized recommendations, allowing companies to identify trends and treatments.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [
+            "data",
+            "machine"
+          ],
+          "topic_keyword_score": 0.25,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": false
+        },
+        {
+          "prompt": "Machine learning",
+          "generated_text": "models on data instead of hand-written rules. Supervised learning maps inputs to labels with cross-entropy or regression loss. Unsupervised learning discovers clusters, factors, or latent structure. Reinforcement learning. Neural networks use layers, activations, and optimizes policies from reward signals over time.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [
+            "data",
+            "learning",
+            "model"
+          ],
+          "topic_keyword_score": 0.375,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": false
+        },
+        {
+          "prompt": "Database systems",
+          "generated_text": "store durable structured data for applications and analytics. Relational databases use tables, rows, columns, and SQL for queries. Indexes speed lookups; B-tree and hash indexes serve different access patterns. Transactions provide ACID guarantees with locking or multi-versi on concurrency.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [
+            "data",
+            "database",
+            "queries",
+            "rows",
+            "tables",
+            "transactions"
+          ],
+          "topic_keyword_score": 0.75,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": false
+        },
+        {
+          "prompt": "<USER> What is AI? <ASSISTANT>",
+          "generated_text": "The main difference between a computer algorithm for a set of instructions and a problem or not. It involves the data that can be used to solve complex problems.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [
+            "computer"
+          ],
+          "topic_keyword_score": 0.125,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": true
+        },
+        {
+          "prompt": "<USER> Explain database indexes. <ASSISTANT>",
+          "generated_text": "The main difference between a computer is that the data structure and a set of instructions in a computer to store and allow machines to solve complex problems. It can be used for data from user data, allowing them to quickly and make decisions on their own data.",
+          "repeated_3gram": false,
+          "repeated_phrase": null,
+          "topic_keywords_found": [],
+          "topic_keyword_score": 0.0,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": false,
+          "unrelated_topics_found": [],
+          "chat_format_response_ok": false
+        },
+        {
+          "prompt": "<USER> Who are you? <ASSISTANT>",
+          "generated_text": "The main theme of the United States is the United States between two people who have a trago. He was also a small town in his friends and he saw an enatography and was determined by his own home. He had been looking for years to find what he decided to take him.",
+          "repeated_3gram": true,
+          "repeated_phrase": "the united states",
+          "topic_keywords_found": [],
+          "topic_keyword_score": 0.0,
+          "gibberish_looking_word_count": 0,
+          "gibberish_words": [],
+          "drift_to_unrelated_topics": true,
+          "unrelated_topics_found": [
+            "politics"
+          ],
+          "chat_format_response_ok": false
+        }
+      ]
+    }
+  ],
+  "recommended_checkpoint": {
+    "checkpoint": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/latest.pt",
+    "step": 4000,
+    "train_loss": 0.5442620247602463,
+    "val_loss": 1.2690665602684021,
+    "repetition_count": 1,
+    "average_topic_score": 0.25,
+    "gibberish_count": 0,
+    "drift_count": 1,
+    "chat_format_successes": 1,
+    "recommendation_score": 9.0
+  }
+}
