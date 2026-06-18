@@ -40,6 +40,8 @@ CHECKPOINT_DIR = PHASE_ROOT / "checkpoints"
 LATEST_CHECKPOINT = CHECKPOINT_DIR / "latest.pt"
 CURATED_LATEST_CHECKPOINT = CHECKPOINT_DIR / "curated_latest.pt"
 TEACHER_LATEST_CHECKPOINT = TEACHER_PHASE_ROOT / "checkpoints" / "teacher_latest.pt"
+TEACHER_BEST_SCORE_CHECKPOINT = TEACHER_PHASE_ROOT / "checkpoints" / "teacher_best_score.pt"
+TEACHER_BEST_VAL_CHECKPOINT = TEACHER_PHASE_ROOT / "checkpoints" / "teacher_best_val.pt"
 
 USER_TAG = "<USER>"
 ASSISTANT_TAG = "<ASSISTANT>"
@@ -498,7 +500,17 @@ def estimate_loss(model: GPT, train_set: SFTDataset, val_set: SFTDataset, batch_
     return values["train"], values["val"]
 
 
-def save_checkpoint(path: Path, model: GPT, optimizer: torch.optim.Optimizer, step: int, cfg: GPTConfig, train_loss: float, val_loss: float) -> int:
+def save_checkpoint(
+    path: Path,
+    model: GPT,
+    optimizer: torch.optim.Optimizer,
+    step: int,
+    cfg: GPTConfig,
+    train_loss: float,
+    val_loss: float,
+    *,
+    teacher_keyword_score: float | None = None,
+) -> int:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "step": step,
@@ -509,8 +521,24 @@ def save_checkpoint(path: Path, model: GPT, optimizer: torch.optim.Optimizer, st
         "val_loss": val_loss,
         "phase": "18B_marshmello_instruct",
     }
-    torch.save(payload, path)
+    if teacher_keyword_score is not None:
+        payload["teacher_keyword_score"] = teacher_keyword_score
+    temporary_path = path.with_suffix(f"{path.suffix}.tmp")
+    torch.save(payload, temporary_path)
+    temporary_path.replace(path)
     return path.stat().st_size
+
+
+def load_checkpoint_metric(path: Path, metric_name: str, default: float) -> float:
+    if not path.exists():
+        return default
+    checkpoint = torch.load(str(path), map_location="cpu", weights_only=False, mmap=True)
+    if not isinstance(checkpoint, dict) or metric_name not in checkpoint:
+        raise ValueError(
+            f"Existing best checkpoint {path} does not contain {metric_name!r}; "
+            "refusing to overwrite it without a comparable metric."
+        )
+    return float(checkpoint[metric_name])
 
 
 def build_model(vocab_size: int, cfg: GPTConfig, device: torch.device) -> GPT:
@@ -984,11 +1012,28 @@ def train(args: argparse.Namespace) -> None:
     last_val_loss = 0.0
     baseline_exact_matches = 0
     best_exact_matches = 0
-    best_val_loss = float("inf")
-    best_teacher_keyword_score = -1.0
+    if args.mode == "teacher":
+        best_val_loss = load_checkpoint_metric(
+            TEACHER_BEST_VAL_CHECKPOINT,
+            "val_loss",
+            float("inf"),
+        )
+        best_teacher_keyword_score = load_checkpoint_metric(
+            TEACHER_BEST_SCORE_CHECKPOINT,
+            "teacher_keyword_score",
+            -1.0,
+        )
+        if best_val_loss < float("inf"):
+            print(f"Existing teacher best val loss: {best_val_loss:.4f}", flush=True)
+        if best_teacher_keyword_score >= 0.0:
+            print(
+                f"Existing teacher best keyword score: {best_teacher_keyword_score:.4f}",
+                flush=True,
+            )
+    else:
+        best_val_loss = float("inf")
+        best_teacher_keyword_score = -1.0
     last_generation_safe = True
-    pending_val_improved = False
-    pending_teacher_score_improved = False
     stop_reason: str | None = None
 
     if args.mode == "overfit" and not args.no_eval:
@@ -1024,7 +1069,25 @@ def train(args: argparse.Namespace) -> None:
             if last_val_loss < best_val_loss:
                 best_val_loss = last_val_loss
                 val_improved = True
-                pending_val_improved = True
+                if args.mode == "teacher" and not args.no_save:
+                    print("  saving teacher best val checkpoint...", flush=True)
+                    size = save_checkpoint(
+                        TEACHER_BEST_VAL_CHECKPOINT,
+                        model,
+                        optimizer,
+                        step,
+                        cfg,
+                        last_train_loss,
+                        last_val_loss,
+                        teacher_keyword_score=best_teacher_keyword_score
+                        if best_teacher_keyword_score >= 0.0
+                        else None,
+                    )
+                    print(
+                        f"  checkpoint path: {TEACHER_BEST_VAL_CHECKPOINT} "
+                        f"({size / 1024**2:.1f} MB)",
+                        flush=True,
+                    )
             elapsed = time.perf_counter() - t0
             avg_tps = step * cfg.batch_size * cfg.block_size / max(elapsed, 1e-6)
             print(
@@ -1060,12 +1123,28 @@ def train(args: argparse.Namespace) -> None:
                 if score > best_teacher_keyword_score:
                     previous = best_teacher_keyword_score
                     best_teacher_keyword_score = score
-                    pending_teacher_score_improved = True
                     if previous < 0:
                         print(f"  teacher keyword score baseline set to {score:.4f}", flush=True)
                     else:
                         print(
                             f"  teacher keyword score improved {previous:.4f} -> {score:.4f}",
+                            flush=True,
+                        )
+                    if not args.no_save:
+                        print("  saving teacher best score checkpoint...", flush=True)
+                        size = save_checkpoint(
+                            TEACHER_BEST_SCORE_CHECKPOINT,
+                            model,
+                            optimizer,
+                            step,
+                            cfg,
+                            last_train_loss,
+                            last_val_loss,
+                            teacher_keyword_score=score,
+                        )
+                        print(
+                            f"  checkpoint path: {TEACHER_BEST_SCORE_CHECKPOINT} "
+                            f"({size / 1024**2:.1f} MB)",
                             flush=True,
                         )
             if not last_generation_safe and args.eval_generation_only_warn:
@@ -1082,23 +1161,31 @@ def train(args: argparse.Namespace) -> None:
                 stop_reason = "generated text became repetitive"
 
         if not args.no_save and (step % args.checkpoint_every == 0 or step == cfg.max_steps):
-            if args.mode == "teacher" and not (pending_teacher_score_improved or pending_val_improved):
-                print(
-                    "  skipping teacher checkpoint: teacher keyword score and val did not improve",
-                    flush=True,
-                )
-                continue
-            if args.eval_generation_only_warn and not last_generation_safe and not val_improved:
+            if (
+                args.mode != "teacher"
+                and args.eval_generation_only_warn
+                and not last_generation_safe
+                and not val_improved
+            ):
                 print(
                     "  skipping checkpoint: generation was repetitive and val did not improve",
                     flush=True,
                 )
                 continue
-            print("  saving checkpoint...", flush=True)
-            size = save_checkpoint(checkpoint_path, model, optimizer, step, cfg, last_train_loss, last_val_loss)
+            print("  saving latest checkpoint...", flush=True)
+            size = save_checkpoint(
+                checkpoint_path,
+                model,
+                optimizer,
+                step,
+                cfg,
+                last_train_loss,
+                last_val_loss,
+                teacher_keyword_score=best_teacher_keyword_score
+                if args.mode == "teacher" and best_teacher_keyword_score >= 0.0
+                else None,
+            )
             print(f"  checkpoint path: {checkpoint_path} ({size / 1024**2:.1f} MB)", flush=True)
-            pending_val_improved = False
-            pending_teacher_score_improved = False
 
         if stop_reason is not None:
             print(f"WARNING: stopping early at step {step}: {stop_reason}", flush=True)

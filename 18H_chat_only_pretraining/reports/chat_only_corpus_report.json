@@ -1,0 +1,32 @@
+{
+  "output": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/data/corpus_chat_only.txt",
+  "total_input_examples": 50250,
+  "kept_teacher_examples": 250,
+  "kept_instruction_examples": 5000,
+  "final_examples": 10000,
+  "total_words": 414300,
+  "teacher_examples_after_repeat": 5000,
+  "instruction_examples_after_repeat": 5000,
+  "teacher_repeat": 20,
+  "instruction_repeat": 1,
+  "teacher_ratio_after_repeat": 0.5,
+  "min_response_words": 8,
+  "max_response_words": 80,
+  "max_instruction_words": 80,
+  "dropped_long_instructions": 3171,
+  "dropped_scaffolding_instruction": 15530,
+  "dropped_scaffolding_response": 142,
+  "max_instruction_words_seen_input": 3804,
+  "max_instruction_words_seen_kept": 60,
+  "duplicate_blocks": 4750,
+  "max_consecutive_duplicate_blocks": 1,
+  "unique_instruction_domains": [
+    "ai",
+    "cybersecurity",
+    "databases",
+    "general",
+    "software_engineering"
+  ],
+  "shuffle_seed": 42,
+  "written_chars": 2575370
+}
