@@ -42,6 +42,9 @@ CURATED_LATEST_CHECKPOINT = CHECKPOINT_DIR / "curated_latest.pt"
 TEACHER_LATEST_CHECKPOINT = TEACHER_PHASE_ROOT / "checkpoints" / "teacher_latest.pt"
 TEACHER_BEST_SCORE_CHECKPOINT = TEACHER_PHASE_ROOT / "checkpoints" / "teacher_best_score.pt"
 TEACHER_BEST_VAL_CHECKPOINT = TEACHER_PHASE_ROOT / "checkpoints" / "teacher_best_val.pt"
+ROUTING_PHASE_ROOT = PROJECT_ROOT / "18I_routing_teacher_fix"
+ROUTING_DATA_PATH = ROUTING_PHASE_ROOT / "data" / "routing_teacher.jsonl"
+ROUTING_LATEST_CHECKPOINT = ROUTING_PHASE_ROOT / "checkpoints" / "routing_latest.pt"
 
 USER_TAG = "<USER>"
 ASSISTANT_TAG = "<ASSISTANT>"
@@ -49,8 +52,12 @@ END_TAG = "<END>"
 SFT_DEFAULT_LR = 1e-5
 CURATED_DEFAULT_LR = 2e-6
 TEACHER_DEFAULT_LR = 5e-6
+ROUTING_DEFAULT_LR = 3e-6
 SFT_DEFAULT_STEPS = 1000
 TEACHER_DEFAULT_STEPS = 500
+ROUTING_DEFAULT_STEPS = 300
+DEFAULT_FIRST_TOKEN_WEIGHT = 8.0
+ROUTING_FIRST_TOKEN_WEIGHT = 30.0
 SFT_GRAD_CLIP = 1.0
 CURATED_MAX_EXAMPLES = 2_000
 CURATED_MIN_INSTRUCTION_WORDS = 4
@@ -909,12 +916,19 @@ def train(args: argparse.Namespace) -> None:
 
     max_steps = args.steps
     if max_steps is None:
-        max_steps = TEACHER_DEFAULT_STEPS if args.mode == "teacher" else SFT_DEFAULT_STEPS
+        if args.mode == "teacher":
+            max_steps = TEACHER_DEFAULT_STEPS
+        elif args.mode == "routing":
+            max_steps = ROUTING_DEFAULT_STEPS
+        else:
+            max_steps = SFT_DEFAULT_STEPS
 
     learning_rate = args.lr
     if learning_rate is None:
         if args.mode == "teacher":
             learning_rate = TEACHER_DEFAULT_LR
+        elif args.mode == "routing":
+            learning_rate = ROUTING_DEFAULT_LR
         elif args.mode == "curated":
             learning_rate = CURATED_DEFAULT_LR
         else:
@@ -934,7 +948,12 @@ def train(args: argparse.Namespace) -> None:
     print(f"Loading tokenizer: {TOKENIZER_PATH}", flush=True)
     bpe = load_tokenizer(TOKENIZER_PATH)
 
-    base_checkpoint = Path(args.base_checkpoint) if args.base_checkpoint else latest_checkpoint_for(cfg)
+    if args.base_checkpoint:
+        base_checkpoint = Path(args.base_checkpoint)
+    elif args.mode == "routing":
+        base_checkpoint = TEACHER_LATEST_CHECKPOINT
+    else:
+        base_checkpoint = latest_checkpoint_for(cfg)
     if not base_checkpoint.exists():
         raise FileNotFoundError(
             f"Base checkpoint not found: {base_checkpoint}\n"
@@ -951,7 +970,12 @@ def train(args: argparse.Namespace) -> None:
 
     data_path = args.data
     if data_path is None:
-        data_path = TEACHER_DATA_PATH if args.mode == "teacher" else CHAT_DATA_PATH
+        if args.mode == "teacher":
+            data_path = TEACHER_DATA_PATH
+        elif args.mode == "routing":
+            data_path = ROUTING_DATA_PATH
+        else:
+            data_path = CHAT_DATA_PATH
     print(f"Loading SFT data: {data_path}", flush=True)
     examples = load_chat_examples(data_path)
     max_examples = args.max_examples
@@ -972,15 +996,24 @@ def train(args: argparse.Namespace) -> None:
     else:
         train_examples, val_examples = split_examples(examples, val_ratio=0.05)
 
+    first_token_weight = (
+        ROUTING_FIRST_TOKEN_WEIGHT if args.mode == "routing" else DEFAULT_FIRST_TOKEN_WEIGHT
+    )
     print("Encoding SFT datasets...", flush=True)
-    train_set = SFTDataset(example_texts(train_examples), bpe, cfg.block_size)
-    val_set = SFTDataset(example_texts(val_examples), bpe, cfg.block_size)
+    train_set = SFTDataset(
+        example_texts(train_examples), bpe, cfg.block_size, first_token_weight=first_token_weight
+    )
+    val_set = SFTDataset(
+        example_texts(val_examples), bpe, cfg.block_size, first_token_weight=first_token_weight
+    )
 
     set_trainable_parameters(model, freeze_backbone=args.freeze_backbone)
     trainable_params = [parameter for parameter in model.parameters() if parameter.requires_grad]
     optimizer = torch.optim.AdamW(trainable_params, lr=cfg.learning_rate, weight_decay=0.01)
     if args.mode == "teacher":
         checkpoint_path = TEACHER_LATEST_CHECKPOINT
+    elif args.mode == "routing":
+        checkpoint_path = ROUTING_LATEST_CHECKPOINT
     elif args.mode == "curated":
         checkpoint_path = CURATED_LATEST_CHECKPOINT
     else:
@@ -1147,14 +1180,15 @@ def train(args: argparse.Namespace) -> None:
                             f"({size / 1024**2:.1f} MB)",
                             flush=True,
                         )
-            if not last_generation_safe and args.eval_generation_only_warn:
+            if not last_generation_safe and args.mode == "teacher":
                 print(
-                    "  generation warning only: checkpoint overwrite requires val improvement",
+                    "  teacher generation warning: latest will still be saved; "
+                    "best checkpoints require metric improvement",
                     flush=True,
                 )
-            elif not last_generation_safe and args.mode == "teacher":
+            elif not last_generation_safe and args.eval_generation_only_warn:
                 print(
-                    "  teacher generation warning: checkpoint overwrite still requires teacher score or val improvement",
+                    "  generation warning only: checkpoint overwrite requires val improvement",
                     flush=True,
                 )
             elif not last_generation_safe:
@@ -1203,12 +1237,13 @@ def main() -> None:
     parser.add_argument("--config", default="large_50m")
     parser.add_argument(
         "--mode",
-        choices=("train", "overfit", "curated", "teacher"),
+        choices=("train", "overfit", "curated", "teacher", "routing"),
         default="train",
         help=(
             "train: full SFT; overfit: use a tiny subset and track exact answer "
             "match; curated: filtered balanced small SFT set; teacher: tiny "
-            "direct-answer teacher set"
+            "direct-answer teacher set; routing: paraphrase routing fix on top of "
+            "the teacher checkpoint (first answer token weight 30, lr 3e-6, 300 steps)"
         ),
     )
     parser.add_argument(
