@@ -1,0 +1,365 @@
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.536928
+  first embedding norm after:   0.550145
+  first embedding norm delta:   +0.013218
+Loading SFT data: 18E_tiny_teacher_sft/data/teacher_extended_short.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    decoded:  <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    decoded:  <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. <END>
+    decoded:  <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            teacher
+Device:          mps
+Base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Base step:       9000
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18E_tiny_teacher_sft/data/teacher_extended_short.jsonl
+Train examples:  1,145
+Val examples:    61
+Learning rate:   5.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+
+Existing teacher best val loss: 0.3416
+Existing teacher best keyword score: 1.0000
+step     1 | train loss 4.9460 | 4,108 tok/s
+step    10 | train loss 4.0044 | 19,264 tok/s
+step    20 | train loss 4.3768 | 19,168 tok/s
+step    30 | train loss 3.5942 | 19,222 tok/s
+step    40 | train loss 3.2670 | 19,159 tok/s
+step    50 | train loss 4.2196 | 19,086 tok/s
+step    60 | train loss 3.5103 | 19,217 tok/s
+step    70 | train loss 3.4405 | 19,270 tok/s
+step    80 | train loss 3.2975 | 19,170 tok/s
+step    90 | train loss 2.4993 | 19,180 tok/s
+step   100 | train loss 3.6451 | 19,183 tok/s
+  running eval...
+  eval step 100 | train loss 3.1227 | val loss 2.9687 | best val 0.3416 | avg 17,538 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: A database is a set of rules for reliable behavior.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a text that prediction tuning data into token sequences in one example.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'help', 'index', 'lookup', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: A database is a rule that combines rows faster. It helps keep data useful, reliable, or fast to access.
+    exact_start_match: False
+    keyword_overlap:   0/12 (0.00) []
+    repeated_3gram:    False
+  teacher keyword score: 0.1562
+step   110 | train loss 3.7094 | 19,111 tok/s
+step   120 | train loss 3.5061 | 19,298 tok/s
+step   130 | train loss 4.5736 | 19,293 tok/s
+step   140 | train loss 2.6167 | 19,184 tok/s
+step   150 | train loss 2.7111 | 19,250 tok/s
+step   160 | train loss 1.8866 | 19,127 tok/s
+step   170 | train loss 2.4234 | 19,150 tok/s
+step   180 | train loss 3.1844 | 19,208 tok/s
+step   190 | train loss 2.4929 | 19,186 tok/s
+step   200 | train loss 2.1729 | 19,233 tok/s
+  running eval...
+  eval step 200 | train loss 2.4393 | val loss 2.3332 | best val 0.3416 | avg 15,962 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Gradient descent is a method that prevents a token or incorrectly.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a token sequences visible to the model.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'help', 'index', 'lookup', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: A transformer is a token or string that tells generation to stop.
+    exact_start_match: False
+    keyword_overlap:   1/12 (0.08) ['token']
+    repeated_3gram:    False
+  teacher keyword score: 0.1771
+step   210 | train loss 2.2627 | 19,050 tok/s
+step   220 | train loss 2.5503 | 19,234 tok/s
+step   230 | train loss 3.1020 | 19,221 tok/s
+step   240 | train loss 2.2546 | 19,220 tok/s
+step   250 | train loss 2.5225 | 19,207 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   260 | train loss 2.6527 | 19,276 tok/s
+step   270 | train loss 1.9821 | 19,234 tok/s
+step   280 | train loss 3.1258 | 19,251 tok/s
+step   290 | train loss 2.5371 | 19,029 tok/s
+step   300 | train loss 2.5588 | 19,132 tok/s
+  running eval...
+  eval step 300 | train loss 1.9248 | val loss 2.1538 | best val 0.3416 | avg 15,877 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model checkpoint is the model weights from a training step.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a column named field that relational database rules for rows and tables.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'help', 'index', 'lookup', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: A database index is a lookup structure that combines rows faster.
+    exact_start_match: False
+    keyword_overlap:   0/12 (0.00) []
+    repeated_3gram:    False
+  teacher keyword score: 0.1562
+step   310 | train loss 2.1765 | 19,233 tok/s
+step   320 | train loss 2.0805 | 19,160 tok/s
+step   330 | train loss 2.5807 | 19,037 tok/s
+step   340 | train loss 2.1610 | 19,094 tok/s
+step   350 | train loss 2.2689 | 19,069 tok/s
+step   360 | train loss 2.6300 | 19,253 tok/s
+step   370 | train loss 2.6128 | 19,014 tok/s
+step   380 | train loss 1.8137 | 19,082 tok/s
+step   390 | train loss 2.2314 | 19,130 tok/s
+step   400 | train loss 2.2641 | 19,417 tok/s
+  running eval...
+  eval step 400 | train loss 1.9618 | val loss 1.8699 | best val 0.3416 | avg 16,074 tok/s
+  generation eval step 400:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is the process of using a trained model to produce an answer.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is software that turns and token IDs.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'help', 'index', 'lookup', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: A transformer is a neural network architecture that uses attention to process token sequences in parallel.
+    exact_start_match: False
+    keyword_overlap:   2/12 (0.17) ['attention', 'token']
+    repeated_3gram:    False
+  teacher keyword score: 0.1979
+step   410 | train loss 2.2108 | 19,189 tok/s
+step   420 | train loss 2.2734 | 19,275 tok/s
+step   430 | train loss 1.7302 | 19,165 tok/s
+step   440 | train loss 1.8972 | 19,250 tok/s
+step   450 | train loss 2.2424 | 19,132 tok/s
+step   460 | train loss 1.6475 | 19,251 tok/s
+step   470 | train loss 1.7276 | 19,288 tok/s
+step   480 | train loss 1.8841 | 19,141 tok/s
+step   490 | train loss 2.1924 | 19,062 tok/s
+step   500 | train loss 1.8781 | 19,270 tok/s
+  running eval...
+  eval step 500 | train loss 1.5247 | val loss 1.6152 | best val 0.3416 | avg 16,191 tok/s
+  generation eval step 500:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is the ability to handle a model.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a small assistant trained to answer prompt and recent history.
+    exact_start_match: False
+    keyword_overlap:   4/7 (0.57) ['answer', 'assistant', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that speeds rows but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Tokenization is the process of converting a text into token IDs and produce answers.
+    exact_start_match: False
+    keyword_overlap:   1/12 (0.08) ['token']
+    repeated_3gram:    False
+  teacher keyword score: 0.3199
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   510 | train loss 2.2743 | 19,189 tok/s
+step   520 | train loss 1.8812 | 19,007 tok/s
+step   530 | train loss 2.4858 | 19,212 tok/s
+step   540 | train loss 1.6483 | 19,088 tok/s
+step   550 | train loss 1.8454 | 19,135 tok/s
+step   560 | train loss 2.6975 | 19,097 tok/s
+step   570 | train loss 1.1635 | 19,152 tok/s
+step   580 | train loss 2.0609 | 19,064 tok/s
+step   590 | train loss 1.6412 | 19,197 tok/s
+step   600 | train loss 1.7784 | 19,236 tok/s
+  running eval...
+  eval step 600 | train loss 1.0850 | val loss 1.3278 | best val 0.3416 | avg 16,093 tok/s
+  generation eval step 600:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Tokenization is the process of using a model to produce an answer.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a small assistant trained to answer prompt and recent history.
+    exact_start_match: False
+    keyword_overlap:   4/7 (0.57) ['answer', 'assistant', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that speeds rows but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Self-attenti on with each tokens in one sequence compare with each other.
+    exact_start_match: False
+    keyword_overlap:   1/12 (0.08) ['token']
+    repeated_3gram:    False
+  teacher keyword score: 0.3199
+step   610 | train loss 1.6671 | 19,194 tok/s
+step   620 | train loss 1.2952 | 19,109 tok/s
+step   630 | train loss 1.4309 | 19,078 tok/s
+step   640 | train loss 2.5018 | 18,950 tok/s
+step   650 | train loss 1.0431 | 19,139 tok/s
+step   660 | train loss 1.1532 | 19,059 tok/s
+step   670 | train loss 1.8098 | 19,074 tok/s
+step   680 | train loss 1.4593 | 19,138 tok/s
+step   690 | train loss 1.8202 | 19,140 tok/s
+step   700 | train loss 1.6332 | 19,158 tok/s
+  running eval...
+  eval step 700 | train loss 1.0429 | val loss 1.3153 | best val 0.3416 | avg 16,184 tok/s
+  generation eval step 700:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model checkpoint is the process of using a trained model to produce an answer.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a neural network architecture that uses attention to process token sequences in parameterized text.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that speeds rows but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Regression is predicting a numeric value.
+    exact_start_match: False
+    keyword_overlap:   0/12 (0.00) []
+    repeated_3gram:    False
+  teacher keyword score: 0.1562
+step   710 | train loss 1.6570 | 19,187 tok/s
+step   720 | train loss 2.0251 | 18,995 tok/s
+step   730 | train loss 2.0363 | 19,159 tok/s
+step   740 | train loss 1.5742 | 19,320 tok/s
+step   750 | train loss 1.2985 | 19,223 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   760 | train loss 1.3544 | 19,046 tok/s
+step   770 | train loss 1.2424 | 18,188 tok/s
+step   780 | train loss 1.3875 | 19,065 tok/s
+step   790 | train loss 1.2384 | 19,029 tok/s
+step   800 | train loss 1.4251 | 19,106 tok/s
+  running eval...
+  eval step 800 | train loss 0.8171 | val loss 1.0254 | best val 0.3416 | avg 16,103 tok/s
+  generation eval step 800:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Tokenization is the process of using a text or answer a model to guide an answer.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a neural network architecture that processes sequences with attention and feed-forward layers.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is an organized lookup structure that speeds rows but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token from previous tokens.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.4062
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt

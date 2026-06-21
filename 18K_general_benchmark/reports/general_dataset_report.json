@@ -1,0 +1,55 @@
+{
+  "phase": "18K_general_benchmark",
+  "generated_at": "2026-06-21T10:17:56.149392+00:00",
+  "source": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/data/marshmello_all_sft.jsonl",
+  "eval_rows": 500,
+  "train_rows": 9304,
+  "source_rows": 9804,
+  "per_bucket": 100,
+  "seed": 42,
+  "buckets": {
+    "ai": [
+      "ai_basics",
+      "deep_learning",
+      "logic_reasoning",
+      "machine_learning",
+      "math_basics",
+      "math_for_ml",
+      "nlp",
+      "statistics",
+      "transformers_llms"
+    ],
+    "databases": [
+      "data_structures",
+      "databases",
+      "sql"
+    ],
+    "programming": [
+      "algorithms",
+      "html_css",
+      "javascript",
+      "python",
+      "software_engineering",
+      "web_development"
+    ],
+    "system_design": [
+      "cloud_computing",
+      "cybersecurity",
+      "devops",
+      "linux",
+      "networking",
+      "operating_systems",
+      "system_design"
+    ],
+    "general_knowledge": [
+      "business_basics",
+      "computer_vision",
+      "daily_life",
+      "general_science",
+      "geography_basics",
+      "history_basics",
+      "study_skills",
+      "writing_communication"
+    ]
+  }
+}

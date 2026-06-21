@@ -1,0 +1,14 @@
+{
+  "output": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher_extended.jsonl",
+  "total": 1422,
+  "from_original": 250,
+  "from_core_sft_train": 1200,
+  "domain_counts": {
+    "ai_basics": 445,
+    "machine_learning": 39,
+    "databases": 436,
+    "software_engineering": 40,
+    "python": 34,
+    "transformers_llms": 428
+  }
+}

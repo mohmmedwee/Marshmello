@@ -1,0 +1,41 @@
+{
+  "rows": [
+    {
+      "label": "18j_teacher_best_score",
+      "checkpoint": "18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt",
+      "routing_accuracy": 0.13,
+      "concept_accuracy": 0.16,
+      "hallucination_rate": 0.88
+    },
+    {
+      "label": "18j_teacher_best_val",
+      "checkpoint": "18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt",
+      "routing_accuracy": 0.11,
+      "concept_accuracy": 0.13,
+      "hallucination_rate": 0.91
+    },
+    {
+      "label": "18j_teacher_latest",
+      "checkpoint": "18E_tiny_teacher_sft/checkpoints/teacher_latest.pt",
+      "routing_accuracy": 0.18,
+      "concept_accuracy": 0.33,
+      "hallucination_rate": 0.78
+    }
+  ],
+  "best_routing": {
+    "label": "18j_teacher_latest",
+    "checkpoint": "18E_tiny_teacher_sft/checkpoints/teacher_latest.pt",
+    "routing_accuracy": 0.18,
+    "concept_accuracy": 0.33,
+    "hallucination_rate": 0.78
+  },
+  "best_concept": {
+    "label": "18j_teacher_latest",
+    "checkpoint": "18E_tiny_teacher_sft/checkpoints/teacher_latest.pt",
+    "routing_accuracy": 0.18,
+    "concept_accuracy": 0.33,
+    "hallucination_rate": 0.78
+  },
+  "baseline": 0.13,
+  "improved": true
+}

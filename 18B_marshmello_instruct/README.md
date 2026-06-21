@@ -47,7 +47,17 @@ The training loss:
 - ignores user tokens
 - trains assistant response tokens
 - trains `<END>`
-- weights the first assistant answer token higher to improve routing
+- weights the first assistant answer token higher to improve routing (default 8; use `--first-token-weight 30` for core SFT from a routing checkpoint)
+
+## Deploy checkpoint
+
+Best **18J** core routing on 45M (~18%):
+
+```text
+18B_marshmello_instruct/checkpoints/best_18j_routing.pt
+```
+
+Do **not** deploy `latest.pt` after failed broad SFT (see `reports/latest_eval_summary.md`).
 
 ---
 
@@ -88,7 +98,21 @@ python 18B_marshmello_instruct/train_instruct.py \
 ## Chat
 
 ```bash
-python 18B_marshmello_instruct/chat.py --prompt "Explain database indexes"
+python 18B_marshmello_instruct/chat.py \
+  --checkpoint 18B_marshmello_instruct/checkpoints/best_18j_routing.pt \
+  --prompt "Explain database indexes" \
+  --greedy
+```
+
+## Dual benchmarks
+
+```bash
+python 18J_marshmello_core_sft/evaluate_core_routing.py \
+  --checkpoint 18B_marshmello_instruct/checkpoints/best_18j_routing.pt --no-baseline
+
+python 18K_general_benchmark/evaluate_general.py \
+  --label best_18j_routing \
+  --checkpoint 18B_marshmello_instruct/checkpoints/best_18j_routing.pt
 ```
 
 ---

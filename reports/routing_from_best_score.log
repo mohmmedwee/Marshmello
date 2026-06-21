@@ -1,0 +1,183 @@
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.542251
+  first embedding norm after:   0.550398
+  first embedding norm delta:   +0.008147
+Loading SFT data: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/data/routing_teacher.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> What is AI? <ASSISTANT> AI is software that performs tasks that normally need human thinking. <END>
+    decoded:  <USER> What is AI? <ASSISTANT> AI is software that performs tasks that normally need human thinking. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Define artificial intelligence. <ASSISTANT> AI lets computers do tasks that usually need human intelligence. <END>
+    decoded:  <USER> Define artificial intelligence. <ASSISTANT> AI lets computers do tasks that usually need human intelligence. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> What does AI mean? <ASSISTANT> Artificial intelligence is the field of building machines that can reason. <END>
+    decoded:  <USER> What does AI mean? <ASSISTANT> Artificial intelligence is the field of building machines that can reason. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            routing
+Device:          mps
+Base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Base step:       500
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/data/routing_teacher.jsonl
+Train examples:  256
+Val examples:    14
+Learning rate:   3.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt
+
+step     1 | train loss 3.5918 | 3,152 tok/s
+step    10 | train loss 3.0252 | 19,057 tok/s
+step    20 | train loss 3.1675 | 19,150 tok/s
+step    30 | train loss 2.2457 | 19,073 tok/s
+step    40 | train loss 3.5019 | 19,023 tok/s
+step    50 | train loss 1.7313 | 18,921 tok/s
+step    60 | train loss 3.4621 | 19,056 tok/s
+step    70 | train loss 1.9476 | 19,055 tok/s
+step    80 | train loss 1.8659 | 19,130 tok/s
+step    90 | train loss 1.7358 | 19,191 tok/s
+step   100 | train loss 3.3156 | 19,095 tok/s
+  running eval...
+  eval step 100 | train loss 1.7841 | val loss 3.0591 | best val 3.0591 | avg 17,173 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   110 | train loss 3.5336 | 19,074 tok/s
+step   120 | train loss 2.2063 | 19,038 tok/s
+step   130 | train loss 1.9478 | 19,244 tok/s
+step   140 | train loss 2.2456 | 19,044 tok/s
+step   150 | train loss 4.1700 | 19,031 tok/s
+step   160 | train loss 2.7938 | 18,937 tok/s
+step   170 | train loss 1.9950 | 18,987 tok/s
+step   180 | train loss 1.6468 | 19,187 tok/s
+step   190 | train loss 2.1993 | 19,065 tok/s
+step   200 | train loss 2.2574 | 19,004 tok/s
+  running eval...
+  eval step 200 | train loss 1.6610 | val loss 2.3378 | best val 2.3378 | avg 16,376 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   210 | train loss 2.2648 | 19,146 tok/s
+step   220 | train loss 1.7682 | 19,229 tok/s
+step   230 | train loss 1.4884 | 19,065 tok/s
+step   240 | train loss 1.1040 | 18,940 tok/s
+step   250 | train loss 1.5018 | 19,018 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt (631.9 MB)
+step   260 | train loss 2.4815 | 18,958 tok/s
+step   270 | train loss 1.3579 | 19,092 tok/s
+step   280 | train loss 1.3905 | 19,146 tok/s
+step   290 | train loss 0.9157 | 19,078 tok/s
+step   300 | train loss 1.6897 | 19,102 tok/s
+  running eval...
+  eval step 300 | train loss 1.5480 | val loss 2.6882 | best val 2.3378 | avg 16,320 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18I_routing_teacher_fix/checkpoints/routing_latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.531524
+  first embedding norm after:   0.550384
+  first embedding norm delta:   +0.018860
+Loading SFT data: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/data/routing_teacher.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> What is AI? <ASSISTANT> AI is software that performs tasks that normally need human thinking. <END>
+    decoded:  <USER> What is AI? <ASSISTANT> AI is software that performs tasks that normally need human thinking. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Define artificial intelligence. <ASSISTANT> AI lets computers do tasks that usually need human intelligence. <END>
+    decoded:  <USER> Define artificial intelligence. <ASSISTANT> AI lets computers do tasks that usually need human intelligence. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> What does AI mean? <ASSISTANT> Artificial intelligence is the field of building machines that can reason. <END>
+    decoded:  <USER> What does AI mean? <ASSISTANT> Artificial intelligence is the field of building machines that can reason. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            routing
+Device:          mps
+Base checkpoint: 18I_routing_teacher_fix/checkpoints/routing_latest.pt
+Base step:       300
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/data/routing_teacher.jsonl
+Train examples:  256
+Val examples:    14
+Learning rate:   1.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt
+
+step     1 | train loss 1.6461 | 2,792 tok/s
+step    10 | train loss 1.3206 | 18,967 tok/s
+step    20 | train loss 2.2581 | 18,785 tok/s
+step    30 | train loss 1.3960 | 17,892 tok/s
+step    40 | train loss 1.0508 | 17,851 tok/s
+step    50 | train loss 1.5443 | 19,082 tok/s
+step    60 | train loss 2.0174 | 18,945 tok/s
+step    70 | train loss 1.0986 | 18,962 tok/s
+step    80 | train loss 1.0763 | 18,997 tok/s
+step    90 | train loss 1.9214 | 18,991 tok/s
+step   100 | train loss 1.8010 | 18,790 tok/s
+  running eval...
+  eval step 100 | train loss 1.4329 | val loss 2.4748 | best val 2.4748 | avg 16,802 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   110 | train loss 0.7506 | 19,256 tok/s
+step   120 | train loss 1.2330 | 18,975 tok/s
+step   130 | train loss 1.2947 | 18,887 tok/s
+step   140 | train loss 1.3457 | 19,093 tok/s
+step   150 | train loss 1.8292 | 18,903 tok/s
+  running eval...
+  eval step 150 | train loss 1.3859 | val loss 2.5238 | best val 2.4748 | avg 15,246 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt

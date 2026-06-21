@@ -1,0 +1,24 @@
+{
+  "input": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher_extended.jsonl",
+  "output": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher_extended_short.jsonl",
+  "total": 1206,
+  "filter_stats": {
+    "input": 1422,
+    "kept": 1206,
+    "reject_cross_domain_databases": 14,
+    "reject_short": 201,
+    "reject_cross_domain_ai_basics": 1
+  },
+  "domain_counts": {
+    "ai_basics": 414,
+    "machine_learning": 6,
+    "databases": 393,
+    "software_engineering": 4,
+    "python": 8,
+    "transformers_llms": 381
+  },
+  "word_count_min": 12,
+  "word_count_max": 21,
+  "word_count_mean": 15.45,
+  "eval_leakage": "none \u2014 derived from teacher_extended (train-only sources)"
+}

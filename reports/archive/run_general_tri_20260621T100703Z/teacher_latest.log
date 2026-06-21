@@ -1,0 +1,508 @@
+=== General eval: teacher_latest ===
+Validated 500 held-out general questions
+[001/500] general-eval-ai-001: A transformer is a neural network architecture that uses attention to process token sequences with a
+[002/500] general-eval-ai-002: A B-tree index is a rule for database lookups and columns.
+[003/500] general-eval-ai-003: A transformer is a neural network architecture that is part of how language models read prompts and 
+[004/500] general-eval-ai-004: A transformer is a neural architecture that is part of how language models read prompts and produce 
+[005/500] general-eval-ai-005: Reinforcement learning trains an input parameters.
+[006/500] general-eval-ai-006: A database index is a named collection of rows that combines rows from related to a relational datab
+[007/500] general-eval-ai-007: Machine learning is a model on data instead of using supervised learning.
+[008/500] general-eval-ai-008: A token is one named field that a language model to one example.
+[009/500] general-eval-ai-009: A transformer is a neural architecture that on prompts and feed-forward layers.
+[010/500] general-eval-ai-010: Migration is the set of token sequences that token predicts and produce answers.
+[011/500] general-eval-ai-011: An API is a defined way for a database and retrieve data.
+[012/500] general-eval-ai-012: A database index is a named field that stores rows from a table.
+[013/500] general-eval-ai-013: Positional embedding is one of the same category that are too simple to training examples used for a
+[014/500] general-eval-ai-014: A database query is a rule for values or relationships.
+[015/500] general-eval-ai-015: Machine learning is a model on data instead of using only fixed rules.
+[016/500] general-eval-ai-016: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[017/500] general-eval-ai-017: A context window is the maximum tokens a model can process of using one time.
+[018/500] general-eval-ai-018: Self-attenti on runs each token combine with an input sequence.
+[019/500] general-eval-ai-019: NER is the SQL query to read or used to read data.
+[020/500] general-eval-ai-020: A transformer is a neural architecture that processes useful for building models that work beyond on
+[021/500] general-eval-ai-021: A transformer is a neural network architecture that is part of how language models read prompts and 
+[022/500] general-eval-ai-022: A database index is a named collection of column set of column set that combines rows each row in a 
+[023/500] general-eval-ai-023: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[024/500] general-eval-ai-024: A neural network is a neural network architecture that connected layers that is connected layers tha
+[025/500] general-eval-ai-025: A neural network is a neural network architecture that is connected layers that is useful for buildi
+[026/500] general-eval-ai-026: Self-attenti on helps attention and feed-forward layers joined by residual paths.
+[027/500] general-eval-ai-027: Unsupervised learning trains a model on new inputs paired with target answers.
+[028/500] general-eval-ai-028: A neural network is a model made of connected layers that is useful for building models that work be
+[029/500] general-eval-ai-029: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[030/500] general-eval-ai-030: Unsupervised learning trains a model on new inputs paired with known target answers.
+[031/500] general-eval-ai-031: A token is one named token or numeric vector that a token ID.
+[032/500] general-eval-ai-032: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[033/500] general-eval-ai-033: A token is one model that a language model on held-out prompts and produce answers.
+[034/500] general-eval-ai-034: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[035/500] general-eval-ai-035: A full table scan reads or most rows of a table to evaluate a query.
+[036/500] general-eval-ai-036: The set of tokens a text sequence of a language model can use.
+[037/500] general-eval-ai-037: A context window is the maximum number of tokens a model can process by one token sequences in the s
+[038/500] general-eval-ai-038: A transformer is a neural network architecture that is part of how language models read prompts and 
+[039/500] general-eval-ai-039: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[040/500] general-eval-ai-040: General embedding is an object that a model prediction error.
+[041/500] general-eval-ai-041: A transformer is a neural architecture that is part of how language models read prompts and produce 
+[042/500] general-eval-ai-042: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[043/500] general-eval-ai-043: A neural network is a model made of layers of learned vector layers.
+[044/500] general-eval-ai-044: A database table is a named collection of columns for one named field and columns.
+[045/500] general-eval-ai-045: Generalization is the ability to perform a model to perform a prediction.
+[046/500] general-eval-ai-046: An attention is one record containing and feed-forward layers used to training.
+[047/500] general-eval-ai-047: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[048/500] general-eval-ai-048: Positional embedding is one full pass used to vocabulary predicts or prediction example.
+[049/500] general-eval-ai-049: Training data is the examples used to fit a model to guide a model's desired output.
+[050/500] general-eval-ai-050: Generalization is an important for the need for the need to be a new input.
+[051/500] general-eval-ai-051: A database index is a named field that combines rows from related to a table.
+[052/500] general-eval-ai-052: Machine learning is a model on new inputs on new inputs or decisions that are too limited to the mod
+[053/500] general-eval-ai-053: A transformer is a neural network architecture that is part of how language models read prompts and 
+[054/500] general-eval-ai-054: A transformer is a token IDs and token IDs that token IDs each token IDs each token IDs or sequence.
+[055/500] general-eval-ai-055: Supervised learning is a model on new inputs paired with target answers.
+[056/500] general-eval-ai-056: An example of a neural network is a process of learned vector that uses a token sequences in a token
+[057/500] general-eval-ai-057: The primary key is a defined way that unknown model weights from a training data.
+[058/500] general-eval-ai-058: Underfitting is too little to choose actions from a branch of learning model.
+[059/500] general-eval-ai-059: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[060/500] general-eval-ai-060: A database index is a named field that prevents a query.
+[061/500] general-eval-ai-061: Positional embedding is a vector used to estimate a token or incorrectly.
+[062/500] general-eval-ai-062: A neural network is a set of inputs that are not used to predict a categories.
+[063/500] general-eval-ai-063: Generator is an object that describes the input sequences a model on a token sample.
+[064/500] general-eval-ai-064: Training data is the examples used to teach a model to teach a model to guide a classifier from past
+[065/500] general-eval-ai-065: None is the most popular language model on the same language model on the same final context manager
+[066/500] general-eval-ai-066: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[067/500] general-eval-ai-067: NNER NNER NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+[068/500] general-eval-ai-068: A neural network is a model made of layers of learned inputs connected to a model.
+[069/500] general-eval-ai-069: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[070/500] general-eval-ai-070: A database query is a named field that data useful, reliable, or fast to access.
+[071/500] general-eval-ai-071: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[072/500] general-eval-ai-072: Pretraining is the training a model on broad text before task-specific tuning.
+[073/500] general-eval-ai-073: Underfitting is a model on unsure a model on unfairly on unfairly on unfairly or incorrectly on unfa
+[074/500] general-eval-ai-074: A transformer is a neural network architecture that is part of how language models read prompts and 
+[075/500] general-eval-ai-075: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[076/500] general-eval-ai-076: The SQL query is a relational database that combines data in relational database to read data.
+[077/500] general-eval-ai-077: General language models read prompts and produce answers.
+[078/500] general-eval-ai-078: A neural network is a method of connected layers that connected to a token sequences that are connec
+[079/500] general-eval-ai-079: A context manager is a language model on one focused job.
+[080/500] general-eval-ai-080: Positional language models read prompts and produce answers.
+[081/500] general-eval-ai-081: Machine learning is a model on data instead of using inputs and make predictions or decisions on new
+[082/500] general-eval-ai-082: A database is a named field that unsupervised learning.
+[083/500] general-eval-ai-083: A database query plan is the structure of a database column or column value.
+[084/500] general-eval-ai-084: A neural network is a neural network architecture that connected layers of connected layers that wit
+[085/500] general-eval-ai-085: Machine learning is a model on data so they can make decisions on new inputs or decisions on new inp
+[086/500] general-eval-ai-086: Artificial intelligence is the field of making computers understand tasks requiring reasoning, and r
+[087/500] general-eval-ai-087: A SQL is a language model on the intended task.
+[088/500] general-eval-ai-088: Evaluation is testing whether a model gives useful and reliable answers.
+[089/500] general-eval-ai-089: Pretraining is the key instructions for building models that work beyond one example.
+[090/500] general-eval-ai-090: An example of a neural network is a set of inputs that uses a model to process a prediction.
+[091/500] general-eval-ai-091: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[092/500] general-eval-ai-092: None is the same number of examples used to choose a branch of examples that are not used to fit a l
+[093/500] general-eval-ai-093: A transformer is a neural network that processes sequences with attention and feed-forward layers.
+[094/500] general-eval-ai-094: A transformer is a neural network architecture that is part of how language models read prompts and 
+[095/500] general-eval-ai-095: A neural network is a neural network architecture that connected layers that is useful for building 
+[096/500] general-eval-ai-096: A database index is an organized place for storing, and retrieve data.
+[097/500] general-eval-ai-097: A database table is a named field that prevents data into training.
+[098/500] general-eval-ai-098: A database column set is a named field that uniquely identifies each row in a table.
+[099/500] general-eval-ai-099: A neural network is a neural network architecture that is useful for building models that work beyon
+[100/500] general-eval-ai-100: A token is one named field that uniquely identifies each other.
+[101/500] general-eval-databases-001: A database is a named field that speeds each row defines one named field inside a table.
+[102/500] general-eval-databases-002: SQL is a language used to read or SQL in relational database to read or used to read or used to read
+[103/500] general-eval-databases-003: The primary key is the process of using a trained model to produce an output for a new input.
+[104/500] general-eval-databases-004: A transformer is a neural network architecture that is attention and feed-forward layers joined by r
+[105/500] general-eval-databases-005: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[106/500] general-eval-databases-006: A transformer is a neural network architecture that uses attention to process token sequences with a
+[107/500] general-eval-databases-007: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[108/500] general-eval-databases-008: A database index is a named collection of column set that combines rows from related to a table.
+[109/500] general-eval-databases-009: Function is the process of reusable block of the used to guide a model to guide a target labor.
+[110/500] general-eval-databases-010: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[111/500] general-eval-databases-011: A token is one named field that prevents a token ID.
+[112/500] general-eval-databases-012: A database column is one named field that uniquely identifies each row in a table.
+[113/500] general-eval-databases-013: A transformer is a neural network architecture that is part of how language models read prompts and 
+[114/500] general-eval-databases-014: A database is a named field that combines rows from a table.
+[115/500] general-eval-databases-015: A database index is a named field that combines rows from related tables.
+[116/500] general-eval-databases-016: A transformer is a neural network architecture that connected layers layers, with attention and feed
+[117/500] general-eval-databases-017: A database query is a named field that prevents a model's database to read or value.
+[118/500] general-eval-databases-018: A database transaction is a group of operations as one of a database to another database transaction
+[119/500] general-eval-databases-019: A token is one full of the same language model on a language model on held-out prompts or writes.
+[120/500] general-eval-databases-020: A database query is a named field that stores records as one record inside a table.
+[121/500] general-eval-databases-021: A transformer is a neural network architecture that is part of how language models read prompts and 
+[122/500] general-eval-databases-022: A token is one named field that a token IDs or writes.
+[123/500] general-eval-databases-023: A database query is a database of database columns, relationships, relationships, and other objects.
+[124/500] general-eval-databases-024: A database index is a rule that prevents a language model to follow a language model to follow its i
+[125/500] general-eval-databases-025: A SQL query to read or stored data.
+[126/500] general-eval-databases-026: A SQL query to read data in relational database to read or stored data.
+[127/500] general-eval-databases-027: A database index is a named field that combines rows from related tables.
+[128/500] general-eval-databases-028: A database index is a named field that combines rows from related to a table.
+[129/500] general-eval-databases-029: A database index is a named collection of rows that combines rows from a table.
+[130/500] general-eval-databases-030: A token is a token or string that tells data to one example.
+[131/500] general-eval-databases-031: Group by is the SQL clause used to summarize rows by a field.
+[132/500] general-eval-databases-032: A database table is a named collection of column set of column set of column set that each row a tab
+[133/500] general-eval-databases-033: Denormalization is adding controlled duplicates or combines data to make reads faster.
+[134/500] general-eval-databases-034: Denormalization organizing data to reduce duplicates or combines rows with relational tables.
+[135/500] general-eval-databases-035: A database is a named field that stores records as one or table.
+[136/500] general-eval-databases-036: A SQL query is a relational database that stores data into relational database to read data.
+[137/500] general-eval-databases-037: A database index is a named field that combines rows from related tables.
+[138/500] general-eval-databases-038: A database is a named field that stores records as one or column to another table.
+[139/500] general-eval-databases-039: A database table is a named field that uniquely identifies each row in a table.
+[140/500] general-eval-databases-040: Denormalization is one record inside a table.
+[141/500] general-eval-databases-041: A transformer is a neural network architecture that is attention where attention and feed-forward la
+[142/500] general-eval-databases-042: SQL is a language used to read or used to read or inference in a language for a language for a langu
+[143/500] general-eval-databases-043: An API database defines and database to lookup to one task.
+[144/500] general-eval-databases-044: A database is a named field that stores data into tables, or fast to access.
+[145/500] general-eval-databases-045: B-tree index is a common sorted index of structured column column column set of column set of column
+[146/500] general-eval-databases-046: SQL is a language used to read data.
+[147/500] general-eval-databases-047: NACID is a language used for language models read prompts and produce answers.
+[148/500] general-eval-databases-048: Denormalization is organizing data to reduce duplication.
+[149/500] general-eval-databases-049: A transformer is a neural network architecture that is part of how language models read prompts and 
+[150/500] general-eval-databases-050: A SQL query to read data in relational database to read or used to read data.
+[151/500] general-eval-databases-051: ACID AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+[152/500] general-eval-databases-052: A SQL query is a field that expands a model's values or value.
+[153/500] general-eval-databases-053: A database index is a named field that combines rows from related tables.
+[154/500] general-eval-databases-054: Denormalization is adding controlled duplicates or fast to make reads faster.
+[155/500] general-eval-databases-055: A database query plan is the database of database columns of column columns.
+[156/500] general-eval-databases-056: A database is a named field that combines rows from a table.
+[157/500] general-eval-databases-057: A neural network architecture that is connected to a model's ability to process or act in a model's 
+[158/500] general-eval-databases-058: A database index is a named field that defines into two or incorrect inputs in a table.
+[159/500] general-eval-databases-059: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[160/500] general-eval-databases-060: A database index is a named field that combines rows from related to database tables.
+[161/500] general-eval-databases-061: ACID is a rule for the SQL query to database transactions.
+[162/500] general-eval-databases-062: SQL query to read or plication.
+[163/500] general-eval-databases-063: A token is one named field that a token IDs or incorrect.
+[164/500] general-eval-databases-064: A database is a named field that uniquely identifies each row in a table.
+[165/500] general-eval-databases-065: A database index is a named field that combines rows from related tables.
+[166/500] general-eval-databases-066: A SQL query is a SQL query to read a query in relational database to read or stored data.
+[167/500] general-eval-databases-067: A token is one named token IDs or two or two or two or two transactions that are actually correct.
+[168/500] general-eval-databases-068: A SQL query is a query that combines rows from related to database tables.
+[169/500] general-eval-databases-069: A transformer is a neural network architecture that uses attention and feed-forward layers sequences
+[170/500] general-eval-databases-070: A database index is a named collection of column or column or column or column set that combines row
+[171/500] general-eval-databases-071: A database index is a named field that combines rows from inputs and return a relational database to
+[172/500] general-eval-databases-072: A SQL query is a SQL query to read or used to read data.
+[173/500] general-eval-databases-073: A SQL query to read or run a query to read or run a query in a query to read or actions in a query.
+[174/500] general-eval-databases-074: An example of a virtual assistant is the field of answers that a language model reads from known dat
+[175/500] general-eval-databases-075: The model made a language model on one task for a language model to produce answer.
+[176/500] general-eval-databases-076: A database index is a defined way for database column or column values.
+[177/500] general-eval-databases-077: A database index is a named collection of rows that combines rows from tables.
+[178/500] general-eval-databases-078: SQL is a language for relational database to read data.
+[179/500] general-eval-databases-079: Denormalization is adding controlled duplicates or combines data to make reads faster.
+[180/500] general-eval-databases-080: A database index is a named collection of column collection of rows that combines rows from a table.
+[181/500] general-eval-databases-081: A database index is a named field that data stored on one columns.
+[182/500] general-eval-databases-082: A database index is a named field that combines rows from related tables.
+[183/500] general-eval-databases-083: An API is a defined way for one program to request data or actions from another program.
+[184/500] general-eval-databases-084: A database query plan is the column set of column a column a column set of column a ns.
+[185/500] general-eval-databases-085: A SQL query is a database that combines rows from inputs from a table.
+[186/500] general-eval-databases-086: A database index is an organized system for storing, and other data.
+[187/500] general-eval-databases-087: A database index is one named field that data useful, reliable, or fast to access.
+[188/500] general-eval-databases-088: A database index is a named collection of column set of column or column set that uniquely identifie
+[189/500] general-eval-databases-089: A database query plan is the structure of columns, relationships, relationships, and other objects.
+[190/500] general-eval-databases-090: A SQL query plan a query to read or retrieve a query.
+[191/500] general-eval-databases-091: A database index is a named field that combines rows from inputs to columns.
+[192/500] general-eval-databases-092: A database index is a named field that combines rows from related tables.
+[193/500] general-eval-databases-093: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[194/500] general-eval-databases-094: A database index is an organized system for storing, organizing data to make a database lookup struc
+[195/500] general-eval-databases-095: A database query plan is the database of database transactions.
+[196/500] general-eval-databases-096: NER JOID is the SQL query to read or stored data.
+[197/500] general-eval-databases-097: A database is a rule that prevents a language model to the intended task.
+[198/500] general-eval-databases-098: A SQL is a rule for relational database columns.
+[199/500] general-eval-databases-099: A database index is a named field that combines rows from related tables.
+[200/500] general-eval-databases-100: Data drift is a defined examples used to fit a model's values of a model's values that a language mo
+[201/500] general-eval-programming-001: The primary key is a defined way that unsupervised learning trains paired with target answers.
+[202/500] general-eval-programming-002: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[203/500] general-eval-programming-003: A full table scan reads of a table to evaluate a query.
+[204/500] general-eval-programming-004: A transformer is a neural network architecture that uses attention to process token sequences in par
+[205/500] general-eval-programming-005: A database is a named field that stores data into trains and reliable behavior.
+[206/500] general-eval-programming-006: A database is a named field that prevents a model's values in a table.
+[207/500] general-eval-programming-007: SQL is a language used to read data.
+[208/500] general-eval-programming-008: Precision is the process of converting a sequence of a trained to execute a trained to execute a new
+[209/500] general-eval-programming-009: A database index is a named field that defines one named field and table.
+[210/500] general-eval-programming-010: A SQL query is a relational database that combines rows from related tables.
+[211/500] general-eval-programming-011: ACID is a rule for reliable database transactions.
+[212/500] general-eval-programming-012: The main key is the field of a column set that uniquely identifies each row in a table.
+[213/500] general-eval-programming-013: A transformer is a neural network architecture that is attention and feed-forward layers joined by r
+[214/500] general-eval-programming-014: A database index is a named field of rows that combines rows from related to a query.
+[215/500] general-eval-programming-015: A database index is a named field that stores rows and reliable to table.
+[216/500] general-eval-programming-016: A transformer is a neural network architecture that uses attention to process token sequences in par
+[217/500] general-eval-programming-017: Training data is a model on held-out examples used to teach a model to teach a classifier from past 
+[218/500] general-eval-programming-018: The sequence of database column set is one record containing one named field that uniquely identifie
+[219/500] general-eval-programming-019: A context window is the maximum tokens a model can process of using one sequence of token sequence.
+[220/500] general-eval-programming-020: A database rules used to choose a database structure.
+[221/500] general-eval-programming-021: An API is a language model on the intended task.
+[222/500] general-eval-programming-022: A database index is a named field of column value that uniquely identifies each row in a table.
+[223/500] general-eval-programming-023: A database index is a rule that prevents a database to restrict database to restrict administrative 
+[224/500] general-eval-programming-024: Positional embedding is a vector that tells a token representation.
+[225/500] general-eval-programming-025: A database query is a named field that combines rows from a relational database to store data.
+[226/500] general-eval-programming-026: Classification is a category of examples used to choose a branch of examples used to compare inputs 
+[227/500] general-eval-programming-027: A database table is a named field that defines one task inside a table.
+[228/500] general-eval-programming-028: The maximum tokens a model can inference between one and return a token ID.
+[229/500] general-eval-programming-029: A database table is a named field that uniquely identifies each row to another table.
+[230/500] general-eval-programming-030: A B-tree index is an ordered tree structure used for database lookups and range tables.
+[231/500] general-eval-programming-031: A database index is a named collection of rows that combines rows from related to a query.
+[232/500] general-eval-programming-032: Self-attenti on runs each token combine with an objective to the same sequence.
+[233/500] general-eval-programming-033: A database query plan is the database of database columns.
+[234/500] general-eval-programming-034: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[235/500] general-eval-programming-035: A database index is a lookups that helps keep data useful, reliable, or fast to access.
+[236/500] general-eval-programming-036: An object is a value used to choose a sequence.
+[237/500] general-eval-programming-037: A database index is a named field that combines rows from related tables.
+[238/500] general-eval-programming-038: Data quality is the ability to perform a model to perform a prediction.
+[239/500] general-eval-programming-039: Denormalization is the structure used by the columns.
+[240/500] general-eval-programming-040: A token is the identifies of the token IDs or other tokens a language model can use.
+[241/500] general-eval-programming-041: A SQL is a language used to read or column in a language for the same language for the same language
+[242/500] general-eval-programming-042: A database is a named field that defines a table.
+[243/500] general-eval-programming-043: A database index is a defined way for database columns, relationships, relationships, and other obje
+[244/500] general-eval-programming-044: A database table is a named field that stores rows each row or columns for one example.
+[245/500] general-eval-programming-045: A transformer is a neural architecture that is part of how language models read prompts and produce 
+[246/500] general-eval-programming-046: A SQL is a named field that uniquely identifies each row in a table.
+[247/500] general-eval-programming-047: Positional embedding is a vector used to represent a token or incorrection.
+[248/500] general-eval-programming-048: Function is an object that expands a language model to a prediction.
+[249/500] general-eval-programming-049: A database index is a collection of column or column set of column values.
+[250/500] general-eval-programming-050: A database plan is the structure of stored information that a database to another database columns.
+[251/500] general-eval-programming-051: A SQL is a rule for relational database columns for relational database columns.
+[252/500] general-eval-programming-052: Function is a reusable block of code that can reads and return a result.
+[253/500] general-eval-programming-053: A database index is a defined way for select or values or relationships.
+[254/500] general-eval-programming-054: Positional embedding is a vector that are too simple to estimating a model to estimate the model to 
+[255/500] general-eval-programming-055: An object is a defined way for one or more usefully.
+[256/500] general-eval-programming-056: The related is a defined set of tokens a token or inference that a token sampling.
+[257/500] general-eval-programming-057: Precision is the process of using examples used to compare a query.
+[258/500] general-eval-programming-058: A token is one named field that a language model predicts a language model on held-out prompts and p
+[259/500] general-eval-programming-059: A database column set is one named field that uniquely identifies each row in a table.
+[260/500] general-eval-programming-060: A transformer is a neural network architecture that uses attention to process token sequences in par
+[261/500] general-eval-programming-061: A database is a named field that unsupervised learning.
+[262/500] general-eval-programming-062: A database index is a named field that prevents a model's ability to read prompts and make predictio
+[263/500] general-eval-programming-063: A database table is a named field of column column named field that uniquely identifies each row in 
+[264/500] general-eval-programming-064: Positional embedding is a vector used to estimate the model of a token or incorrectly.
+[265/500] general-eval-programming-065: A transformer is a neural network architecture that processes connected by hiding inputs and feed-fo
+[266/500] general-eval-programming-066: The primary key is a defined way for a language model to perform a language model to produce an inpu
+[267/500] general-eval-programming-067: A database transaction is a group of operations on one group of predicted as one unit.
+[268/500] general-eval-programming-068: ACID is a rule used for reliable database transactions.
+[269/500] general-eval-programming-069: Refactoring is improving code structure without changing behavior.
+[270/500] general-eval-programming-070: A transformer is a neural network architecture that is part of how language models read prompts and 
+[271/500] general-eval-programming-071: A database table is a named collection of column or column set that combines a table.
+[272/500] general-eval-programming-072: A token is one full of the maximum number of tokens a language model can reads or incorrect.
+[273/500] general-eval-programming-073: The primary key is a rule that a language model to change a language model to guide a language model
+[274/500] general-eval-programming-074: A database index is a named field that combines rows from related tables.
+[275/500] general-eval-programming-075: A database index is a named field that prevents a model's database to restrict database table.
+[276/500] general-eval-programming-076: A database query is a named field that combines rows from a relational database to retrieve data.
+[277/500] general-eval-programming-077: A database index is a named field of column column or column set that uniquely identifies each row i
+[278/500] general-eval-programming-078: A transformer is a neural network architecture that uses attention to process token sequences in par
+[279/500] general-eval-programming-079: A database query is a named field that unsupervised learning trains paired with target answers.
+[280/500] general-eval-programming-080: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[281/500] general-eval-programming-081: A database table is a named field that stores each row in a table.
+[282/500] general-eval-programming-082: A B-tree index is a rule for database lookups and columns.
+[283/500] general-eval-programming-083: Recall is the maximum number of examples used to choose a language model.
+[284/500] general-eval-programming-084: A database query is a named field that prevents data into training.
+[285/500] general-eval-programming-085: A database is a named field that uniquely identifies each row to another table.
+[286/500] general-eval-programming-086: A database defines data structures that defines in a table.
+[287/500] general-eval-programming-087: A neural network is a neural network architecture that connected layers sequences with attention and
+[288/500] general-eval-programming-088: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[289/500] general-eval-programming-089: A database is a named field that combines data with relational tables.
+[290/500] general-eval-programming-090: A database index is one named field that prevents a model's column or column value.
+[291/500] general-eval-programming-091: A neural network is a neural network architecture that connected layers of learned vector inputs pai
+[292/500] general-eval-programming-092: Pathlib is a group of column set of column set of column set of column set that are the same number 
+[293/500] general-eval-programming-093: A database query is a named field that prevents data from a database to read or value.
+[294/500] general-eval-programming-094: A database column is one named field that uniquely identifies each row in a table.
+[295/500] general-eval-programming-095: Self-attenti on is one record useful for building models that work beyond one example.
+[296/500] general-eval-programming-096: A context window is the maximum tokens a model can process of token sequences in the same context ma
+[297/500] general-eval-programming-097: Classification is a defined way for one program to represent a training example.
+[298/500] general-eval-programming-098: Positional embedding is a vector used to represent a token or incorrectly or inference for a languag
+[299/500] general-eval-programming-099: NER combines data to make a prediction.
+[300/500] general-eval-programming-100: Knowledge representation is the process of using software to perform a task.
+[301/500] general-eval-system_design-001: Softmax is a language used for a language model.
+[302/500] general-eval-system_design-002: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[303/500] general-eval-system_design-003: A database index is a named field that prevents a token IDs or to evaluate a query.
+[304/500] general-eval-system_design-004: General is an input signal that helps a model make a prediction.
+[305/500] general-eval-system_design-005: A SQL is a language used to read data.
+[306/500] general-eval-system_design-006: A database query plan is the database of database columns.
+[307/500] general-eval-system_design-007: A database index is a named field of column defines and data structure in a table.
+[308/500] general-eval-system_design-008: A database is a named field that prevents data into trains or table.
+[309/500] general-eval-system_design-009: A transformer is a neural architecture that is part of how language models read prompts and produce 
+[310/500] general-eval-system_design-010: The SQL is a language that a language model weights from known model.
+[311/500] general-eval-system_design-011: A database index is a named field of column or column values.
+[312/500] general-eval-system_design-012: A database index is an organized place for one column or column or column a table.
+[313/500] general-eval-system_design-013: A database query is a named field that combines rows from a table.
+[314/500] general-eval-system_design-014: A database is a named field that prevents a model's ability to perform a model's ability to perform 
+[315/500] general-eval-system_design-015: A database index is a named field of database column column or column named field that combines rows
+[316/500] general-eval-system_design-016: A database index is an organized place for storing, and data structure that are used for database lo
+[317/500] general-eval-system_design-017: The context window is the maximum tokens a model can process of token sequences in the same sequence
+[318/500] general-eval-system_design-018: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[319/500] general-eval-system_design-019: A database query plan is the database of database column defines one named columns.
+[320/500] general-eval-system_design-020: A SQL is a rule for database transaction and data into one database transaction to another database 
+[321/500] general-eval-system_design-021: An API is a defined way for one task or actions from another task.
+[322/500] general-eval-system_design-022: The maximum tokens a token sequences with token IDs.
+[323/500] general-eval-system_design-023: A database index is an organized place for storing, and retrieving, and retrieve data.
+[324/500] general-eval-system_design-024: A database is a named field that prevents a query.
+[325/500] general-eval-system_design-025: A database query plan is the database of database columns.
+[326/500] general-eval-system_design-026: A database query is a named field that combines rows from a table.
+[327/500] general-eval-system_design-027: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[328/500] general-eval-system_design-028: A database index is a named field that combines rows from inputs to change and return a relational d
+[329/500] general-eval-system_design-029: A database index is a named field that combines rows from inputs into two or values.
+[330/500] general-eval-system_design-030: ACID is a rule that prevents data into training, transform or iness.
+[331/500] general-eval-system_design-031: A database query plan is the database of database columns, relationships, and other objects.
+[332/500] general-eval-system_design-032: A database column set is one named field that prevents a language model to process a language model 
+[333/500] general-eval-system_design-033: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[334/500] general-eval-system_design-034: A database index is a named field that defines one task column to one task.
+[335/500] general-eval-system_design-035: A token is one record containing and column values.
+[336/500] general-eval-system_design-036: A database transactions connected by a database to another database structure.
+[337/500] general-eval-system_design-037: A transformer is a neural architecture that processes connected by keys connected by keys.
+[338/500] general-eval-system_design-038: A B-tree index is a full collection of column set of column set of column a ns.
+[339/500] general-eval-system_design-039: A transformer is a neural network architecture that is part of how language models read prompts and 
+[340/500] general-eval-system_design-040: A neural network is a neural network architecture that connected layers that is connected to a model
+[341/500] general-eval-system_design-041: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[342/500] general-eval-system_design-042: A database index is a named field that combines rows from related to a table.
+[343/500] general-eval-system_design-043: Docker is a named field that prevents a language model reads from a language model.
+[344/500] general-eval-system_design-044: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[345/500] general-eval-system_design-045: Fine-tuning occurs when a model repeated a trained model made an input sequence made a trained model
+[346/500] general-eval-system_design-046: A database index is a named collection of rows that combines rows from related to a table.
+[347/500] general-eval-system_design-047: ACID is a rule for the database transaction of database transactions.
+[348/500] general-eval-system_design-048: The main key is the main key key key in the column or column or column or column or column or ns.
+[349/500] general-eval-system_design-049: A database index is a named collection of column or column or column set that combines a table.
+[350/500] general-eval-system_design-050: Precision is the process of using a trained model to produce an input.
+[351/500] general-eval-system_design-051: NER is the SQL query to read or used data.
+[352/500] general-eval-system_design-052: Recall is the ability to perform tasks like a model to perform a new input.
+[353/500] general-eval-system_design-053: Generalization is an organized place for data structure that are too much faster than one example.
+[354/500] general-eval-system_design-054: A database index is a collection of column or column or column set that a table.
+[355/500] general-eval-system_design-055: A database query is a named field that unsupervised learning.
+[356/500] general-eval-system_design-056: A database index is an organized set of column column set of column in a table.
+[357/500] general-eval-system_design-057: A transformer is a neural architecture that predicts data into training, while building models that 
+[358/500] general-eval-system_design-058: A database index is a method that combines data into training, and test data.
+[359/500] general-eval-system_design-059: A database index is an organized value of column value that uniquely identifies each row in a table.
+[360/500] general-eval-system_design-060: A database query plan is the column set of column a column or ns.
+[361/500] general-eval-system_design-061: A database query plan is the structure of column defines one named database table.
+[362/500] general-eval-system_design-062: A database query plan is the structure of database columns, relationships, and other data structures
+[363/500] general-eval-system_design-063: A database query plan is the structure of database columns.
+[364/500] general-eval-system_design-064: A SQL query to query data in relational database transactions.
+[365/500] general-eval-system_design-065: A BPE clause is a rule that builds values one at a time.
+[366/500] general-eval-system_design-066: The SQL is a language model on the intended task.
+[367/500] general-eval-system_design-067: A database query is the field of rows from a query.
+[368/500] general-eval-system_design-068: A database index is a named field that stores rows one column or column to one named field inside a 
+[369/500] general-eval-system_design-069: A token is one full table for one example.
+[370/500] general-eval-system_design-070: A database index is a group of lookup to one unit.
+[371/500] general-eval-system_design-071: A database query is a named field that combines rows from a relational database to retrieve data.
+[372/500] general-eval-system_design-072: A database index is a named field that combines rows from a table.
+[373/500] general-eval-system_design-073: A database index is a named collection of column collection of column set that defines one named col
+[374/500] general-eval-system_design-074: ACID is a rule that uniquely identifies each other values in a table.
+[375/500] general-eval-system_design-075: A database query is a named database column or column set that speeds rows one named field after acc
+[376/500] general-eval-system_design-076: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[377/500] general-eval-system_design-077: A database is a named collection of column set that prevents a language model to another task.
+[378/500] general-eval-system_design-078: The model made a model made of predicts a model on held-out prompts or actions to the intended task.
+[379/500] general-eval-system_design-079: A database query plan is the structure of a database chooses to execute a query.
+[380/500] general-eval-system_design-080: ACID is a rule for reliable transactions.
+[381/500] general-eval-system_design-081: A database index is a named field that combines rows from related to a relational database to anothe
+[382/500] general-eval-system_design-082: A database query is a named field that speeds reads into tables, or table.
+[383/500] general-eval-system_design-083: A database query plan is the database of database columns.
+[384/500] general-eval-system_design-084: A transformer is a neural architecture that is part of how language models read prompts and produce 
+[385/500] general-eval-system_design-085: Underfitting is a model on held-out prompts or inference to the intended task.
+[386/500] general-eval-system_design-086: A neural network architecture that combines data with attention with attention and feed-forward laye
+[387/500] general-eval-system_design-087: A database is a named field that combines rows with tables.
+[388/500] general-eval-system_design-088: A database query is a named field that uniquely identifies in a table.
+[389/500] general-eval-system_design-089: A SQL query is a relational database that a relational database to read or columns.
+[390/500] general-eval-system_design-090: Softmax is a language used for a language model.
+[391/500] general-eval-system_design-091: A database query plan is the structure of column column column a table.
+[392/500] general-eval-system_design-092: A token is one full set of token IDs or two or two or two or two objects.
+[393/500] general-eval-system_design-093: A database is a named field that unsupervised learning.
+[394/500] general-eval-system_design-094: Inference is the process of using a trained model to produce an environment.
+[395/500] general-eval-system_design-095: A database plan is the structure of a database column or column to one another table.
+[396/500] general-eval-system_design-096: A database is a named field that prevents data into training, or manipulate data.
+[397/500] general-eval-system_design-097: A neural network is a neural network that connected layers of learned weights to inputs and behavior
+[398/500] general-eval-system_design-098: A database is a named field that combines rows from inputs or values.
+[399/500] general-eval-system_design-099: A transformer is a neural network architecture that is part of how language models read prompts and 
+[400/500] general-eval-system_design-100: A database column is one named field containing values one record column column or column value.
+[401/500] general-eval-general_knowledge-001: Overfitting choose training examples used to teach a model to teach a classifier from past cases tha
+[402/500] general-eval-general_knowledge-002: Self-attenti on runs through the same sequence.
+[403/500] general-eval-general_knowledge-003: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[404/500] general-eval-general_knowledge-004: A context window is the maximum tokens a model can process of token sequences in the model.
+[405/500] general-eval-general_knowledge-005: Regression is a model on user requests.
+[406/500] general-eval-general_knowledge-006: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[407/500] general-eval-general_knowledge-007: A neural network is a model made of learned vector that measures a model to process token outputs.
+[408/500] general-eval-general_knowledge-008: Machine learning is a model on data instead of using only fixed rules.
+[409/500] general-eval-general_knowledge-009: A database is a named field of column or column or column set that uniquely identifies each row in a
+[410/500] general-eval-general_knowledge-010: A database query plan is the structure of column a named field that prevents a table.
+[411/500] general-eval-general_knowledge-011: Recall is the process of using a trained model to produce an environment.
+[412/500] general-eval-general_knowledge-012: Generalization is a model that predicted a model on held-out inputs and outputs.
+[413/500] general-eval-general_knowledge-013: The primary key is a rule for a table.
+[414/500] general-eval-general_knowledge-014: A B-tree index is a full table scan reads and column or column set of rows that are used for a table
+[415/500] general-eval-general_knowledge-015: The maximum tokens a token sequences in the same sequence.
+[416/500] general-eval-general_knowledge-016: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[417/500] general-eval-general_knowledge-017: A transformer is a neural architecture that is part of how language models read prompts and produce 
+[418/500] general-eval-general_knowledge-018: A database index is a defined way for one task or incorrect to access.
+[419/500] general-eval-general_knowledge-019: Unsupervised learning trains a model on new inputs paired with target answers.
+[420/500] general-eval-general_knowledge-020: A model on held-out prompts and assistant answers.
+[421/500] general-eval-general_knowledge-021: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[422/500] general-eval-general_knowledge-022: A database is a rule for the database column values.
+[423/500] general-eval-general_knowledge-023: An attention is one sequence of actions from another or actions from another table.
+[424/500] general-eval-general_knowledge-024: A neural network is a model made of learned vector that measures a model to process token sequence.
+[425/500] general-eval-general_knowledge-025: Recall is the process of using a language model to produce an answer.
+[426/500] general-eval-general_knowledge-026: Precision is the process of using a trained model to produce an environment.
+[427/500] general-eval-general_knowledge-027: A token is one full of the none of the none of the none of the none of the none of the none of the n
+[428/500] general-eval-general_knowledge-028: Generator is a process that combines data with knowledge representation, and behavior.
+[429/500] general-eval-general_knowledge-029: A transformer is a neural network architecture that is part of how language models read prompts and 
+[430/500] general-eval-general_knowledge-030: The balance between the two or false, the same number that the same is too simple to the correct tha
+[431/500] general-eval-general_knowledge-031: A database index is a named collection of column or column set that combines rows one record each ro
+[432/500] general-eval-general_knowledge-032: A database query is a named collection of column collection that defines one named field and data to
+[433/500] general-eval-general_knowledge-033: A transformer is a neural architecture that is part of how language models read prompts and produce 
+[434/500] general-eval-general_knowledge-034: A database index is a rule that prevents a database to restrict administrative database.
+[435/500] general-eval-general_knowledge-035: A transformer is a neural network architecture that is useful for building models that work beyond o
+[436/500] general-eval-general_knowledge-036: A database query is a named collection of rows that combines rows from a table.
+[437/500] general-eval-general_knowledge-037: A database query is a named field that prevents data into training.
+[438/500] general-eval-general_knowledge-038: The Battle of the Battle of the Battle of the Battle of the Battle of the Battle of the Battle of Ax
+[439/500] general-eval-general_knowledge-039: A transformer is a neural network architecture that is part of how language models read prompts and 
+[440/500] general-eval-general_knowledge-040: A database index is an organized structure that helps keep data useful, reliable, or fast to access.
+[441/500] general-eval-general_knowledge-041: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[442/500] general-eval-general_knowledge-042: Multi-transacti on is the process of converting a process of using a process of using a vectors that
+[443/500] general-eval-general_knowledge-043: A transformer is a neural network architecture that is part of how language models read prompts and 
+[444/500] general-eval-general_knowledge-044: A transformer is a neural network architecture that uses attention and feed-forward layers sequences
+[445/500] general-eval-general_knowledge-045: A database query plan is the database of database columns, columns, relationships, and other data to
+[446/500] general-eval-general_knowledge-046: A database defines one named field and data to another table.
+[447/500] general-eval-general_knowledge-047: A context window is the maximum tokens a model can process at one time.
+[448/500] general-eval-general_knowledge-048: Regression is a model on unsupervised learning.
+[449/500] general-eval-general_knowledge-049: A database index is a named field that stores records stored or column values in a table.
+[450/500] general-eval-general_knowledge-050: A transformer is a neural architecture that is part of how language models read prompts and produce 
+[451/500] general-eval-general_knowledge-051: A token is one full of a token or other numeric values.
+[452/500] general-eval-general_knowledge-052: A database is a named field that speeds an ordered collection of rows from one column value.
+[453/500] general-eval-general_knowledge-053: A neural network is a neural network architecture that is connected layers of layers that is useful 
+[454/500] general-eval-general_knowledge-054: A B-tree index is an ordered tree structure used for database lookups and range scans.
+[455/500] general-eval-general_knowledge-055: A database index is a named field that combines rows from inputs from a table.
+[456/500] general-eval-general_knowledge-056: The maximum number of prediction represents a language model to follow a prediction.
+[457/500] general-eval-general_knowledge-057: The first transformer was trained model on new training data.
+[458/500] general-eval-general_knowledge-058: A neural network is a neural network architecture that connected layers layers.
+[459/500] general-eval-general_knowledge-059: A database table is a named collection of column column column column or column set that one named c
+[460/500] general-eval-general_knowledge-060: The maximum tokens a model on held-out prompts and produce answers.
+[461/500] general-eval-general_knowledge-061: A B-tree index is a rule used to choose actions from related to the database table.
+[462/500] general-eval-general_knowledge-062: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[463/500] general-eval-general_knowledge-063: A transformer is part of how language models read prompts and produce answers.
+[464/500] general-eval-general_knowledge-064: An API is a defined way for one model to change its environment.
+[465/500] general-eval-general_knowledge-065: An API is the field of general pattern's ability to perform a model to perform a new input.
+[466/500] general-eval-general_knowledge-066: A database index is a named field of rows that combines rows from related to a query.
+[467/500] general-eval-general_knowledge-067: Nositional language model combines data into token IDs and token IDs or other token IDs.
+[468/500] general-eval-general_knowledge-068: A database column is one named field that uniquely identifies each row in a table.
+[469/500] general-eval-general_knowledge-069: A context window is the maximum number of tokens a model can process by numeric identifier from one 
+[470/500] general-eval-general_knowledge-070: A context window is the maximum number of tokens a model can process by numeric identifier from a mo
+[471/500] general-eval-general_knowledge-071: A database query plan is the column column column a table.
+[472/500] general-eval-general_knowledge-072: A context window is the maximum tokens a model can process of using one prediction.
+[473/500] general-eval-general_knowledge-073: A full of asks a token or other token or other pretrain a language model.
+[474/500] general-eval-general_knowledge-074: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[475/500] general-eval-general_knowledge-075: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[476/500] general-eval-general_knowledge-076: A transformer is a neural network architecture that is attention and feed-forward layers joined by r
+[477/500] general-eval-general_knowledge-077: A database plan is the database of database rules that data stored as one record containing values o
+[478/500] general-eval-general_knowledge-078: A context window is the maximum tokens a model can process of using a model.
+[479/500] general-eval-general_knowledge-079: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[480/500] general-eval-general_knowledge-080: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[481/500] general-eval-general_knowledge-081: A token is an object that is a language model on a token or incorrect.
+[482/500] general-eval-general_knowledge-082: An API is a defined way for one program to request data or values for a model.
+[483/500] general-eval-general_knowledge-083: Function is the process of reusable block of the reusable block of a reusable block of the reusable 
+[484/500] general-eval-general_knowledge-084: A database is a defined way for one program to perform a query.
+[485/500] general-eval-general_knowledge-085: ACID prediction predicted a model to guide a training data.
+[486/500] general-eval-general_knowledge-086: A database query is a named field that prevents data useful, reliable, or fast to access.
+[487/500] general-eval-general_knowledge-087: Generalization is the process of using a trained model to produce an environment.
+[488/500] general-eval-general_knowledge-088: An API is a rule for building models that work beyond one example.
+[489/500] general-eval-general_knowledge-089: The token is the token sequences that token IDs or token IDs.
+[490/500] general-eval-general_knowledge-090: A database column defines one named field and data structures in a table.
+[491/500] general-eval-general_knowledge-091: A token is one task for a token or other tokens.
+[492/500] general-eval-general_knowledge-092: A database query is a named collection of rows that are not used to read or categories.
+[493/500] general-eval-general_knowledge-093: A neural network is a neural network architecture that is connected layers that is useful for buildi
+[494/500] general-eval-general_knowledge-094: A transformer is a neural architecture that token sequences with attention and feed-forward layers.
+[495/500] general-eval-general_knowledge-095: A token is one full of the most popular language model.
+[496/500] general-eval-general_knowledge-096: Classification is a model made of inputs paired with target answers.
+[497/500] general-eval-general_knowledge-097: A database table is a named field that stores rows one named field to another table.
+[498/500] general-eval-general_knowledge-098: A database query is a named field that combines rows from related tables.
+[499/500] general-eval-general_knowledge-099: A database column set is one named field that uniquely identifies each row in a table.
+[500/500] general-eval-general_knowledge-100: A transformer is a neural network architecture that is part of how language models read prompts and 
+Keyword overlap:      2.2%
+Answer correctness:   0.6%
+Response quality:     12.8%
+Hallucination rate:   64.2%
+JSON results: reports/archive/run_general_tri_20260621T100703Z/general_teacher_latest.json
+Markdown report: reports/archive/run_general_tri_20260621T100703Z/general_teacher_latest.md

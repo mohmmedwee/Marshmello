@@ -1,0 +1,23 @@
+{
+  "output": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher_transformers_routing.jsonl",
+  "total": 40,
+  "domain": "transformers_llms",
+  "word_count_min": 13,
+  "word_count_max": 22,
+  "word_count_mean": 16.3,
+  "by_concept": {
+    "transformer": 4,
+    "attention": 4,
+    "self_attention": 3,
+    "multi_head_attention": 3,
+    "positional_encoding": 3,
+    "tokenizer": 3,
+    "tokenization": 4,
+    "bpe": 4,
+    "vocabulary": 3,
+    "context_window": 3,
+    "causal_mask": 3,
+    "attention_head": 3
+  },
+  "comparison_count": 15
+}

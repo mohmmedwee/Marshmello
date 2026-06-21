@@ -1,0 +1,366 @@
+=== Teacher 800 from weak boost data ===
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.539874
+  first embedding norm after:   0.550145
+  first embedding norm delta:   +0.010272
+Loading SFT data: 18E_tiny_teacher_sft/data/teacher_extended_short.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    decoded:  <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Compare bias-variance tradeoff with generalization. <ASSISTANT> The bias-variance tradeoff describes the balance between models that are too simple and models that are too sensitive to training data. <END>
+    decoded:  <USER> Compare bias-variance tradeoff with generalization. <ASSISTANT> The bias-variance tradeoff describes the balance between models that are too simple and models that are too sensitive to training data. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> Compare classification with regression. <ASSISTANT> Classification is a task where a model assigns an input to one of a set of discrete categories. <END>
+    decoded:  <USER> Compare classification with regression. <ASSISTANT> Classification is a task where a model assigns an input to one of a set of discrete categories. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            teacher
+Device:          mps
+Base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Base step:       9000
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18E_tiny_teacher_sft/data/teacher_extended_short.jsonl
+Train examples:  1,305
+Val examples:    69
+Learning rate:   5.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+
+Existing teacher best val loss: 0.3416
+Existing teacher best keyword score: 1.0000
+step     1 | train loss 4.1235 | 2,580 tok/s
+step    10 | train loss 4.1174 | 19,192 tok/s
+step    20 | train loss 3.3694 | 18,951 tok/s
+step    30 | train loss 3.5236 | 19,110 tok/s
+step    40 | train loss 2.6980 | 19,070 tok/s
+step    50 | train loss 3.7466 | 19,085 tok/s
+step    60 | train loss 3.7590 | 19,005 tok/s
+step    70 | train loss 3.4638 | 18,994 tok/s
+step    80 | train loss 2.9167 | 18,731 tok/s
+step    90 | train loss 4.3930 | 18,922 tok/s
+step   100 | train loss 3.5299 | 19,040 tok/s
+  running eval...
+  eval step 100 | train loss 2.7528 | val loss 3.4930 | best val 0.3416 | avg 16,981 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Classification is predicting a category for an input.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a token sequences that tells generation to stop.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that helps find rows faster.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+    exact_start_match: False
+    keyword_overlap:   0/12 (0.00) []
+    repeated_3gram:    False
+  teacher keyword score: 0.2500
+step   110 | train loss 3.4024 | 19,211 tok/s
+step   120 | train loss 2.8779 | 19,142 tok/s
+step   130 | train loss 2.7278 | 19,141 tok/s
+step   140 | train loss 2.8850 | 19,143 tok/s
+step   150 | train loss 3.2308 | 19,156 tok/s
+step   160 | train loss 2.8316 | 19,035 tok/s
+step   170 | train loss 2.9643 | 19,084 tok/s
+step   180 | train loss 4.1110 | 19,134 tok/s
+step   190 | train loss 1.7820 | 19,132 tok/s
+step   200 | train loss 3.5482 | 18,950 tok/s
+  running eval...
+  eval step 200 | train loss 2.7986 | val loss 2.7751 | best val 0.3416 | avg 15,513 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Classification is assigning an inputs or categories to one example.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a token or token.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'help', 'index', 'lookup', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token from previous tokens.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.4062
+step   210 | train loss 3.0150 | 19,149 tok/s
+step   220 | train loss 3.1731 | 19,123 tok/s
+step   230 | train loss 3.3883 | 19,181 tok/s
+step   240 | train loss 2.6675 | 19,136 tok/s
+step   250 | train loss 2.8803 | 19,198 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   260 | train loss 2.7489 | 18,984 tok/s
+step   270 | train loss 3.1634 | 18,997 tok/s
+step   280 | train loss 2.7342 | 19,048 tok/s
+step   290 | train loss 2.8022 | 18,862 tok/s
+step   300 | train loss 2.7843 | 18,695 tok/s
+  running eval...
+  eval step 300 | train loss 2.3462 | val loss 2.4305 | best val 0.3416 | avg 15,468 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is the model weights from a training or tune.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a token or column that tells generation to stop.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'help', 'index', 'lookup', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token from previous tokens.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.4062
+step   310 | train loss 1.8639 | 19,087 tok/s
+step   320 | train loss 2.6973 | 18,910 tok/s
+step   330 | train loss 2.1730 | 19,124 tok/s
+step   340 | train loss 2.0661 | 19,231 tok/s
+step   350 | train loss 2.1713 | 19,241 tok/s
+step   360 | train loss 3.0376 | 18,994 tok/s
+step   370 | train loss 1.2772 | 19,127 tok/s
+step   380 | train loss 2.1926 | 19,073 tok/s
+step   390 | train loss 1.7593 | 18,951 tok/s
+step   400 | train loss 2.0582 | 18,869 tok/s
+  running eval...
+  eval step 400 | train loss 1.8610 | val loss 2.7125 | best val 0.3416 | avg 15,691 tok/s
+  generation eval step 400:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is the training a model on broad text before task-specific tuning.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a small assistant trained to answer example.
+    exact_start_match: False
+    keyword_overlap:   4/7 (0.57) ['answer', 'assistant', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'help', 'index', 'lookup', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token from previous tokens.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.5491
+step   410 | train loss 3.2097 | 19,222 tok/s
+step   420 | train loss 2.0571 | 19,104 tok/s
+step   430 | train loss 2.7384 | 19,049 tok/s
+step   440 | train loss 1.9900 | 18,850 tok/s
+step   450 | train loss 1.5886 | 18,994 tok/s
+step   460 | train loss 1.8214 | 18,967 tok/s
+step   470 | train loss 2.2651 | 18,933 tok/s
+step   480 | train loss 1.0261 | 19,197 tok/s
+step   490 | train loss 2.5295 | 18,763 tok/s
+step   500 | train loss 1.4600 | 19,093 tok/s
+  running eval...
+  eval step 500 | train loss 1.5069 | val loss 2.3392 | best val 0.3416 | avg 15,819 tok/s
+  generation eval step 500:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is the ability to read prompts or data.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is software that turns and practical.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is an organized lookup structure that speeds rows but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Unsupervised learning is finding structure in data to guide a category of inputs or value.
+    exact_start_match: False
+    keyword_overlap:   0/12 (0.00) []
+    repeated_3gram:    False
+  teacher keyword score: 0.1562
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   510 | train loss 1.9669 | 18,831 tok/s
+step   520 | train loss 2.0119 | 18,852 tok/s
+step   530 | train loss 2.0866 | 19,145 tok/s
+step   540 | train loss 1.8417 | 19,093 tok/s
+step   550 | train loss 1.6967 | 19,100 tok/s
+step   560 | train loss 2.2368 | 19,077 tok/s
+step   570 | train loss 1.4058 | 19,128 tok/s
+step   580 | train loss 1.9333 | 18,894 tok/s
+step   590 | train loss 1.5570 | 18,463 tok/s
+step   600 | train loss 1.3643 | 19,081 tok/s
+  running eval...
+  eval step 600 | train loss 1.2663 | val loss 1.4739 | best val 0.3416 | avg 15,776 tok/s
+  generation eval step 600:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Classification is a category for an input. It helps the system answer or act more usefully.
+    exact_start_match: False
+    keyword_overlap:   1/8 (0.12) ['help']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a small assistant answer.
+    exact_start_match: False
+    keyword_overlap:   3/7 (0.43) ['answer', 'assistant', 'small']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is an organized lookup structure that speeds rows but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token from previous tokens.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.5446
+step   610 | train loss 1.3952 | 18,908 tok/s
+step   620 | train loss 1.6829 | 19,012 tok/s
+step   630 | train loss 1.4032 | 19,072 tok/s
+step   640 | train loss 2.1152 | 18,998 tok/s
+step   650 | train loss 1.8850 | 18,975 tok/s
+step   660 | train loss 1.6782 | 18,749 tok/s
+step   670 | train loss 1.8130 | 18,846 tok/s
+step   680 | train loss 1.1533 | 18,903 tok/s
+step   690 | train loss 1.4333 | 19,032 tok/s
+step   700 | train loss 1.4428 | 19,030 tok/s
+  running eval...
+  eval step 700 | train loss 1.0627 | val loss 1.5007 | best val 0.3416 | avg 15,850 tok/s
+  generation eval step 700:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is the process of using software to change and operate.
+    exact_start_match: False
+    keyword_overlap:   1/8 (0.12) ['software']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A database query is the column set of rows that a table.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that speeds rows but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.4375
+step   710 | train loss 1.3289 | 19,001 tok/s
+step   720 | train loss 1.9275 | 19,092 tok/s
+step   730 | train loss 1.6691 | 19,028 tok/s
+step   740 | train loss 1.7499 | 18,807 tok/s
+step   750 | train loss 1.3907 | 18,920 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   760 | train loss 1.3581 | 19,005 tok/s
+step   770 | train loss 1.4233 | 19,014 tok/s
+step   780 | train loss 1.2567 | 18,848 tok/s
+step   790 | train loss 1.0287 | 18,828 tok/s
+step   800 | train loss 1.1997 | 18,940 tok/s
+  running eval...
+  eval step 800 | train loss 0.9440 | val loss 1.2744 | best val 0.3416 | avg 15,804 tok/s
+  generation eval step 800:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Classification is a model on held-out examples used to guide a category from input.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: A transformer is a neural network architecture that processes sequences with attention and feed-forward layers.
+    exact_start_match: False
+    keyword_overlap:   0/7 (0.00) []
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster.
+    Generated: A database index is a lookup structure that speeds rows but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   5/8 (0.62) ['database', 'index', 'lookup', 'row', 'structure']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.4062
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt

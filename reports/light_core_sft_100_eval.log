@@ -1,0 +1,109 @@
+Validated 1200 SFT examples and 100 held-out questions
+[001/100] core-eval-001: Artificial intelligence is the ability to perform tasks that perception, learning, or sensitive beha
+[002/100] core-eval-002: Machine learning trains models on data instead of using behavior and produce inputs to behavior data
+[003/100] core-eval-003: Unsupervised learning trains a model on data so they can make predictions or decisions on new inputs
+[004/100] core-eval-004: Unsupervised learning trains a model from inputs paired with target answers.
+[005/100] core-eval-005: Reinforcement learning trains to choose actions from rewards to make decisions on interaction to mak
+[006/100] core-eval-006: A neural network is a neural network architecture that connected layers connected layers layers.
+[007/100] core-eval-007: Precision is the process of converting a sequence of token sequences that a model can encode.
+[008/100] core-eval-008: A database index is a named field of database columns, columns, and other objects.
+[009/100] core-eval-009: A database index is a column set of column set of column set of column a table.
+[010/100] core-eval-010: Inference is using a trained model to produce an answer.
+[011/100] core-eval-011: A database rules is a named field of rules that unreliable system behavior.
+[012/100] core-eval-012: A context window is the maximum number of tokens a model can process by numeric identifiers.
+[013/100] core-eval-013: Underfitting occurs when a model fits training examples used by using training examples that were ac
+[014/100] core-eval-014: A neural network is a set of connected layers that is connected by a set of inputs that can process 
+[015/100] core-eval-015: A database index is one record containing values or other column a table.
+[016/100] core-eval-016: A database index is a column that prevents a query.
+[017/100] core-eval-017: Gradient descent is a method that updates weights to reduce loss.
+[018/100] core-eval-018: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[019/100] core-eval-019: Precision is the process of converts a sequence of token sequences or iness.
+[020/100] core-eval-020: A database transactions connected by a group of values that a query.
+[021/100] core-eval-021: A transformer is a neural architecture that processes sequences with attention and feed-forward laye
+[022/100] core-eval-022: Knowledge representation is storing facts so software can use them while answering questions.
+[023/100] core-eval-023: Artificial intelligence is the field of reasoning or pattern that perform tasks requiring reasoning,
+[024/100] core-eval-024: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[025/100] core-eval-025: Underfitting a model predicts a model on held-out prompts or decisions that guide a training example
+[026/100] core-eval-026: Unsupervised learning trains a model on data that has been used to predict patterns or inforcement l
+[027/100] core-eval-027: Unsupervised learning is learning trains patterns from data that can make predictions or decisions o
+[028/100] core-eval-028: A database is a neural network architecture that combines data in parameterized inputs into inputs a
+[029/100] core-eval-029: A database is a collection of column or column or column set that uniquely identifies each row in a 
+[030/100] core-eval-030: A context window is the maximum number of tokens a model can process of token sequences in parallel.
+[031/100] core-eval-031: Precision is the process of converting a model to estimate a trained model to estimate that predicti
+[032/100] core-eval-032: A database query is a database that combines data in relational database transactions.
+[033/100] core-eval-033: A database index is a named field of rows one named field that prevents a language model to follow a
+[034/100] core-eval-034: Regression is a number of examples used to fit a language model parameters.
+[035/100] core-eval-035: Overfitting occurs when a model fits training examples that improves its training data.
+[036/100] core-eval-036: A transformer is a neural network architecture that processes sequences with attention and feed-forw
+[037/100] core-eval-037: Positional embedding is a vector that represent a token representation.
+[038/100] core-eval-038: A database index is a rule that prevents a database to restrict database to restrict administrative 
+[039/100] core-eval-039: A database index is an organized place for storing, and other data structures that combines rows wit
+[040/100] core-eval-040: Model calibration is the target chooses a trained model to produce an answer.
+[041/100] core-eval-041: A database index is a named field of column set of column set of column set of column set of column 
+[042/100] core-eval-042: Fine-tuning combines a model combines data with supervised learning.
+[043/100] core-eval-043: A database index is a column set of column column column set that uniquely identifies each row in a 
+[044/100] core-eval-044: A transformer is the process of token ID-token IDs and token IDs that token IDs each token IDs each 
+[045/100] core-eval-045: A transformer is a neural network architecture that uses attention with attention and feed-forward l
+[046/100] core-eval-046: A transformer is a token representation.
+[047/100] core-eval-047: A database index is a named field of column set of column set of column set of column set of column 
+[048/100] core-eval-048: Self-attenti on runs through the same sequence.
+[049/100] core-eval-049: A database rules are connected by a table, column values that uniquely identifies each row in a tabl
+[050/100] core-eval-050: Multi-learned vector that represent each token combines each token combines the input sequence.
+[051/100] core-eval-051: A database index is a named field that defines into two or incorrect inputs in a table.
+[052/100] core-eval-052: A database index is a rule that prevents a database to restrict administrative settings.
+[053/100] core-eval-053: A database index is a named field of lookup structure that combines rows from known tables.
+[054/100] core-eval-054: A database index is a group of examples used to perform a branch of training data.
+[055/100] core-eval-055: A database transaction is a group of database transaction that uniquely identifies each other values
+[056/100] core-eval-056: Lositional embedding is unsupervised learning.
+[057/100] core-eval-057: A database rules for building models that work beyond one example.
+[058/100] core-eval-058: A transformer is a token or rule that prevents a language model to guide a language model to guide a
+[059/100] core-eval-059: Training data is the examples used to fit a model's ability to fit a model's ability to fit a model'
+[060/100] core-eval-060: Fine-tuning combines data separate examples used to compare several categories.
+[061/100] core-eval-061: A database is a database that stores records as a database to retrieve data to retrieve data.
+[062/100] core-eval-062: Positional embedding is a vector that tells token appears.
+[063/100] core-eval-063: A database is a neural network architecture that is connected layers that connected layers that is c
+[064/100] core-eval-064: A database index is one record containing values for the column value.
+[065/100] core-eval-065: A database is a named field that defines a trained to the database to execute a relational database 
+[066/100] core-eval-066: A transformer is a neural network architecture that uses attention to process token sequences in par
+[067/100] core-eval-067: A database index is a named field that prevents data into column values that a table.
+[068/100] core-eval-068: Positional embedding is a vector that tells a token representations or incorrect.
+[069/100] core-eval-069: A transformer is a neural network architecture that is connected layers that is connected by using i
+[070/100] core-eval-070: Multi-tool combines rows with one columns.
+[071/100] core-eval-071: A database index is a set of column set of column column set of column set of column a table.
+[072/100] core-eval-072: A database table is a named field of column or column set of rows that uniquely identifies each row 
+[073/100] core-eval-073: A database index is a named field of column column set of column set that uniquely identifies each r
+[074/100] core-eval-074: A context window is the maximum tokens a model can process of using one time.
+[075/100] core-eval-075: A database index is an organized tool that combines rows with columns, and other related data.
+[076/100] core-eval-076: A database index is one named field that prevents a query.
+[077/100] core-eval-077: A database index is a named field of column set of column column set of column set of column set of 
+[078/100] core-eval-078: A database index is a column set of column set that uniquely identifies each row in a table.
+[079/100] core-eval-079: A database is a database that stores records as a database to retrieve data to another database tran
+[080/100] core-eval-080: Gradient descent is a method that updates a method to represent a training data.
+[081/100] core-eval-081: A database index is a lookup structure that combines rows with relational tables.
+[082/100] core-eval-082: A table scan reads each row is a table of the column of a query.
+[083/100] core-eval-083: A database index is a set of column column set of column set of column a table.
+[084/100] core-eval-084: A database table is a named field of column or column set of rows that uniquely identifies each row 
+[085/100] core-eval-085: ACID is a rule used for reliable transform objective database transform objects.
+[086/100] core-eval-086: Gradient descent is the process of general patterns, and combines data to make decisions on the desi
+[087/100] core-eval-087: A database rules is one record containing values or columns.
+[088/100] core-eval-088: A database index is an organized place for storing, and retrieve data.
+[089/100] core-eval-089: A database index is a column set of column set of column set of column set of column set of column a
+[090/100] core-eval-090: A database table is a named field that stores rows each row in a table.
+[091/100] core-eval-091: A database rules are used to reads and reliable context.
+[092/100] core-eval-092: Positional embedding predicted by a vector or inforcement learning.
+[093/100] core-eval-093: A database index is an organized database columns, columns, and other related data.
+[094/100] core-eval-094: A database index is a named field that prevents data into training, and reliable database transactio
+[095/100] core-eval-095: A database index is a named field that combines rows from a table.
+[096/100] core-eval-096: A database table is a named field of column or column set of column set that uniquely identifies eac
+[097/100] core-eval-097: A database index is a named field of database column column set that combines rows each row in a tab
+[098/100] core-eval-098: Positional embedding is a vector that unsupervised learning.
+[099/100] core-eval-099: A database rules that data useful, reliable, or fast to access.
+[100/100] core-eval-100: A database index is a column defines and other column values one column a table.
+Concept accuracy:     31.0%
+Routing accuracy:     16.0%
+Exact answer overlap: 0.0%
+Keyword overlap:      11.0%
+Hallucination rate:   79.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18J_marshmello_core_sft/data/reports/marshmello_core_eval_results.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18J_marshmello_core_sft/data/reports/marshmello_core_eval_report.md

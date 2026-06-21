@@ -1,0 +1,195 @@
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18I_routing_teacher_fix/checkpoints/routing_latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.546024
+  first embedding norm after:   0.550384
+  first embedding norm delta:   +0.004360
+Loading SFT data: 18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    decoded:  <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    decoded:  <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    decoded:  <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            train
+Device:          mps
+Base checkpoint: 18I_routing_teacher_fix/checkpoints/routing_latest.pt
+Base step:       300
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Train examples:  1,140
+Val examples:    60
+Learning rate:   1.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+step     1 | train loss 3.7312 | 3,319 tok/s
+step    10 | train loss 4.9496 | 19,141 tok/s
+step    20 | train loss 4.7217 | 19,231 tok/s
+step    30 | train loss 4.2666 | 19,120 tok/s
+step    40 | train loss 4.7583 | 19,148 tok/s
+step    50 | train loss 5.2638 | 18,945 tok/s
+step    60 | train loss 4.5703 | 19,171 tok/s
+step    70 | train loss 4.7402 | 19,241 tok/s
+step    80 | train loss 4.4473 | 18,464 tok/s
+step    90 | train loss 3.8069 | 19,158 tok/s
+step   100 | train loss 4.3988 | 19,146 tok/s
+  running eval...
+  eval step 100 | train loss 4.2896 | val loss 4.2286 | best val 4.2286 | avg 17,273 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   110 | train loss 3.9316 | 19,370 tok/s
+step   120 | train loss 4.5101 | 18,889 tok/s
+step   130 | train loss 4.6732 | 19,240 tok/s
+step   140 | train loss 4.3221 | 19,235 tok/s
+step   150 | train loss 4.2308 | 19,244 tok/s
+step   160 | train loss 4.1054 | 19,455 tok/s
+step   170 | train loss 4.3084 | 19,159 tok/s
+step   180 | train loss 4.3841 | 18,993 tok/s
+step   190 | train loss 4.6129 | 18,659 tok/s
+step   200 | train loss 4.4353 | 18,558 tok/s
+  running eval...
+  eval step 200 | train loss 4.2867 | val loss 4.1473 | best val 4.1473 | avg 16,395 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   210 | train loss 4.3075 | 18,856 tok/s
+step   220 | train loss 4.2994 | 18,817 tok/s
+step   230 | train loss 4.1601 | 18,708 tok/s
+step   240 | train loss 4.4050 | 18,808 tok/s
+step   250 | train loss 3.9457 | 18,713 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+step   260 | train loss 4.3402 | 19,007 tok/s
+step   270 | train loss 4.7619 | 18,811 tok/s
+step   280 | train loss 4.6957 | 18,652 tok/s
+step   290 | train loss 4.7044 | 18,642 tok/s
+step   300 | train loss 4.0956 | 18,673 tok/s
+  running eval...
+  eval step 300 | train loss 4.1755 | val loss 3.9456 | best val 3.9456 | avg 16,247 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   310 | train loss 3.8756 | 18,775 tok/s
+step   320 | train loss 3.9767 | 18,533 tok/s
+step   330 | train loss 4.4575 | 18,740 tok/s
+step   340 | train loss 4.2834 | 18,785 tok/s
+step   350 | train loss 4.5181 | 18,758 tok/s
+step   360 | train loss 4.2655 | 18,660 tok/s
+step   370 | train loss 4.3180 | 18,974 tok/s
+step   380 | train loss 4.0499 | 18,823 tok/s
+step   390 | train loss 4.3749 | 18,662 tok/s
+step   400 | train loss 3.2692 | 18,997 tok/s
+  running eval...
+  eval step 400 | train loss 4.0555 | val loss 3.7471 | best val 3.7471 | avg 16,466 tok/s
+  generation eval step 400:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   410 | train loss 4.1786 | 19,158 tok/s
+step   420 | train loss 4.1265 | 19,335 tok/s
+step   430 | train loss 4.0253 | 18,835 tok/s
+step   440 | train loss 3.9832 | 18,904 tok/s
+step   450 | train loss 4.6855 | 18,276 tok/s
+step   460 | train loss 4.5770 | 18,881 tok/s
+step   470 | train loss 3.6613 | 18,926 tok/s
+step   480 | train loss 4.3438 | 18,751 tok/s
+step   490 | train loss 3.4690 | 18,860 tok/s
+step   500 | train loss 4.4899 | 18,835 tok/s
+  running eval...
+  eval step 500 | train loss 3.9579 | val loss 3.8330 | best val 3.7471 | avg 16,620 tok/s
+  generation eval step 500:
+    Q: What is AI?
+    A: Artificial intelligence is the field of computers solve tasks that need reasoning or pattern use.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+step   510 | train loss 3.9433 | 19,175 tok/s
+step   520 | train loss 4.4314 | 19,315 tok/s
+step   530 | train loss 3.9111 | 19,283 tok/s
+step   540 | train loss 4.7991 | 19,198 tok/s
+step   550 | train loss 3.8622 | 19,207 tok/s
+step   560 | train loss 3.7411 | 19,258 tok/s
+step   570 | train loss 4.0763 | 19,286 tok/s
+step   580 | train loss 3.6849 | 19,333 tok/s
+step   590 | train loss 4.1180 | 18,928 tok/s
+step   600 | train loss 3.6901 | 18,931 tok/s
+  running eval...
+  eval step 600 | train loss 3.7392 | val loss 3.9095 | best val 3.7471 | avg 16,568 tok/s
+  generation eval step 600:
+    Q: What is AI?
+    A: Artificial intelligence is the field of computers solve tasks that need reasoning, and make decisions based on human language.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   610 | train loss 4.2910 | 19,471 tok/s
+step   620 | train loss 4.3878 | 18,978 tok/s
+step   630 | train loss 4.2408 | 19,304 tok/s
+step   640 | train loss 3.8287 | 18,832 tok/s
+step   650 | train loss 4.2731 | 18,928 tok/s
+step   660 | train loss 3.7228 | 19,007 tok/s
+step   670 | train loss 3.6430 | 19,086 tok/s
+step   680 | train loss 4.4551 | 18,752 tok/s
+step   690 | train loss 4.7682 | 18,697 tok/s
+step   700 | train loss 4.4197 | 18,857 tok/s
+  running eval...
+  eval step 700 | train loss 3.6307 | val loss 3.6485 | best val 3.6485 | avg 16,610 tok/s
+  generation eval step 700:
+    Q: What is AI?
+    A: Artificial intelligence is the field of computers solve tasks that need reasoning, or pattern use.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   710 | train loss 3.9660 | 19,149 tok/s
+step   720 | train loss 4.8481 | 18,258 tok/s
+step   730 | train loss 4.3247 | 18,944 tok/s
+step   740 | train loss 3.9200 | 18,195 tok/s
+step   750 | train loss 3.7770 | 17,901 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+step   760 | train loss 3.8998 | 19,254 tok/s
+step   770 | train loss 3.4581 | 19,187 tok/s
+step   780 | train loss 3.9056 | 19,007 tok/s
+step   790 | train loss 3.3817 | 18,969 tok/s
+step   800 | train loss 4.0595 | 18,404 tok/s
+  running eval...
+  eval step 800 | train loss 3.4660 | val loss 3.4667 | best val 3.4667 | avg 16,527 tok/s
+  generation eval step 800:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning, or pattern use.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt

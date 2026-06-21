@@ -996,9 +996,11 @@ def train(args: argparse.Namespace) -> None:
     else:
         train_examples, val_examples = split_examples(examples, val_ratio=0.05)
 
-    first_token_weight = (
-        ROUTING_FIRST_TOKEN_WEIGHT if args.mode == "routing" else DEFAULT_FIRST_TOKEN_WEIGHT
-    )
+    first_token_weight = args.first_token_weight
+    if first_token_weight is None:
+        first_token_weight = (
+            ROUTING_FIRST_TOKEN_WEIGHT if args.mode == "routing" else DEFAULT_FIRST_TOKEN_WEIGHT
+        )
     print("Encoding SFT datasets...", flush=True)
     train_set = SFTDataset(
         example_texts(train_examples), bpe, cfg.block_size, first_token_weight=first_token_weight
@@ -1270,6 +1272,15 @@ def main() -> None:
         type=float,
         default=None,
         help="Learning rate (default: 1e-5 train/overfit, 2e-6 curated, 5e-6 teacher)",
+    )
+    parser.add_argument(
+        "--first-token-weight",
+        type=float,
+        default=None,
+        help=(
+            "Loss weight on the first assistant answer token (default: 30 routing, 8 otherwise). "
+            "Use 30 for core SFT from a routing checkpoint to preserve routing."
+        ),
     )
     parser.add_argument(
         "--freeze-backbone",

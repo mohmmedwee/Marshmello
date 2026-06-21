@@ -19,6 +19,7 @@ This repository is both a **hands-on transformer course** (Phases 01–18) and t
 - [Learning path](#learning-path)
 - [Architecture](#architecture)
 - [SFT training modes](#sft-training-modes-phase-18b)
+- [Dual benchmarks: 18J + 18K](#dual-benchmarks-18j--18k)
 - [Project layout](#project-layout)
 - [Full training pipeline](#full-training-pipeline)
 - [How the pieces connect](#how-the-pieces-connect)
@@ -39,7 +40,9 @@ Two decoder-only GPT checkpoints trained in this repo. **Weights are not stored 
 
 **Marshmello-45M (latest base)** was pretrained on a ~1M-word local corpus (Phase 18A) covering AI/ML, databases, software engineering, cybersecurity, and Python APIs.
 
-The training stack also includes later phases for chat-format adaptation (18C), tokenizer v2 (18D), tiny-teacher SFT (18E), and full instruct tuning (18B).
+The training stack also includes later phases for chat-format adaptation (18C), tokenizer v2 (18D), tiny-teacher SFT (18E), instruct tuning (18B), core routing eval (18J), and general assistant benchmark (18K).
+
+**Deploy checkpoint (local, not on Hub):** `18B_marshmello_instruct/checkpoints/best_18j_routing.pt` — best ~18% **18J** core routing after teacher SFT.
 
 Both published Hub models use the custom PyTorch GPT in this repo — not `transformers` AutoModel.
 
@@ -80,10 +83,13 @@ python 13_gpt_pretraining/generate.py \
 
 ### 4. Chat with an instruct checkpoint (Phase 18B)
 
-After SFT (see [Recommended path](#recommended-path-to-an-instruct-model)):
+After teacher SFT (see [Recommended path](#recommended-path-to-an-instruct-model)):
 
 ```bash
-python 18B_marshmello_instruct/chat.py --prompt "Explain database indexes"
+python 18B_marshmello_instruct/chat.py \
+  --checkpoint 18B_marshmello_instruct/checkpoints/best_18j_routing.pt \
+  --prompt "Explain database indexes" \
+  --greedy
 ```
 
 ### 5. Start from lesson 1 (no GPU required)
@@ -105,9 +111,11 @@ The later phases build on each other. This is the order that works best in pract
   ↓
 18C  continued pretraining on raw text + chat boundaries (not SFT)
   ↓
-18E  tiny teacher SFT (short direct answers, ~250 examples)
+18E  tiny teacher SFT (short direct answers, ~1590 examples incl. math)
   ↓
-18B  curated or full SFT (prompt-following on assistant tokens)
+18B  curated or full SFT (optional — broad SFT regressed on 45M)
+  ↓
+18J  core routing benchmark  |  18K  general assistant benchmark
 ```
 
 | Step | Phase | What it teaches |
@@ -115,8 +123,10 @@ The later phases build on each other. This is the order that works best in pract
 | 1 | [18A](18A_large_pretraining_corpus/) | ~1M-word technical corpus |
 | 2 | [13](13_gpt_pretraining/) | Causal LM on raw paragraphs |
 | 3 | [18C](18C_base_chat_adaptation/) | `<USER>` / `<ASSISTANT>` / `<END>` as text boundaries |
-| 4 | [18E](18E_tiny_teacher_sft/) | Short, on-topic answers before broad SFT |
+| 4 | [18E](18E_tiny_teacher_sft/) | Short, on-topic answers (+ math basics) before broad SFT |
 | 5 | [18B](18B_marshmello_instruct/) | Masked SFT on assistant responses |
+| 6 | [18J](18J_marshmello_core_sft/) | Core concept **routing** eval (AI, transformers, databases) |
+| 7 | [18K](18K_general_benchmark/) | General assistant QA eval (500 held-out, 5 buckets) |
 
 **Optional:** [18D](18D_tokenizer_v2/) trains `tokenizer_v2.json` with punctuation and chat markers. It changes vocab size and token IDs — **old checkpoints are incompatible** until you re-pretrain the base model with the new tokenizer.
 
@@ -168,8 +178,10 @@ Each phase folder is a self-contained lesson. Read the code top to bottom — co
 | [18B_marshmello_instruct](18B_marshmello_instruct/) | SFT + chat CLI + eval | PyTorch |
 | [18C_base_chat_adaptation](18C_base_chat_adaptation/) | Continued base pretraining on raw + chat text | PyTorch |
 | [18D_tokenizer_v2](18D_tokenizer_v2/) | BPE v2 with punctuation + chat markers | Pure Python |
-| [18E_tiny_teacher_sft](18E_tiny_teacher_sft/) | Tiny direct-answer teacher dataset + eval | Pure Python |
+| [18E_tiny_teacher_sft](18E_tiny_teacher_sft/) | Tiny teacher dataset builders + math + eval | Pure Python |
 | [18G_checkpoint_and_corpus_expansion](18G_checkpoint_and_corpus_expansion/) | Compare checkpoints; build expanded mixed corpus | Pure Python |
+| [18J_marshmello_core_sft](18J_marshmello_core_sft/) | Core SFT data + **routing** benchmark (100 held-out) | PyTorch |
+| [18K_general_benchmark](18K_general_benchmark/) | General assistant benchmark (500 held-out) | PyTorch |
 
 Work through the folders in order. Each phase reuses ideas from the previous one.
 
@@ -212,10 +224,37 @@ The trainer and SFT scripts use **safe encoding** (`corpus_to_ids_safe`) so unkn
 |------|------|------------|------------|
 | `train` | Full `chat.jsonl` | `1e-5` | `18B_marshmello_instruct/checkpoints/latest.pt` |
 | `curated` | Filtered balanced subset (~2k) | `2e-6` | `checkpoints/curated_latest.pt` |
-| `teacher` | Phase 18E `teacher.jsonl` (~250) | `5e-6` | `18E_tiny_teacher_sft/checkpoints/teacher_latest.pt` |
+| `teacher` | Phase 18E `teacher_extended_short.jsonl` (~1590) | `5e-6` | `18E_tiny_teacher_sft/checkpoints/teacher_latest.pt` |
 | `overfit` | 20 examples (diagnostic) | `1e-5` | `latest.pt` |
 
+Use `--first-token-weight 30` when fine-tuning from a routing checkpoint on core SFT
+to help preserve **18J** routing (default: 8 for train/teacher, 30 for routing mode).
+
 Use `--freeze-backbone` to train only the LM head and final transformer block. The trainer verifies tokenizer/checkpoint vocab compatibility and runs a decode sanity check on chat tags before training.
+
+---
+
+## Dual benchmarks: 18J + 18K
+
+Use **both** benchmarks — they measure different things:
+
+| Phase | Question | Deploy gate |
+|-------|----------|-------------|
+| **[18J](18J_marshmello_core_sft/)** | Does the model route to the correct **core concept** (AI, transformer, DB index)? | Routing accuracy ~18% best on 45M (`best_18j_routing.pt`) |
+| **[18K](18K_general_benchmark/)** | Does it answer **general assistant** questions (SQL, programming, daily life)? | Domain score; broad SFT at 500 steps **regressed** 21.8%→12% |
+
+```bash
+# 18J — core routing
+python 18J_marshmello_core_sft/evaluate_core_routing.py \
+  --checkpoint 18B_marshmello_instruct/checkpoints/best_18j_routing.pt --no-baseline
+
+# 18K — general assistant
+python 18K_general_benchmark/compare_checkpoints.py
+```
+
+Summary reports: `reports/latest_eval_summary.md`, `18K_general_benchmark/reports/comparison.md`.
+
+**Do not use** `18B_marshmello_instruct/checkpoints/latest.pt` after failed broad SFT — keep `best_18j_routing.pt`.
 
 ---
 
@@ -239,8 +278,11 @@ Marshmello/
 ├── 18B_marshmello_instruct/                         # SFT, chat, eval
 ├── 18C_base_chat_adaptation/                        # Mixed raw+chat continued pretrain
 ├── 18D_tokenizer_v2/                                # BPE v2 trainer + comparison
-├── 18E_tiny_teacher_sft/                            # Tiny teacher dataset + eval
+├── 18E_tiny_teacher_sft/                            # Teacher builders + math data + eval
 ├── 18G_checkpoint_and_corpus_expansion/             # Checkpoint compare + expanded corpus
+├── 18J_marshmello_core_sft/                         # Core SFT data + routing benchmark
+├── 18K_general_benchmark/                           # General assistant benchmark (500 eval)
+├── reports/                                         # Run summaries + eval archives
 └── requirements.txt
 ```
 
@@ -287,13 +329,18 @@ python 13_gpt_pretraining/training/trainer.py \
 python 18C_base_chat_adaptation/eval_chat_format.py
 
 # Phase 18E — tiny teacher SFT (short direct answers first)
-python 18E_tiny_teacher_sft/build_teacher_data.py
+python 18E_tiny_teacher_sft/build_teacher_extended_short.py
+python 18E_tiny_teacher_sft/build_teacher_math.py
 python 18B_marshmello_instruct/train_instruct.py \
   --mode teacher \
   --config large_50m \
   --base-checkpoint 13_gpt_pretraining/checkpoints/large_50m/latest.pt \
-  --steps 500
+  --data 18E_tiny_teacher_sft/data/teacher_extended_short.jsonl \
+  --steps 800 \
+  --lr 5e-6
 python 18E_tiny_teacher_sft/eval_teacher.py
+python 18J_marshmello_core_sft/evaluate_core_routing.py \
+  --checkpoint 18E_tiny_teacher_sft/checkpoints/teacher_latest.pt --no-baseline
 
 # Phase 18B — curated SFT (recommended before full chat.jsonl)
 python 18B_marshmello_instruct/train_instruct.py \
@@ -341,10 +388,14 @@ python 16_evaluation_suite/evaluate.py
 
 ```bash
 hf auth login
+# Base weights + model card
 python 13_gpt_pretraining/hub/push_to_hub.py \
   --config large_50m \
   --repo-id ostah-1010/Marshmello \
   --checkpoint 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+
+# Model card only (no weight upload)
+python 13_gpt_pretraining/hub/push_to_hub.py --all --readme-only
 ```
 
 ---
@@ -382,9 +433,13 @@ tokenizer v2          →  punctuation + chat tags (optional, re-pretrain requir
      ↓
 base chat adaptation  →  next-token pretraining on raw text + chat boundaries
      ↓
-tiny teacher SFT      →  short direct answers (~250 examples)
+tiny teacher SFT      →  short direct answers (~1590 examples, incl. math)
      ↓
 instruct fine-tuning  →  Marshmello-45M-Instruct
+     ↓
+18J routing eval      →  core concept discrimination
+     ↓
+18K general benchmark →  broad assistant QA (500 held-out)
 ```
 
 ---

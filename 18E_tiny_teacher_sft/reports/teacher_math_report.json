@@ -1,0 +1,25 @@
+{
+  "math_output": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher_math.jsonl",
+  "math_rows": 216,
+  "base_rows": 1374,
+  "merged_total": 1590,
+  "added_to_short": 216,
+  "backup": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher_extended_short_before_math.jsonl",
+  "domain_counts": {
+    "ai_basics": 414,
+    "databases": 479,
+    "machine_learning": 6,
+    "math_basics": 216,
+    "python": 8,
+    "software_engineering": 4,
+    "transformers_llms": 463
+  },
+  "concept_counts": {
+    "integer_addition": 160,
+    "integer_subtraction": 25,
+    "integer_multiplication": 25,
+    "integer_add": 4,
+    "integer_sub": 1,
+    "integer_mul": 1
+  }
+}

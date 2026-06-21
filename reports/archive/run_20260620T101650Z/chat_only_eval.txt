@@ -1,0 +1,31 @@
+Phase 18H: chat-only pretraining eval
+============================================================
+Checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Config:     large_50m
+Device:     mps
+------------------------------------------------------------
+Prompt:               <USER> What is AI? <ASSISTANT>
+Answer:               Model updates is new training or tuning that improves a deployed model. It helps the system answer or act more usefully.
+on_topic:             False []
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               FAIL
+------------------------------------------------------------
+Prompt:               <USER> Who are you? <ASSISTANT>
+Answer:               I am Marshmelody is a small assistant trained to answer clearly and directly.
+on_topic:             True ['i', 'assistant', 'trained', 'answer']
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               PASS
+------------------------------------------------------------
+Prompt:               <USER> Explain database indexes. <ASSISTANT>
+Answer:               A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+on_topic:             True ['index', 'database', 'lookup', 'faster', 'rows']
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               PASS
+============================================================
+final_result:         FAIL (2/3)

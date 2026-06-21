@@ -1,0 +1,141 @@
+=== Broad SFT 500 steps ===
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18B_marshmello_instruct/checkpoints/best_18j_routing.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.545239
+  first embedding norm after:   0.550108
+  first embedding norm delta:   +0.004868
+Loading SFT data: 18K_general_benchmark/data/general_train.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> Name a scenario where heuristics are applied in AI. <ASSISTANT> Heuristics are practical problem-solving strategies. A puzzle-solving algorithm that uses trial and error to find solutions is an example. <END>
+    decoded:  <USER> Name a scenario where heuristics are applied in AI. <ASSISTANT> Heuristics are practical problem-solving strategies. A puzzle-solving algorithm that uses trial and error to find solutions is an example. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Provide an example of knowledge representation. <ASSISTANT> A semantic network stores facts about a domain, such as relationships between medical diagnoses and symptoms. <END>
+    decoded:  <USER> Provide an example of knowledge representation. <ASSISTANT> A semantic network stores facts about a domain, such as relationships between medical diagnoses and symptoms. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> Give a real use case of symbolic AI. <ASSISTANT> Chess programs using rule-based systems, such as IBM's Deep Blue, exemplify symbolic AI by evaluating moves through logical deductions. <END>
+    decoded:  <USER> Give a real use case of symbolic AI. <ASSISTANT> Chess programs using rule-based systems, such as IBM's Deep Blue, exemplify symbolic AI by evaluating moves through logical deductions. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            train
+Device:          mps
+Base checkpoint: 18B_marshmello_instruct/checkpoints/best_18j_routing.pt
+Base step:       800
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18K_general_benchmark/data/general_train.jsonl
+Train examples:  8,838
+Val examples:    466
+Learning rate:   5.00e-07
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+step     1 | train loss 6.1077 | 2,747 tok/s
+step    10 | train loss 5.5202 | 18,129 tok/s
+step    20 | train loss 5.3538 | 18,013 tok/s
+step    30 | train loss 6.6446 | 18,307 tok/s
+step    40 | train loss 5.2051 | 18,147 tok/s
+step    50 | train loss 5.9368 | 18,244 tok/s
+step    60 | train loss 5.5804 | 18,333 tok/s
+step    70 | train loss 6.0259 | 18,398 tok/s
+step    80 | train loss 5.7284 | 18,376 tok/s
+step    90 | train loss 5.9281 | 18,322 tok/s
+step   100 | train loss 5.4478 | 18,134 tok/s
+  running eval...
+  eval step 100 | train loss 5.2215 | val loss 5.2874 | best val 5.2874 | avg 16,349 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: Tokenization is the process of converting text into a sequence to estimate an input.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that speeds reads but can make writes slightly slower.
+step   110 | train loss 5.9584 | 18,171 tok/s
+step   120 | train loss 5.8147 | 17,901 tok/s
+step   130 | train loss 5.3525 | 17,827 tok/s
+step   140 | train loss 5.3748 | 18,313 tok/s
+step   150 | train loss 5.4917 | 17,793 tok/s
+step   160 | train loss 5.2522 | 18,280 tok/s
+step   170 | train loss 5.2712 | 18,207 tok/s
+step   180 | train loss 5.3621 | 18,058 tok/s
+step   190 | train loss 5.8090 | 18,338 tok/s
+step   200 | train loss 5.6853 | 18,307 tok/s
+  running eval...
+  eval step 200 | train loss 5.2006 | val loss 5.4495 | best val 5.2874 | avg 15,031 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    A: Tokenization is the process of converting text into a sequence to guide a model can then used by using examples that units output.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that speeds rows into columns, and other objects.
+step   210 | train loss 5.5173 | 18,166 tok/s
+step   220 | train loss 4.6553 | 17,923 tok/s
+step   230 | train loss 5.5582 | 17,303 tok/s
+step   240 | train loss 4.9631 | 17,916 tok/s
+step   250 | train loss 4.9237 | 17,614 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+step   260 | train loss 5.6756 | 17,819 tok/s
+step   270 | train loss 4.8645 | 17,537 tok/s
+step   280 | train loss 5.2145 | 17,449 tok/s
+step   290 | train loss 5.0402 | 17,413 tok/s
+step   300 | train loss 5.2007 | 17,468 tok/s
+  running eval...
+  eval step 300 | train loss 5.1997 | val loss 5.2455 | best val 5.2455 | avg 14,747 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    A: Gradient descent is an optimization process that prevents a model parameters in order to capture the direction of its incorrectly on the value for the direction and interaction to ensure that the demand is unseen by using any number or infinite value.
+    Q: Explain database indexes.
+    A: A database index is an organized structure that helps keep data useful, reliable, or fast to access.
+step   310 | train loss 5.4469 | 18,253 tok/s
+step   320 | train loss 5.3079 | 18,220 tok/s
+step   330 | train loss 5.2359 | 18,382 tok/s
+step   340 | train loss 5.3447 | 18,027 tok/s
+step   350 | train loss 5.2339 | 17,957 tok/s
+step   360 | train loss 4.8845 | 17,889 tok/s
+step   370 | train loss 5.2388 | 17,834 tok/s
+step   380 | train loss 4.6138 | 17,815 tok/s
+step   390 | train loss 5.7312 | 17,979 tok/s
+step   400 | train loss 5.2331 | 17,532 tok/s
+  running eval...
+  eval step 400 | train loss 4.9255 | val loss 5.2072 | best val 5.2072 | avg 14,306 tok/s
+  generation eval step 400:
+    Q: What is AI?
+    A: Model checkpoint is the process of using a trained model to produce an output for a new input.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+step   410 | train loss 5.4017 | 17,968 tok/s
+step   420 | train loss 5.0401 | 17,846 tok/s
+step   430 | train loss 4.6010 | 17,871 tok/s
+step   440 | train loss 5.4078 | 17,665 tok/s
+step   450 | train loss 5.2412 | 17,684 tok/s
+step   460 | train loss 5.3114 | 17,642 tok/s
+step   470 | train loss 5.6391 | 17,945 tok/s
+step   480 | train loss 5.4434 | 17,806 tok/s
+step   490 | train loss 4.6490 | 17,776 tok/s
+step   500 | train loss 5.0598 | 17,815 tok/s
+  running eval...
+  eval step 500 | train loss 5.2490 | val loss 5.1290 | best val 5.1290 | avg 14,606 tok/s
+  generation eval step 500:
+    Q: What is AI?
+    A: Model checkpoint is the target answer or incorrectly on a training example.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt

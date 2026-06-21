@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-06-20T08:56:52.453066+00:00",
+  "checkpoints": {
+    "step1_chat_base": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/latest.pt",
+    "step2_teacher": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt",
+    "step3_routing": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt",
+    "step4_core_sft": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt"
+  },
+  "steps": {
+    "1_chat_only_base": {
+      "exit_code": 0,
+      "checkpoint": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/latest.pt",
+      "pass_count": 2,
+      "fail_count": 1,
+      "total": 3,
+      "final": "FAIL (2/3)",
+      "raw_tail": "Answer:               A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.\non_topic:             True ['index', 'database', 'lookup', 'faster', 'rows']\nstops_at_end:         True\nclean_after_end:      True\nno_repeated_3gram:    True\nresult:               PASS\n============================================================\nfinal_result:         FAIL (2/3)"
+    },
+    "2_teacher_sft": {
+      "exit_code": 0,
+      "checkpoint": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt",
+      "pass_count": 6,
+      "total": 6,
+      "final": "PASS (6/6)",
+      "raw_tail": "\nPrompt: Who are you?\nAnswer: I am Marshmello, a small assistant trained to answer clearly and directly.\nResult: PASS - ok\n\nFinal: PASS"
+    },
+    "3_routing_fix": {
+      "exit_code": 0,
+      "checkpoint": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt",
+      "pass_count": 6,
+      "total": 6,
+      "final": "PASS (6/6)",
+      "raw_tail": "on_topic: True ['token', 'text']\nrouted:   True\ngrammar:  True\nResult:   PASS\n============================================================\nFinal: PASS"
+    },
+    "4_core_sft": {
+      "exit_code": 0,
+      "checkpoint": "/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt",
+      "core_eval": {
+        "concept_accuracy": 0.21,
+        "routing_accuracy": 0.1,
+        "hallucination_rate": 0.93,
+        "confusion_drop": 0.06999999999999995,
+        "conclusion": "Model capacity is likely the bottleneck and scaling to 300M\u2013500M is justified."
+      },
+      "raw_tail": "Routing accuracy:     10.0%\nExact answer overlap: 0.0%\nKeyword overlap:      7.8%\nHallucination rate:   93.0%\nConfusion drop:       7.0%\nConclusion: Model capacity is likely the bottleneck and scaling to 300M\u2013500M is justified.\nJSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18J_marshmello_core_sft/data/reports/marshmello_core_eval_pipeline_results.json\nMarkdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18J_marshmello_core_sft/data/reports/marshmello_core_eval_pipeline_report.md"
+    }
+  }
+}

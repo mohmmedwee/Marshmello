@@ -112,9 +112,32 @@ Full source, training pipeline, and evaluation suite:
 ```text
 Linear model → Attention → Transformer → BPE LM → GPT pretraining
 → Dataset pipeline → 50M scaling → Evaluation → Instruction dataset
+→ Chat adaptation (18C) → Tiny teacher SFT (18E) → Instruct tuning (18B)
+→ Core routing eval (18J) → General benchmark (18K)
 ```
 
-Phases 01–17 in the repo walk through every layer of the stack with readable Python.
+Phases 01–18K in the repo walk through every layer of the stack with readable Python.
+
+## Instruct checkpoints (GitHub only)
+
+Base weights live on this Hub repo. **Instruct / routing checkpoints** (~632 MB each)
+are trained locally and documented in the GitHub repo — not uploaded here yet:
+
+| Checkpoint | Role |
+|------------|------|
+| `18E_tiny_teacher_sft/checkpoints/teacher_latest.pt` | Tiny teacher SFT (~1590 short answers incl. math) |
+| `18B_marshmello_instruct/checkpoints/best_18j_routing.pt` | Best **18J** core routing (~18%) — recommended deploy |
+
+Chat after cloning + downloading base weights:
+
+```bash
+python 18B_marshmello_instruct/chat.py \\
+  --checkpoint 18B_marshmello_instruct/checkpoints/best_18j_routing.pt \\
+  --prompt "Explain what a database index is" --greedy
+```
+
+Dual benchmarks: **18J** (core concept routing) and **18K** (general assistant QA).
+See `18J_marshmello_core_sft/` and `18K_general_benchmark/` on GitHub.
 
 ## Files in this repo
 
@@ -130,7 +153,8 @@ Phases 01–17 in the repo walk through every layer of the stack with readable P
 
 - Trained on a **small educational corpus** (not web-scale pretraining)
 - Outputs may **memorize** training paragraphs (see Phase 16 evaluation in GitHub repo)
-- Not instruction-tuned — Phase 17 prepares SFT data; chat tuning is next
+- This Hub repo ships the **base** causal LM; instruct/routing checkpoints are on GitHub
+- Small educational corpus — not web-scale; may memorize training text (Phase 16)
 - Custom PyTorch GPT (not `transformers` AutoModel)
 
 ## Citation

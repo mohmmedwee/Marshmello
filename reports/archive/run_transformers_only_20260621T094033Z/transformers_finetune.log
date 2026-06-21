@@ -1,0 +1,77 @@
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18B_marshmello_instruct/checkpoints/best_18j_routing.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.550723
+  first embedding norm after:   0.550108
+  first embedding norm delta:   -0.000615
+Loading SFT data: 18E_tiny_teacher_sft/data/teacher_transformers_routing.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> What is a transformer? <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    decoded:  <USER> What is a transformer? <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Explain what a transformer is in one sentence. <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    decoded:  <USER> Explain what a transformer is in one sentence. <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> State a precise one-sentence definition of a transformer. <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    decoded:  <USER> State a precise one-sentence definition of a transformer. <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            train
+Device:          mps
+Base checkpoint: 18B_marshmello_instruct/checkpoints/best_18j_routing.pt
+Base step:       800
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18E_tiny_teacher_sft/data/teacher_transformers_routing.jsonl
+Train examples:  38
+Val examples:    2
+Learning rate:   5.00e-07
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+step     1 | train loss 1.0841 | 2,491 tok/s
+step    10 | train loss 2.0794 | 18,827 tok/s
+step    20 | train loss 1.9650 | 18,683 tok/s
+step    30 | train loss 3.3846 | 18,767 tok/s
+step    40 | train loss 2.3104 | 18,793 tok/s
+step    50 | train loss 2.8249 | 18,815 tok/s
+step    60 | train loss 1.4307 | 18,858 tok/s
+step    70 | train loss 2.4910 | 18,820 tok/s
+step    80 | train loss 3.4301 | 18,961 tok/s
+step    90 | train loss 1.0971 | 18,759 tok/s
+step   100 | train loss 3.9516 | 18,882 tok/s
+  running eval...
+  eval step 100 | train loss 2.2161 | val loss 2.4934 | best val 2.4934 | avg 16,765 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: Tokenization is the process of using a sequence to value an answer a model can inference for a model.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that speeds rows but can make writes slightly slower.
+step   110 | train loss 2.4325 | 18,958 tok/s
+step   120 | train loss 1.1491 | 18,649 tok/s
+step   130 | train loss 1.9465 | 18,761 tok/s
+step   140 | train loss 2.9400 | 18,996 tok/s
+step   150 | train loss 3.0111 | 18,827 tok/s
+  running eval...
+  eval step 150 | train loss 1.9231 | val loss 2.2925 | best val 2.2925 | avg 14,629 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt

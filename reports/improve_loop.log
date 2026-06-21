@@ -1,0 +1,1758 @@
+=== Step 1: 18H chat extend +500 ===
+Phase 15: GPT 50M Pretraining
+============================================================
+Config:              large_50m
+Device:              mps
+
+Loading tokenizer from /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Probing batch size (start=4)...
+BPE vocab size:     8,000
+Corpus path:        13_gpt_pretraining/data/corpus_chat_only.txt
+Train BPE tokens:   518,976
+Val BPE tokens:     57,665
+Block size:         512
+Batch size:         4
+Learning rate:      2.00e-05
+Grad accumulation:  8
+Effective batch:    32 sequences
+Tokens / opt step:  16,384
+Model parameters:   55,209,984  (~55.21M)
+Analytic estimate:  55,209,984  (~55.21M)
+Est. train memory:  ~1130 MB
+Checkpoint dir:     /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m
+
+Resumed from 13_gpt_pretraining/checkpoints/large_50m/latest.pt at step 8500
+
+Training target step: 9,000 (500 optimizer steps to run)
+step  8510 | loss 2.7102 | lr 2.00e-05 | 19,503 tok/s | bs=4 accum=8
+step  8520 | loss 2.4751 | lr 1.99e-05 | 19,331 tok/s | bs=4 accum=8
+step  8530 | loss 2.1613 | lr 1.98e-05 | 18,800 tok/s | bs=4 accum=8
+step  8540 | loss 1.7393 | lr 1.97e-05 | 17,974 tok/s | bs=4 accum=8
+step  8550 | loss 2.0925 | lr 1.95e-05 | 16,674 tok/s | bs=4 accum=8
+step  8560 | loss 2.4440 | lr 1.93e-05 | 18,322 tok/s | bs=4 accum=8
+step  8570 | loss 2.9140 | lr 1.90e-05 | 17,811 tok/s | bs=4 accum=8
+step  8580 | loss 2.0037 | lr 1.88e-05 | 18,183 tok/s | bs=4 accum=8
+step  8590 | loss 2.1013 | lr 1.84e-05 | 18,131 tok/s | bs=4 accum=8
+step  8600 | loss 2.5796 | lr 1.81e-05 | 17,150 tok/s | bs=4 accum=8
+  eval step 8600 | train loss 2.2499 | val loss 4.4466 | avg 17,999 tok/s | mem ~1130 MB
+step  8610 | loss 1.8200 | lr 1.77e-05 | 16,303 tok/s | bs=4 accum=8
+step  8620 | loss 2.0888 | lr 1.73e-05 | 15,882 tok/s | bs=4 accum=8
+step  8630 | loss 2.6637 | lr 1.68e-05 | 14,930 tok/s | bs=4 accum=8
+step  8640 | loss 2.3741 | lr 1.64e-05 | 14,134 tok/s | bs=4 accum=8
+step  8650 | loss 2.2244 | lr 1.59e-05 | 12,455 tok/s | bs=4 accum=8
+step  8660 | loss 2.2672 | lr 1.54e-05 | 13,212 tok/s | bs=4 accum=8
+step  8670 | loss 2.4104 | lr 1.48e-05 | 13,192 tok/s | bs=4 accum=8
+step  8680 | loss 2.5204 | lr 1.43e-05 | 13,102 tok/s | bs=4 accum=8
+step  8690 | loss 2.1072 | lr 1.37e-05 | 12,612 tok/s | bs=4 accum=8
+step  8700 | loss 2.6925 | lr 1.31e-05 | 13,150 tok/s | bs=4 accum=8
+step  8710 | loss 1.9694 | lr 1.25e-05 | 10,443 tok/s | bs=4 accum=8
+step  8720 | loss 2.0197 | lr 1.19e-05 | 13,568 tok/s | bs=4 accum=8
+step  8730 | loss 2.4620 | lr 1.13e-05 | 14,694 tok/s | bs=4 accum=8
+step  8740 | loss 2.3327 | lr 1.06e-05 | 15,087 tok/s | bs=4 accum=8
+step  8750 | loss 2.4922 | lr 1.00e-05 | 14,503 tok/s | bs=4 accum=8
+step  8760 | loss 1.8599 | lr 9.37e-06 | 14,438 tok/s | bs=4 accum=8
+step  8770 | loss 2.3887 | lr 8.75e-06 | 15,220 tok/s | bs=4 accum=8
+step  8780 | loss 2.5310 | lr 8.13e-06 | 16,043 tok/s | bs=4 accum=8
+step  8790 | loss 2.3873 | lr 7.51e-06 | 16,331 tok/s | bs=4 accum=8
+step  8800 | loss 2.0256 | lr 6.91e-06 | 16,278 tok/s | bs=4 accum=8
+  eval step 8800 | train loss 2.0050 | val loss 4.3543 | avg 15,270 tok/s | mem ~1130 MB
+step  8810 | loss 2.8584 | lr 6.32e-06 | 16,454 tok/s | bs=4 accum=8
+step  8820 | loss 2.6536 | lr 5.74e-06 | 15,988 tok/s | bs=4 accum=8
+step  8830 | loss 2.3492 | lr 5.18e-06 | 16,877 tok/s | bs=4 accum=8
+step  8840 | loss 2.6799 | lr 4.64e-06 | 17,120 tok/s | bs=4 accum=8
+step  8850 | loss 2.3358 | lr 4.12e-06 | 17,208 tok/s | bs=4 accum=8
+step  8860 | loss 2.1487 | lr 3.63e-06 | 17,379 tok/s | bs=4 accum=8
+step  8870 | loss 2.3894 | lr 3.15e-06 | 17,485 tok/s | bs=4 accum=8
+step  8880 | loss 1.9550 | lr 2.71e-06 | 17,429 tok/s | bs=4 accum=8
+step  8890 | loss 2.3606 | lr 2.29e-06 | 17,695 tok/s | bs=4 accum=8
+step  8900 | loss 2.6170 | lr 1.91e-06 | 17,832 tok/s | bs=4 accum=8
+step  8910 | loss 2.1391 | lr 1.56e-06 | 17,737 tok/s | bs=4 accum=8
+step  8920 | loss 2.3559 | lr 1.24e-06 | 17,837 tok/s | bs=4 accum=8
+step  8930 | loss 2.3902 | lr 9.52e-07 | 17,948 tok/s | bs=4 accum=8
+step  8940 | loss 2.2808 | lr 7.02e-07 | 17,964 tok/s | bs=4 accum=8
+step  8950 | loss 2.6898 | lr 4.89e-07 | 17,836 tok/s | bs=4 accum=8
+step  8960 | loss 2.6612 | lr 3.14e-07 | 18,043 tok/s | bs=4 accum=8
+step  8970 | loss 2.3391 | lr 1.77e-07 | 17,698 tok/s | bs=4 accum=8
+step  8980 | loss 2.7231 | lr 7.89e-08 | 18,130 tok/s | bs=4 accum=8
+step  8990 | loss 2.4592 | lr 1.97e-08 | 17,370 tok/s | bs=4 accum=8
+step  9000 | loss 1.8358 | lr 0.00e+00 | 18,204 tok/s | bs=4 accum=8
+  eval step 9000 | train loss 1.9892 | val loss 4.3702 | avg 16,056 tok/s | mem ~1130 MB
+  checkpoint → step_009000.pt (631.9 MB) | latest 631.9 MB
+
+Training complete. Best val loss: 4.3543
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/latest.pt
+
+Generate text:
+  python 13_gpt_pretraining/generate.py --config large_50m --prompt "Artificial intelligence" --temperature 0.8 --top-k 40
+
+
+=== Iteration run_20260620T101650Z: chat eval + teacher 800 ===
+=== Iteration run_20260620T101650Z: chat eval + teacher 800 ===
+Phase 18H: chat-only pretraining eval
+============================================================
+Checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Config:     large_50m
+Device:     mps
+------------------------------------------------------------
+Prompt:               <USER> What is AI? <ASSISTANT>
+Answer:               Model updates is new training or tuning that improves a deployed model. It helps the system answer or act more usefully.
+on_topic:             False []
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               FAIL
+------------------------------------------------------------
+Prompt:               <USER> Who are you? <ASSISTANT>
+Answer:               I am Marshmelody is a small assistant trained to answer clearly and directly.
+on_topic:             True ['i', 'assistant', 'trained', 'answer']
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               PASS
+------------------------------------------------------------
+Prompt:               <USER> Explain database indexes. <ASSISTANT>
+Answer:               A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+on_topic:             True ['index', 'database', 'lookup', 'faster', 'rows']
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               PASS
+============================================================
+final_result:         FAIL (2/3)
+Phase 18H: chat-only pretraining eval
+============================================================
+Checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Config:     large_50m
+Device:     mps
+------------------------------------------------------------
+Prompt:               <USER> What is AI? <ASSISTANT>
+Answer:               Model updates is new training or tuning that improves a deployed model. It helps the system answer or act more usefully.
+on_topic:             False []
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               FAIL
+------------------------------------------------------------
+Prompt:               <USER> Who are you? <ASSISTANT>
+Answer:               I am Marshmelody is a small assistant trained to answer clearly and directly.
+on_topic:             True ['i', 'assistant', 'trained', 'answer']
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               PASS
+------------------------------------------------------------
+Prompt:               <USER> Explain database indexes. <ASSISTANT>
+Answer:               A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+on_topic:             True ['index', 'database', 'lookup', 'faster', 'rows']
+stops_at_end:         True
+clean_after_end:      True
+no_repeated_3gram:    True
+result:               PASS
+============================================================
+final_result:         FAIL (2/3)
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Building model on mps...
+Loading base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Loading base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.559204
+  first embedding norm after:   0.550145
+  first embedding norm delta:   -0.009059
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.559204
+  first embedding norm after:   0.550145
+  first embedding norm delta:   -0.009059
+Loading SFT data: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher.jsonl
+Loading SFT data: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher.jsonl
+Decode sanity check:
+Decode sanity check:
+  example 1:
+    original: <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    decoded:  <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 1:
+    original: <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    decoded:  <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    decoded:  <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    decoded:  <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. It helps the system answer or act more usefully. <END>
+    decoded:  <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. It helps the system answer or act more usefully. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. It helps the system answer or act more usefully. <END>
+    decoded:  <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. It helps the system answer or act more usefully. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            teacher
+Device:          mps
+Base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Base step:       9000
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher.jsonl
+Train examples:  237
+Val examples:    13
+Learning rate:   5.00e-06
+Grad clip norm:  1.0
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            teacher
+Device:          mps
+Base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Base step:       9000
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher.jsonl
+Train examples:  237
+Val examples:    13
+Learning rate:   5.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+
+Existing teacher best val loss: 0.4683
+Existing teacher best keyword score: 0.7917
+Existing teacher best val loss: 0.4683
+Existing teacher best keyword score: 0.7917
+step     1 | train loss 1.0442 | 3,737 tok/s
+step     1 | train loss 1.0442 | 3,737 tok/s
+step    10 | train loss 1.1346 | 19,255 tok/s
+step    10 | train loss 1.1346 | 19,255 tok/s
+step    20 | train loss 0.5712 | 18,365 tok/s
+step    20 | train loss 0.5712 | 18,365 tok/s
+step    30 | train loss 0.7588 | 17,645 tok/s
+step    30 | train loss 0.7588 | 17,645 tok/s
+step    40 | train loss 0.9554 | 18,387 tok/s
+step    40 | train loss 0.9554 | 18,387 tok/s
+step    50 | train loss 0.8363 | 18,362 tok/s
+step    50 | train loss 0.8363 | 18,362 tok/s
+step    60 | train loss 0.7920 | 18,380 tok/s
+step    60 | train loss 0.7920 | 18,380 tok/s
+step    70 | train loss 0.7403 | 18,539 tok/s
+step    70 | train loss 0.7403 | 18,539 tok/s
+step    80 | train loss 0.7293 | 18,495 tok/s
+step    80 | train loss 0.7293 | 18,495 tok/s
+step    90 | train loss 0.6672 | 18,471 tok/s
+step    90 | train loss 0.6672 | 18,471 tok/s
+step   100 | train loss 1.0144 | 18,217 tok/s
+  running eval...
+step   100 | train loss 1.0144 | 18,217 tok/s
+  running eval...
+  saving teacher best val checkpoint...
+  saving teacher best val checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt (631.9 MB)
+  eval step 100 | train loss 0.2882 | val loss 0.4135 | best val 0.4135 | avg 15,654 tok/s
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt (631.9 MB)
+  generation eval step 100:
+  eval step 100 | train loss 0.2882 | val loss 0.4135 | best val 0.4135 | avg 15,654 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is a model weights from a training step. It is useful for building models that work beyond one example.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is a model weights from a training step. It is useful for building models that work beyond one example.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmelon is a small assistant trained to answer clearly and directly.
+    exact_start_match: False
+    keyword_overlap:   6/7 (0.86) ['answer', 'assistant', 'clearly', 'directly', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmelon is a small assistant trained to answer clearly and directly.
+    exact_start_match: False
+    keyword_overlap:   6/7 (0.86) ['answer', 'assistant', 'clearly', 'directly', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.7143
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.7143
+step   110 | train loss 0.6257 | 18,549 tok/s
+step   110 | train loss 0.6257 | 18,549 tok/s
+step   120 | train loss 0.5801 | 19,189 tok/s
+step   120 | train loss 0.5801 | 19,189 tok/s
+step   130 | train loss 0.7368 | 19,201 tok/s
+step   130 | train loss 0.7368 | 19,201 tok/s
+step   140 | train loss 1.1449 | 19,216 tok/s
+step   140 | train loss 1.1449 | 19,216 tok/s
+step   150 | train loss 0.7321 | 19,230 tok/s
+step   150 | train loss 0.7321 | 19,230 tok/s
+step   160 | train loss 0.8300 | 19,035 tok/s
+step   160 | train loss 0.8300 | 19,035 tok/s
+step   170 | train loss 0.6334 | 19,103 tok/s
+step   170 | train loss 0.6334 | 19,103 tok/s
+step   180 | train loss 0.6979 | 19,190 tok/s
+step   180 | train loss 0.6979 | 19,190 tok/s
+step   190 | train loss 0.4637 | 19,036 tok/s
+step   190 | train loss 0.4637 | 19,036 tok/s
+step   200 | train loss 0.7353 | 19,065 tok/s
+  running eval...
+step   200 | train loss 0.7353 | 19,065 tok/s
+  running eval...
+  eval step 200 | train loss 0.2278 | val loss 0.5187 | best val 0.4135 | avg 14,803 tok/s
+  generation eval step 200:
+  eval step 200 | train loss 0.2278 | val loss 0.5187 | best val 0.4135 | avg 14,803 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is software that helps teams build software that is easier to change and operate.
+    exact_start_match: False
+    keyword_overlap:   2/8 (0.25) ['help', 'software']
+    repeated_3gram:    False
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is software that helps teams build software that is easier to change and operate.
+    exact_start_match: False
+    keyword_overlap:   2/8 (0.25) ['help', 'software']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmelon is a small assistant trained to answer clearly and directly.
+    exact_start_match: False
+    keyword_overlap:   6/7 (0.86) ['answer', 'assistant', 'clearly', 'directly', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmelon is a small assistant trained to answer clearly and directly.
+    exact_start_match: False
+    keyword_overlap:   6/7 (0.86) ['answer', 'assistant', 'clearly', 'directly', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.7768
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.7768
+step   210 | train loss 0.6360 | 19,058 tok/s
+step   210 | train loss 0.6360 | 19,058 tok/s
+step   220 | train loss 1.0433 | 19,167 tok/s
+step   220 | train loss 1.0433 | 19,167 tok/s
+step   230 | train loss 0.4016 | 19,131 tok/s
+step   230 | train loss 0.4016 | 19,131 tok/s
+step   240 | train loss 0.3466 | 19,178 tok/s
+step   240 | train loss 0.3466 | 19,178 tok/s
+step   250 | train loss 0.8094 | 19,093 tok/s
+  saving latest checkpoint...
+step   250 | train loss 0.8094 | 19,093 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   260 | train loss 0.4582 | 19,260 tok/s
+step   260 | train loss 0.4582 | 19,260 tok/s
+step   270 | train loss 0.5872 | 19,127 tok/s
+step   270 | train loss 0.5872 | 19,127 tok/s
+step   280 | train loss 0.4344 | 19,273 tok/s
+step   280 | train loss 0.4344 | 19,273 tok/s
+step   290 | train loss 0.7616 | 19,271 tok/s
+step   290 | train loss 0.7616 | 19,271 tok/s
+step   300 | train loss 0.4173 | 19,331 tok/s
+  running eval...
+step   300 | train loss 0.4173 | 19,331 tok/s
+  running eval...
+  saving teacher best val checkpoint...
+  saving teacher best val checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt (631.9 MB)
+  eval step 300 | train loss 0.1581 | val loss 0.3451 | best val 0.3451 | avg 14,670 tok/s
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt (631.9 MB)
+  generation eval step 300:
+  eval step 300 | train loss 0.1581 | val loss 0.3451 | best val 0.3451 | avg 14,670 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Classification is assigning an item to one of several categories. It helps the system answer or act more usefully.
+    exact_start_match: False
+    keyword_overlap:   1/8 (0.12) ['help']
+    repeated_3gram:    False
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Classification is assigning an item to one of several categories. It helps the system answer or act more usefully.
+    exact_start_match: False
+    keyword_overlap:   1/8 (0.12) ['help']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.7812
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 0.7812
+step   310 | train loss 0.4969 | 18,929 tok/s
+step   310 | train loss 0.4969 | 18,929 tok/s
+step   320 | train loss 0.8327 | 19,141 tok/s
+step   320 | train loss 0.8327 | 19,141 tok/s
+step   330 | train loss 0.2198 | 19,216 tok/s
+step   330 | train loss 0.2198 | 19,216 tok/s
+step   340 | train loss 0.9183 | 19,186 tok/s
+step   340 | train loss 0.9183 | 19,186 tok/s
+step   350 | train loss 0.5061 | 19,127 tok/s
+step   350 | train loss 0.5061 | 19,127 tok/s
+step   360 | train loss 0.5162 | 19,219 tok/s
+step   360 | train loss 0.5162 | 19,219 tok/s
+step   370 | train loss 0.5555 | 18,965 tok/s
+step   370 | train loss 0.5555 | 18,965 tok/s
+step   380 | train loss 0.4278 | 19,327 tok/s
+step   380 | train loss 0.4278 | 19,327 tok/s
+step   390 | train loss 0.4307 | 19,302 tok/s
+step   390 | train loss 0.4307 | 19,302 tok/s
+step   400 | train loss 0.5480 | 19,075 tok/s
+  running eval...
+step   400 | train loss 0.5480 | 19,075 tok/s
+  running eval...
+  eval step 400 | train loss 0.1041 | val loss 0.4384 | best val 0.3451 | avg 14,993 tok/s
+  generation eval step 400:
+  eval step 400 | train loss 0.1041 | val loss 0.4384 | best val 0.3451 | avg 14,993 tok/s
+  generation eval step 400:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+  teacher keyword score improved 0.7917 -> 1.0000
+  saving teacher best score checkpoint...
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+  teacher keyword score improved 0.7917 -> 1.0000
+  saving teacher best score checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt (631.9 MB)
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt (631.9 MB)
+step   410 | train loss 0.4416 | 19,345 tok/s
+step   410 | train loss 0.4416 | 19,345 tok/s
+step   420 | train loss 0.3635 | 19,236 tok/s
+step   420 | train loss 0.3635 | 19,236 tok/s
+step   430 | train loss 0.3952 | 19,114 tok/s
+step   430 | train loss 0.3952 | 19,114 tok/s
+step   440 | train loss 0.5350 | 19,142 tok/s
+step   440 | train loss 0.5350 | 19,142 tok/s
+step   450 | train loss 0.5121 | 19,131 tok/s
+step   450 | train loss 0.5121 | 19,131 tok/s
+step   460 | train loss 0.6694 | 19,185 tok/s
+step   460 | train loss 0.6694 | 19,185 tok/s
+step   470 | train loss 0.3404 | 19,058 tok/s
+step   470 | train loss 0.3404 | 19,058 tok/s
+step   480 | train loss 0.5205 | 19,180 tok/s
+step   480 | train loss 0.5205 | 19,180 tok/s
+step   490 | train loss 0.2595 | 19,242 tok/s
+step   490 | train loss 0.2595 | 19,242 tok/s
+step   500 | train loss 0.5181 | 19,088 tok/s
+  running eval...
+step   500 | train loss 0.5181 | 19,088 tok/s
+  running eval...
+  eval step 500 | train loss 0.0743 | val loss 0.3623 | best val 0.3451 | avg 15,062 tok/s
+  generation eval step 500:
+  eval step 500 | train loss 0.0743 | val loss 0.3623 | best val 0.3451 | avg 15,062 tok/s
+  generation eval step 500:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+  saving latest checkpoint...
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   510 | train loss 0.4492 | 19,128 tok/s
+step   510 | train loss 0.4492 | 19,128 tok/s
+step   520 | train loss 0.4183 | 19,105 tok/s
+step   520 | train loss 0.4183 | 19,105 tok/s
+step   530 | train loss 0.2355 | 19,210 tok/s
+step   530 | train loss 0.2355 | 19,210 tok/s
+step   540 | train loss 0.2488 | 19,385 tok/s
+step   540 | train loss 0.2488 | 19,385 tok/s
+step   550 | train loss 0.2601 | 19,149 tok/s
+step   550 | train loss 0.2601 | 19,149 tok/s
+step   560 | train loss 0.2167 | 19,299 tok/s
+step   560 | train loss 0.2167 | 19,299 tok/s
+step   570 | train loss 0.2137 | 19,313 tok/s
+step   570 | train loss 0.2137 | 19,313 tok/s
+step   580 | train loss 0.2308 | 19,240 tok/s
+step   580 | train loss 0.2308 | 19,240 tok/s
+step   590 | train loss 0.3993 | 19,224 tok/s
+step   590 | train loss 0.3993 | 19,224 tok/s
+step   600 | train loss 0.3612 | 19,215 tok/s
+  running eval...
+step   600 | train loss 0.3612 | 19,215 tok/s
+  running eval...
+  eval step 600 | train loss 0.0574 | val loss 0.4902 | best val 0.3451 | avg 15,106 tok/s
+  generation eval step 600:
+  eval step 600 | train loss 0.0574 | val loss 0.4902 | best val 0.3451 | avg 15,106 tok/s
+  generation eval step 600:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+step   610 | train loss 0.3928 | 19,255 tok/s
+step   610 | train loss 0.3928 | 19,255 tok/s
+step   620 | train loss 0.1413 | 19,182 tok/s
+step   620 | train loss 0.1413 | 19,182 tok/s
+step   630 | train loss 0.3804 | 19,226 tok/s
+step   630 | train loss 0.3804 | 19,226 tok/s
+step   640 | train loss 0.1298 | 19,265 tok/s
+step   640 | train loss 0.1298 | 19,265 tok/s
+step   650 | train loss 0.1308 | 19,113 tok/s
+step   650 | train loss 0.1308 | 19,113 tok/s
+step   660 | train loss 0.3803 | 19,088 tok/s
+step   660 | train loss 0.3803 | 19,088 tok/s
+step   670 | train loss 0.2349 | 19,233 tok/s
+step   670 | train loss 0.2349 | 19,233 tok/s
+step   680 | train loss 0.2249 | 19,160 tok/s
+step   680 | train loss 0.2249 | 19,160 tok/s
+step   690 | train loss 0.2443 | 19,215 tok/s
+step   690 | train loss 0.2443 | 19,215 tok/s
+step   700 | train loss 0.2611 | 19,078 tok/s
+  running eval...
+step   700 | train loss 0.2611 | 19,078 tok/s
+  running eval...
+  eval step 700 | train loss 0.0804 | val loss 0.4764 | best val 0.3451 | avg 15,278 tok/s
+  generation eval step 700:
+  eval step 700 | train loss 0.0804 | val loss 0.4764 | best val 0.3451 | avg 15,278 tok/s
+  generation eval step 700:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+step   710 | train loss 0.2225 | 19,187 tok/s
+step   710 | train loss 0.2225 | 19,187 tok/s
+step   720 | train loss 0.3916 | 19,320 tok/s
+step   720 | train loss 0.3916 | 19,320 tok/s
+step   730 | train loss 0.2219 | 19,109 tok/s
+step   730 | train loss 0.2219 | 19,109 tok/s
+step   740 | train loss 0.2932 | 18,949 tok/s
+step   740 | train loss 0.2932 | 18,949 tok/s
+step   750 | train loss 0.2917 | 19,171 tok/s
+  saving latest checkpoint...
+step   750 | train loss 0.2917 | 19,171 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   760 | train loss 0.2741 | 19,254 tok/s
+step   760 | train loss 0.2741 | 19,254 tok/s
+step   770 | train loss 0.3838 | 19,126 tok/s
+step   770 | train loss 0.3838 | 19,126 tok/s
+step   780 | train loss 0.3249 | 19,260 tok/s
+step   780 | train loss 0.3249 | 19,260 tok/s
+step   790 | train loss 0.2621 | 19,088 tok/s
+step   790 | train loss 0.2621 | 19,088 tok/s
+step   800 | train loss 0.2067 | 19,152 tok/s
+  running eval...
+step   800 | train loss 0.2067 | 19,152 tok/s
+  running eval...
+  eval step 800 | train loss 0.0430 | val loss 0.3778 | best val 0.3451 | avg 15,287 tok/s
+  generation eval step 800:
+  eval step 800 | train loss 0.0430 | val loss 0.3778 | best val 0.3451 | avg 15,287 tok/s
+  generation eval step 800:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+  saving latest checkpoint...
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+Eval 18J: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Eval 18J: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Validated 1200 SFT examples and 100 held-out questions
+[001/100] core-eval-001: Artificial intelligence is the process of making computers solve tasks that need reasoning or patter
+[002/100] core-eval-002: Machine learning is a way for computers to learn patterns and make predictions.
+[003/100] core-eval-003: Random to train on each other. It helps the system answer or act more usefully.
+[004/100] core-eval-004: Deployment is finding structure in a model to make reads more usefully.
+[005/100] core-eval-005: Neural network is a model that uses a neural network to process and make a prediction. It is useful 
+[006/100] core-eval-006: To check the model is useful for building models that work beyond one example.
+[007/100] core-eval-007: Loss the process of general patterns, and the desired outcome.
+[008/100] core-eval-008: The first player is a set of structure that helps keep data useful, reliable, or fast to access.
+[009/100] core-eval-009: A virtual assistant can be used to automate tasks such as virtual assistant answers, and even instal
+[010/100] core-eval-010: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[011/100] core-eval-011: Classification is a category for an input. It is useful for building models that work beyond one exa
+[012/100] core-eval-012: A group of different types of data are assigned to store and can be used to store information from a
+[013/100] core-eval-013: Context is the process of creating a general pattern. It is useful for building models that work bey
+[014/100] core-eval-014: Table is a great way to keep data useful, reliable, or fast to access.
+[015/100] core-eval-015: Cost is the Cost of Cost Ci Ci Ci Ci Ci Ci Ci Ci Ci Ci Ci Ci Ci Ci is a Ci Ci Ci Ci Ci Ci Ci Ci Ci C
+[016/100] core-eval-016: Rate limits is controlling how many requests a client can make. It helps the system answer or act mo
+[017/100] core-eval-017: Backup is a saved snapshot of changes in a small group of examples used to create more than a model.
+[018/100] core-eval-018: To check the model is the model to check for building models that work beyond one example.
+[019/100] core-eval-019: Precision is how many predicted positives the model found. It is useful for building models that wor
+[020/100] core-eval-020: Rollback is used to store and practical. It is useful for building models that work beyond one examp
+[021/100] core-eval-021: Training data is one focused on another task. It helps the system answer or act more usefully.
+[022/100] core-eval-022: Knowledge representation is storing facts so software can use them while answering questions. It hel
+[023/100] core-eval-023: Artificial intelligence is the field of Artificial intelligence that focuses on the field of making 
+[024/100] core-eval-024: A machine learning algorithm is a set of instructions that can be used to solve a problem with each 
+[025/100] core-eval-025: Understanding is finding structure in data without labeled answers. It is useful for building models
+[026/100] core-eval-026: Two examples of how many predicted can be used to predict the model can be used to predict the next 
+[027/100] core-eval-027: Good practice is to improve the task at a time. It helps the system answer or act more usefully.
+[028/100] core-eval-028: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[029/100] core-eval-029: Data is a way that stores data stored on a database and retrieve data. It helps keep data useful, re
+[030/100] core-eval-030: A group can use the input to the input data. It helps the system answer or act more usefully.
+[031/100] core-eval-031: Loss the process of general patterns, or act more usefully.
+[032/100] core-eval-032: Model updates is a deployed model to produce values such as a deployed model. It helps the system an
+[033/100] core-eval-033: A good leader should include identify, confidence and inspection. It should also be able to keep dat
+[034/100] core-eval-034: Regression is predicting a number for an input. It is useful for building models that work beyond on
+[035/100] core-eval-035: Data visualization is a model that uses a neural network to process and make predictions based on th
+[036/100] core-eval-036: To store the data and use the data to store the data in order to make sure the data usefully.
+[037/100] core-eval-037: Positional embedding is a vector that tells the model where a token appears. It is useful for buildi
+[038/100] core-eval-038: Use slightly curve to store the desired outcome.
+[039/100] core-eval-039: Regularization is a technique that discourages overly complex models. It is useful for building mode
+[040/100] core-eval-040: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[041/100] core-eval-041: A good program should include the program to compare the program and the program to the program foll
+[042/100] core-eval-042: The following are different types of different types of words such as words and words that are words
+[043/100] core-eval-043: A database index is a set of records that helps keep data useful, reliable, or fast to access.
+[044/100] core-eval-044: Coupling is a small group of examples used to teach a model to solve the desired answer. It is usefu
+[045/100] core-eval-045: None is one that makes choices through simple branching or relevance. It helps the system answer or 
+[046/100] core-eval-046: Poss is a vector that shows how language models read prompts and produce answers.
+[047/100] core-eval-047: For example, a program is the program used to compare the list. It helps the system answer or act mo
+[048/100] core-eval-048: The key steps for creating a simple and visualization. The interface should include the interface sh
+[049/100] core-eval-049: A simple branch is a function that can be used to find the desired outcome. It helps keep data usefu
+[050/100] core-eval-050: I am Marshmelloading my training is useful for building models that work beyond one example.
+[051/100] core-eval-051: A good idea could be to make a new product or service could be used to make a more efficient and the
+[052/100] core-eval-052: Hallest is the structure of tables, columns, and relationships. It helps keep data useful, reliable,
+[053/100] core-eval-053: Training data is the examples used to teach a model useful patterns. It helps the system answer or a
+[054/100] core-eval-054: Function is a model that makes choices through simple branching rules. It is useful for building mod
+[055/100] core-eval-055: A simple branch of the result is a collection of unique value. It is part of how language models rea
+[056/100] core-eval-056: Caching is the ability to keep track of the need to keep data useful, reliable, or fast to access.
+[057/100] core-eval-057: A situation is that something that something that something is not a situation that something that i
+[058/100] core-eval-058: Fine-tuning is training an existing model to follow user requests. It is part of how language models
+[059/100] core-eval-059: Training data is examples used to teach a model useful patterns. It is useful for building models th
+[060/100] core-eval-060: Four is a way for our daily lives in our lives and our lives in our lives in our lives in the world.
+[061/100] core-eval-061: The model is a rule that prevents a model. It helps keep data useful, reliable, or fast to access.
+[062/100] core-eval-062: Pathlib is a small group of examples used to build software that is easier to change and operate.
+[063/100] core-eval-063: A virtual assistant is a field that uses language models read prompts and produce answers.
+[064/100] core-eval-064: A database index is a lookup structure that helps find rows faster. It speeds reads but can make wri
+[065/100] core-eval-065: A program is the program that the program follows: True if the model is the model is the model to ch
+[066/100] core-eval-066: Function is a rule that can be used to sort data from a model. It helps the system answer or act mor
+[067/100] core-eval-067: A simple branch of a table scan be used to sort query results. It helps keep data useful, reliable, 
+[068/100] core-eval-068: Search is trying to find a new language model found. It is useful for building models that work beyo
+[069/100] core-eval-069: A virtual assistant is an answer. It is useful for building models that work beyond one example.
+[070/100] core-eval-070: Random Where clause is the SQL clause used to sort query results. It helps keep data useful, reliabl
+[071/100] core-eval-071: Data visualization is the most important steps for running a project manager. It helps teams build s
+[072/100] core-eval-072: The main difference between a web browser and a web browser is a web browser that a web browser. It 
+[073/100] core-eval-073: Training data is examples used to teach a model useful patterns. It is useful for building models th
+[074/100] core-eval-074: You can use it to store and make a slightly slower. It helps the system answer or act more usefully.
+[075/100] core-eval-075: A database is a tool that stores records as one that makes choices through simple branching rules. I
+[076/100] core-eval-076: Primary key is the key instructions that a function or method. It helps the system answer or act mor
+[077/100] core-eval-077: A program should be the program should be able to check for any relevant information such as the sea
+[078/100] core-eval-078: The key instructions for building models that work beyond one example.
+[079/100] core-eval-079: Model checkpoint is saved model weights from a training step. It is useful for building models that 
+[080/100] core-eval-080: Batch is a small group of examples processed together. It is useful for building models that work be
+[081/100] core-eval-081: A common mistake with code is optimizing the visible syntax while ignoring the data flow. Good techn
+[082/100] core-eval-082: Cost is the best way to make a few minutes or run when you need a few minutes or fast to make a fina
+[083/100] core-eval-083: For example, a program is the program to check if the strings is the strings are false. For loop is 
+[084/100] core-eval-084: The three main steps should include a database, a database, a database, and a database. It helps kee
+[085/100] core-eval-085: The main difference between a class and a class is that the same function is the same function are t
+[086/100] core-eval-086: To keep the result reliable, check for objects with the desired outcomes. It helps keep data useful,
+[087/100] core-eval-087: A situation is when something that something may not be difficult to make a situation when something
+[088/100] core-eval-088: Hash index is an index that helps keep data useful, reliable, or fast to access.
+[089/100] core-eval-089: Data visualization is the best way for building models that work beyond one example.
+[090/100] core-eval-090: The key steps for running a program. The user should include the user interface and the user interfa
+[091/100] core-eval-091: A simple method is a user interface that helps the system answer or act more usefully.
+[092/100] core-eval-092: Convector representation is a way to make a model quality during training. It is useful for building
+[093/100] core-eval-093: A database is a field that stores records as one or predictions that work beyond one example. It hel
+[094/100] core-eval-094: Model calibration is a boundary that turns text into token IDs and back. It is part of how language 
+[095/100] core-eval-095: Training data is the examples used to read prompts and make decisions based on each other. It helps 
+[096/100] core-eval-096: The following statement should be able to the words "to "" or "to "? "? "", "", "", "", "", "", "", 
+[097/100] core-eval-097: A database index is a set of columns for selecting column scores and columns for one kind of data. I
+[098/100] core-eval-098: Cach, reliable, or fast to access.
+[099/100] core-eval-099: A situation is that one can be used to find new information from one example. It helps the system an
+[100/100] core-eval-100: Function is returning data used to install dependencies. It helps Python code stay clear and practic
+Concept accuracy:     16.0%
+Routing accuracy:     13.0%
+Exact answer overlap: 0.0%
+Keyword overlap:      5.2%
+Hallucination rate:   88.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_best_score.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_best_score.md
+Exact answer overlap: 0.0%
+Keyword overlap:      5.2%
+Hallucination rate:   88.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_best_score.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_best_score.md
+Eval 18J: 18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt
+Eval 18J: 18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt
+Validated 1200 SFT examples and 100 held-out questions
+[001/100] core-eval-001: Artificial intelligence is the process of making computers solve tasks that need reasoning or patter
+[002/100] core-eval-002: Machine learning is a way for computers to learn patterns and make predictions.
+[003/100] core-eval-003: Search is trying possible choices until a good answer or path is found. It helps the system answer o
+[004/100] core-eval-004: Deployment is finding structure in a model to produce answer. It helps the system answer or act more
+[005/100] core-eval-005: Machine learning is a way that uses a computer to learn from data and make decisions without labeled
+[006/100] core-eval-006: To check the result of the size of the size of each other. If you need to check the containers are d
+[007/100] core-eval-007: Context is the process of making model behavior easier to understand. It helps the system answer or 
+[008/100] core-eval-008: The first player is a set of rows and its own words. It is useful for building models that work beyo
+[009/100] core-eval-009: Good practice is to work beyond one example. It helps the system answer or act more usefully.
+[010/100] core-eval-010: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[011/100] core-eval-011: Classification is a category for an input. It is useful for building models that work beyond one exa
+[012/100] core-eval-012: A simple branch of the size of each item is calculated by the size of the size of the size of the si
+[013/100] core-eval-013: Context is the process of creating a model. It is useful for building models that work beyond one ex
+[014/100] core-eval-014: Table is used to choose a branch of found. It is useful for building models that work beyond one exa
+[015/100] core-eval-015: Training data is examples that may help with data or unauthorized access.
+[016/100] core-eval-016: Rate limits is controlling a loop that runs while a loop is found. It helps Python code stay clear a
+[017/100] core-eval-017: Backup is a type of computer programs that focuses on the same time. It helps Python code stay clear
+[018/100] core-eval-018: To check the model is the model to check the model and measure the prediction. It is useful for buil
+[019/100] core-eval-019: Loss the process of using a context of an object or signal of an object or class. It helps the syste
+[020/100] core-eval-020: Some examples of the following are commonly used in a variety of applications such as JSON paylo, JS
+[021/100] core-eval-021: Method include a file running, running, or a found. It helps Python code stay clear and practical.
+[022/100] core-eval-022: Deployment is putting a model into a real application. It helps the system answer or act more useful
+[023/100] core-eval-023: Artificial intelligence is the field of artificial intelligence that AI systems that focuses on the 
+[024/100] core-eval-024: To make a new type of language model to predictions, and use the user interface to the user interfac
+[025/100] core-eval-025: Understanding is finding structure in data without labeled answers. It is useful for building models
+[026/100] core-eval-026: Two examples of the data is used to predict the data and make predictions more usefully.
+[027/100] core-eval-027: Good practice is to improve the task at a time. It helps the system answer or act more usefully.
+[028/100] core-eval-028: Neural network is a model made of layers of learned weights. It is useful for building models that w
+[029/100] core-eval-029: Data is a way that stores data stored on a network to access. It helps the system answer or act more
+[030/100] core-eval-030: To check the model is useful for building models that work beyond one example.
+[031/100] core-eval-031: Loss the process of the desired outcome. It is useful for building models that work beyond one examp
+[032/100] core-eval-032: Model updates is trained to make a prediction. It is useful for building models that work beyond one
+[033/100] core-eval-033: A good leader should include identify, inspire others. It should also be able to keep data useful, r
+[034/100] core-eval-034: Regression is predicting a number for an input. It is useful for building models that work beyond on
+[035/100] core-eval-035: Data visualization is a model that uses a neural network to process and make predictions. It is usef
+[036/100] core-eval-036: To make a new way to make a new type of data or make sure to make sure the system is easier to use t
+[037/100] core-eval-037: Context is an expression used to compare words or phrases in a context manager. It helps the model i
+[038/100] core-eval-038: Use slightly curve to store the desired outcome.
+[039/100] core-eval-039: Regularization is a technique that discourages overly complex models. It is useful for building mode
+[040/100] core-eval-040: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[041/100] core-eval-041: A good program should include the program to be the program to the program follows: 1. Return the pr
+[042/100] core-eval-042: The following are different types of different types of words such as words and words that are words
+[043/100] core-eval-043: A simple database index is a set of columns for exact matching column scores and columns for one kin
+[044/100] core-eval-044: Cost is the process of using a single layer of using a trained to create a prediction. It is useful 
+[045/100] core-eval-045: None is one that one focused on another part. It helps the system answer or act more usefully.
+[046/100] core-eval-046: Full table is a table showing answer. It helps the system answer or act more usefully.
+[047/100] core-eval-047: For example, a program is the program follows: True if __name__ == '__main__'` check used for script
+[048/100] core-eval-048: The main difference between a computer and a computer systems. A computer is that uses a computer to
+[049/100] core-eval-049: Function is the rules of a model to the model to the desired answer. It is part of how language mode
+[050/100] core-eval-050: I am Marshmello, I am Marshmello, I am Marshmello, I am confident with my small test for you, I am c
+[051/100] core-eval-051: A good idea could be to make a positive impact on the importance of taking action and make sure to t
+[052/100] core-eval-052: Hallest is the structure of tables, columns, and relationships. It helps keep data useful, reliable,
+[053/100] core-eval-053: Training data is the examples used to teach a model useful patterns. It helps the system answer or a
+[054/100] core-eval-054: Function is a model that makes choices through simple branching rules. It is useful for building mod
+[055/100] core-eval-055: The key difference between a class and a class is that is a single object that is a function. It hel
+[056/100] core-eval-056: Caching the size of the size of each training is useful for building models that work beyond one exa
+[057/100] core-eval-057: A good idea could be used to help people stay clear and practical.
+[058/100] core-eval-058: Function is training an answer. It is useful for building models that work beyond one example.
+[059/100] core-eval-059: Training data is examples used to teach a model useful patterns. It is useful for building models th
+[060/100] core-eval-060: The main characters are the main characters in the story of the story and the story of the story and
+[061/100] core-eval-061: The model is a table that shows the correct class is trained to request and incorrect answer. It is 
+[062/100] core-eval-062: I can also help me with my own work beyond one example.
+[063/100] core-eval-063: A virtual assistant is a field that uses language models read prompts and produce answers.
+[064/100] core-eval-064: A database index is a lookup structure that helps find rows faster.
+[065/100] core-eval-065: A program is the program that the program follows: True True Try Try Try Try Try Try
+[066/100] core-eval-066: The following statement should be able to be able to be able to be able to be able to be able to be 
+[067/100] core-eval-067: Module is a Python file that can be imported. It helps Python code stay clear and practical.
+[068/100] core-eval-068: Search is trying to find a good answer or path while choices are correctly. It is useful for buildin
+[069/100] core-eval-069: A virtual assistant is an answer. It is useful for building models that work beyond one example.
+[070/100] core-eval-070: Main guard is the next value of another task. It helps the system answer or act more usefully.
+[071/100] core-eval-071: Data visualization is the most important steps for running a project manager. It helps teams build s
+[072/100] core-eval-072: The main difference between a web browser and a web browser is a web browser that a web browser. It 
+[073/100] core-eval-073: Training data is examples used to teach a model useful patterns. It is useful for building models th
+[074/100] core-eval-074: To keep the model small clean code stay clear and practical.
+[075/100] core-eval-075: A database is an organized place that stores records as one or more usefully.
+[076/100] core-eval-076: Primary key is the key instructions that a function or method. It helps the system answer or act mor
+[077/100] core-eval-077: Training data is the examples used to read prompts and identify patterns from data. It helps the sys
+[078/100] core-eval-078: The key instructions that a program should be able to the user interface and the user to the user ex
+[079/100] core-eval-079: The model is a table that runs while a table scan be changed. It helps Python code stay clear and pr
+[080/100] core-eval-080: Batch is a small group of examples processed together. It is useful for building models that work be
+[081/100] core-eval-081: A good idea could be used to find the best way to make it easier for a person who could be able to u
+[082/100] core-eval-082: Cost is the best way to make a few minutes or run when you need a few minutes or fast to make a few 
+[083/100] core-eval-083: For example, a program should be the program follows: 1. True 2. True 3. Use the program 4. Use the 
+[084/100] core-eval-084: The three main steps should include a database, a database, and a database. The design should includ
+[085/100] core-eval-085: Cost is a defined way for the application of the application and testing the application of the appl
+[086/100] core-eval-086: To keep the result reliable, keep data useful, reliable, or fast to access.
+[087/100] core-eval-087: A situation is difficult to make a difficult decision trees easier to understand. It helps the syste
+[088/100] core-eval-088: Hash index is an index that helps keep data useful, reliable, or fast to access.
+[089/100] core-eval-089: Data visualization is the best way for making repeated requests have the final effect, and the targe
+[090/100] core-eval-090: The key steps for running a program. The user should include the user interface and the user interfa
+[091/100] core-eval-091: A good idea is a rule that can make reads or act more usefully.
+[092/100] core-eval-092: To keep the two examples of the two examples of the two examples of the two are able to make sure to
+[093/100] core-eval-093: A good idea is one that allows people to understand. It helps the system answer or act more usefully
+[094/100] core-eval-094: Cost is the SQL clause used to store and retrieve data. It helps keep data useful, reliable, or fast
+[095/100] core-eval-095: Try to the program should be the program to check if the program should be able to check if the stri
+[096/100] core-eval-096: The following statement should be able to the words and the words that the words are correct. The wo
+[097/100] core-eval-097: A database is a set of records as the input and the input of the input to the input and the input is
+[098/100] core-eval-098: Cach, and then expect the other hand, are not safe to keep your desired outcomes.
+[099/100] core-eval-099: A situation is that one can be used to find new information from one example. It helps the system an
+[100/100] core-eval-100: Function is returning data so teams build software that is easier to change and operate.
+Concept accuracy:     13.0%
+Routing accuracy:     9.0%
+Exact answer overlap: 0.0%
+Keyword overlap:      4.8%
+Hallucination rate:   90.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_best_val.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_best_val.md
+Exact answer overlap: 0.0%
+Keyword overlap:      4.8%
+Hallucination rate:   90.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_best_val.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_best_val.md
+Eval 18J: 18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+Eval 18J: 18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+Validated 1200 SFT examples and 100 held-out questions
+[001/100] core-eval-001: Artificial intelligence is the process of making computers solve tasks that need reasoning or patter
+[002/100] core-eval-002: Machine learning is a way for computers to learn patterns from data instead of using only fixed rule
+[003/100] core-eval-003: Random forest is many decision trees combined to improve predictions. It is useful for building mode
+[004/100] core-eval-004: Deployment is finding structure in a model to make reads more usefully.
+[005/100] core-eval-005: Machine learning is a way that uses a model to learn patterns from data and make predictions based o
+[006/100] core-eval-006: You can use the user to start the user interface and match the user's goal to the user's code stay c
+[007/100] core-eval-007: Precision is how many predicted positives were actually correct. It is useful for building models th
+[008/100] core-eval-008: Document database is a set of records that can be changed. It helps keep data useful, reliable, or f
+[009/100] core-eval-009: Random forest is many decision trees combined to improve predictions. It is useful for building mode
+[010/100] core-eval-010: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[011/100] core-eval-011: Classification is a category for an input. It is useful for building models that work beyond one exa
+[012/100] core-eval-012: You can use the next token from previous tokens. It is part of how language models read prompts and 
+[013/100] core-eval-013: Precision is how many predicted positives were actually correct. It is useful for building models th
+[014/100] core-eval-014: Table is a simple result used for comparison. It is useful for building models that work beyond one 
+[015/100] core-eval-015: Random would be used to improve the data and make sure the data is unnecessary data.
+[016/100] core-eval-016: Rate limiting is controlling how many requests a client can make. It helps the system answer or act 
+[017/100] core-eval-017: Backup is a saved snapshot of changes in a single layer of an object or more than one unit. It helps
+[018/100] core-eval-018: To check the model is the model made of the desired answer. It is useful for building models that wo
+[019/100] core-eval-019: Precision is how many predicted positives were actually correct. It is useful for building models th
+[020/100] core-eval-020: Rollback is undoing a transaction when something fails. It is useful for building models that work b
+[021/100] core-eval-021: Cost is a tool that makes choices through simple branching rules. It helps the system answer or act 
+[022/100] core-eval-022: Knowledge representation is storing facts so software can use them while answering questions. It hel
+[023/100] core-eval-023: Artificial intelligence is the field of Artificial intelligence that focuses on the field of making 
+[024/100] core-eval-024: A machine learning algorithm is a set of instructions that can be used to solve a problem with each 
+[025/100] core-eval-025: Understanding is finding structure in data without labeled answers. It is useful for building models
+[026/100] core-eval-026: No, No, No, N, N, N, N, N, N, NN, NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+[027/100] core-eval-027: Good practice is to improve the task at a time. It helps the system answer or act more usefully.
+[028/100] core-eval-028: Neural network is a model made of layers of learned weights. It is useful for building models that w
+[029/100] core-eval-029: Data is a way that stores data stored on a database and retrieve data. It helps keep data useful, re
+[030/100] core-eval-030: Model updates is the training step. It is useful for building models that work beyond one example.
+[031/100] core-eval-031: Precision is how many predicted positives were actually correct. It is useful for building models th
+[032/100] core-eval-032: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[033/100] core-eval-033: Use slice for a budgeting trip. It helps the system answer or act more usefully.
+[034/100] core-eval-034: Random forest is predicting a number for an input. It is useful for building models that work beyond
+[035/100] core-eval-035: Data visualization is a model that uses a model to process and make reads while a prediction. It is 
+[036/100] core-eval-036: You can use the following steps: 1. Use the words to the words to the words to the words and the wor
+[037/100] core-eval-037: Pathlib is a group of objects. It is useful for building models that work beyond one example.
+[038/100] core-eval-038: Use slightly curve to store the desired outcome.
+[039/100] core-eval-039: Regularization is a technique that discourages overly complex models. It is useful for building mode
+[040/100] core-eval-040: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[041/100] core-eval-041: Module is a code that can be used to improve the user behavior. It helps teams build software that i
+[042/100] core-eval-042: The following are several examples of different types of different types of categories such as keywo
+[043/100] core-eval-043: A database index is a set of records that helps keep data useful, reliable, or fast to access.
+[044/100] core-eval-044: Ci is the process of using facts and steps to reach an answer. It helps the system answer or act mor
+[045/100] core-eval-045: None is one that makes one at a time. It helps the system answer or act more usefully.
+[046/100] core-eval-046: Poss is a vector that shows how language models read prompts and produce answers.
+[047/100] core-eval-047: For example, a program is the program follows: True if __name__ == '__main__'` check used for script
+[048/100] core-eval-048: The key steps for running a program. For example, a program should include the user to the user and 
+[049/100] core-eval-049: A simple result is a function that turns each item in a list. It helps Python code stay clear and pr
+[050/100] core-eval-050: I am Marshmello, I am Marshmello, and test for a small assistant trained to answer clearly and direc
+[051/100] core-eval-051: A good idea could be to make a new product or service could be a product or service that could be us
+[052/100] core-eval-052: Hallest index is a rule that prevents a token from seeing future tokens. It is part of how language 
+[053/100] core-eval-053: Use a program should be the program to check the program should be the program to check the loop thr
+[054/100] core-eval-054: Commit is important to improve the quality of the quality of the quality of the quality of the quali
+[055/100] core-eval-055: A simple result is a rule that prevents a program. It is part of how language models read prompts an
+[056/100] core-eval-056: Caching is choosing the next token from only the highest scoring options. It is part of how language
+[057/100] core-eval-057: A situation is that something that something that something is not a situation that something that i
+[058/100] core-eval-058: -tree index is a request for building models that work beyond one example. It helps the system answe
+[059/100] core-eval-059: Training data is examples used to teach a model useful patterns. It is useful for building models th
+[060/100] core-eval-060: The five most popular sports include the United States of the United States of the United States of 
+[061/100] core-eval-061: Use slicing: `def reverse_string(text): return text[:: -1]`. It returns a new string with the charac
+[062/100] core-eval-062: Pathlib is a small group of examples used to build software that is easier to change and operate.
+[063/100] core-eval-063: A virtual assistant is a field that uses language models read prompts and produce answers.
+[064/100] core-eval-064: A database index is a lookup structure that helps find rows faster.
+[065/100] core-eval-065: For example, a program is the program to check for the system is the model to make a final check aft
+[066/100] core-eval-066: The key steps for running a program. For example, a program should include the user to the user requ
+[067/100] core-eval-067: Module is a Python file that can be imported. It helps Python code stay clear and practical.
+[068/100] core-eval-068: Search is trying to find a good answer or path while choices are correctly. It is useful for buildin
+[069/100] core-eval-069: None is one that one at one at a time. It helps Python code stay clear and practical.
+[070/100] core-eval-070: Self-attenti on is a rule that prevents a token from seeing future tokens. It is part of how languag
+[071/100] core-eval-071: Data visualization is the size of each item to make sure the desired outcome. It helps keep data use
+[072/100] core-eval-072: None table is a rule for one example. It helps keep data useful, reliable, or fast to access.
+[073/100] core-eval-073: Training data is examples used to teach a model useful patterns. It is useful for building models th
+[074/100] core-eval-074: You can use it to store the desired answer. It helps the system answer or act more usefully.
+[075/100] core-eval-075: This is used to find the result of a model that makes choices through simple branching rules. It hel
+[076/100] core-eval-076: Primary key is a function that fails each function or method. It helps the system answer or act more
+[077/100] core-eval-077: Training data is the examples used to read prompts and identify patterns from data. It helps the sys
+[078/100] core-eval-078: None table is the most popular way for one kind of data. It helps keep data useful, reliable, or fas
+[079/100] core-eval-079: Model checkpoint is saved model weights from a training step. It is useful for building models that 
+[080/100] core-eval-080: Batch is a small group of examples processed together. It is useful for building models that work be
+[081/100] core-eval-081: A simple example of a person is a person who is always looking for a new language that would be a gr
+[082/100] core-eval-082: Cost is the best way to make a few minutes or run when something failure. It helps the system answer
+[083/100] core-eval-083: For example, a program is the program follows: True if the program == 0: return True if the program 
+[084/100] core-eval-084: The key steps for running a search engine optimization are: 1) the search engine optimization (2) 2)
+[085/100] core-eval-085: The model is a rule that prevents the model with each other. It is useful for building models that w
+[086/100] core-eval-086: To keep the result reliable, check for objects with the desired outcomes. It is useful for building 
+[087/100] core-eval-087: None is one that makes it easier to change and operate. It helps the system answer or act more usefu
+[088/100] core-eval-088: Cost is the process of steps for running a program. It helps the system answer or act more usefully.
+[089/100] core-eval-089: Data split is how clean, relevant, and correct the training examples used to read prompts and produc
+[090/100] core-eval-090: The key steps for running a program. The user should include the user interface and the user interfa
+[091/100] core-eval-091: A simple method is a user request for building models that work beyond one example.
+[092/100] core-eval-092: Convector represents a rule for one example. It is useful for building models that work beyond one e
+[093/100] core-eval-093: A database is a field that stores records as one or predictions that work beyond one example.
+[094/100] core-eval-094: Model checkpoint is saved model weights from a training step. It is useful for building models that 
+[095/100] core-eval-095: For example, a program should be the program should be able to check if the program should check if 
+[096/100] core-eval-096: The key steps for running a program. The user may include the user interface and the user interface 
+[097/100] core-eval-097: A database index is a set of columns for one kind of data. It helps keep data useful, reliable, or f
+[098/100] core-eval-098: Cach, reliable, or fast to access.
+[099/100] core-eval-099: None is one that makes one part of how much work beyond one example.
+[100/100] core-eval-100: Function is returning data in transformers? It is part of how language models read prompts and produ
+Concept accuracy:     15.0%
+Routing accuracy:     13.0%
+Exact answer overlap: 0.0%
+Keyword overlap:      5.5%
+Hallucination rate:   88.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_latest.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_latest.md
+Exact answer overlap: 0.0%
+Keyword overlap:      5.5%
+Hallucination rate:   88.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_latest.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_teacher_latest.md
+Best teacher checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt routing=0.13 (baseline=0.10)
+Best teacher checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt routing=0.13 (baseline=0.10)
+Updated best_18j_routing.pt from 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Updated best_18j_routing.pt from 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+=== Short core SFT from best teacher ===
+=== Short core SFT from best teacher ===
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Building model on mps...
+Loading base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Loading base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.557098
+  first embedding norm after:   0.550127
+  first embedding norm delta:   -0.006971
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.557098
+  first embedding norm after:   0.550127
+  first embedding norm delta:   -0.006971
+Loading SFT data: 18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Loading SFT data: 18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Decode sanity check:
+Decode sanity check:
+  example 1:
+    original: <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    decoded:  <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 1:
+    original: <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    decoded:  <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    decoded:  <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    decoded:  <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    decoded:  <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+  example 3:
+    original: <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    decoded:  <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            train
+Device:          mps
+Base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Base step:       400
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Train examples:  1,140
+Val examples:    60
+Learning rate:   5.00e-07
+Grad clip norm:  1.0
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            train
+Device:          mps
+Base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Base step:       400
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Train examples:  1,140
+Val examples:    60
+Learning rate:   5.00e-07
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+step     1 | train loss 4.4374 | 3,393 tok/s
+step     1 | train loss 4.4374 | 3,393 tok/s
+step    10 | train loss 5.5367 | 19,234 tok/s
+step    10 | train loss 5.5367 | 19,234 tok/s
+step    20 | train loss 5.3391 | 19,040 tok/s
+step    20 | train loss 5.3391 | 19,040 tok/s
+step    30 | train loss 4.6619 | 19,042 tok/s
+step    30 | train loss 4.6619 | 19,042 tok/s
+step    40 | train loss 4.9011 | 18,957 tok/s
+step    40 | train loss 4.9011 | 18,957 tok/s
+step    50 | train loss 4.8354 | 19,002 tok/s
+step    50 | train loss 4.8354 | 19,002 tok/s
+step    60 | train loss 4.7088 | 19,104 tok/s
+step    60 | train loss 4.7088 | 19,104 tok/s
+step    70 | train loss 4.5604 | 18,868 tok/s
+step    70 | train loss 4.5604 | 18,868 tok/s
+step    80 | train loss 4.9153 | 18,859 tok/s
+step    80 | train loss 4.9153 | 18,859 tok/s
+step    90 | train loss 4.8623 | 19,142 tok/s
+step    90 | train loss 4.8623 | 19,142 tok/s
+step   100 | train loss 3.5300 | 19,162 tok/s
+  running eval...
+step   100 | train loss 3.5300 | 19,162 tok/s
+  running eval...
+  eval step 100 | train loss 4.1105 | val loss 3.7993 | best val 3.7993 | avg 17,304 tok/s
+  generation eval step 100:
+  eval step 100 | train loss 4.1105 | val loss 3.7993 | best val 3.7993 | avg 17,304 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+step   110 | train loss 3.3593 | 19,198 tok/s
+step   110 | train loss 3.3593 | 19,198 tok/s
+step   120 | train loss 3.8509 | 19,224 tok/s
+step   120 | train loss 3.8509 | 19,224 tok/s
+step   130 | train loss 4.0536 | 19,103 tok/s
+step   130 | train loss 4.0536 | 19,103 tok/s
+step   140 | train loss 4.1593 | 19,023 tok/s
+step   140 | train loss 4.1593 | 19,023 tok/s
+step   150 | train loss 4.1098 | 19,025 tok/s
+step   150 | train loss 4.1098 | 19,025 tok/s
+step   160 | train loss 3.0772 | 18,936 tok/s
+step   160 | train loss 3.0772 | 18,936 tok/s
+step   170 | train loss 4.1136 | 19,247 tok/s
+step   170 | train loss 4.1136 | 19,247 tok/s
+step   180 | train loss 4.0766 | 19,148 tok/s
+step   180 | train loss 4.0766 | 19,148 tok/s
+step   190 | train loss 4.0303 | 19,265 tok/s
+step   190 | train loss 4.0303 | 19,265 tok/s
+step   200 | train loss 4.0096 | 19,319 tok/s
+  running eval...
+step   200 | train loss 4.0096 | 19,319 tok/s
+  running eval...
+  eval step 200 | train loss 3.7124 | val loss 4.3037 | best val 3.7993 | avg 15,794 tok/s
+  generation eval step 200:
+  eval step 200 | train loss 3.7124 | val loss 4.3037 | best val 3.7993 | avg 15,794 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+  saving latest checkpoint...
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+Validated 1200 SFT examples and 100 held-out questions
+[001/100] core-eval-001: A neural network is a model that uses a model to process and make predictions.
+[002/100] core-eval-002: A neural network is a set of data that uses a neural network to process data and make predictions.
+[003/100] core-eval-003: A virtual assistant can be used to improve customer data from one task at a time. A virtual assistan
+[004/100] core-eval-004: Unsupervised learning is finding structure in data without labeled answers. It helps the system answ
+[005/100] core-eval-005: A neural network is a process that uses a neural network to process and make a prediction. A neural 
+[006/100] core-eval-006: A computer system can be used to detect objects in a variety of tasks such as image recognition, ima
+[007/100] core-eval-007: A neural network is a model that uses a branch of layers of learned weights. It is useful for buildi
+[008/100] core-eval-008: A database index is a set of columns, and a network (a network () () () () () () () () () () () () (
+[009/100] core-eval-009: A virtual assistant can be used to automate tasks such as virtual assistant answers, and even instal
+[010/100] core-eval-010: Model updates is new training or tuning that improves a deployed model. It helps the system answer o
+[011/100] core-eval-011: A database is a database that stores records as a database that stores records as a database to stor
+[012/100] core-eval-012: A group of two different types of data are the data and the data points that are the data and the da
+[013/100] core-eval-013: A neural network is a model that uses the model to process a prediction.
+[014/100] core-eval-014: A list of items that are used to store items such as stocks, bunks, bowl or bubblock stops, or bubbl
+[015/100] core-eval-015: A person who is a person who is always looking for a person who is always looking for a new team.
+[016/100] core-eval-016: A database index is a lookup structure that helps find rows faster.
+[017/100] core-eval-017: A neural network is a type of neural network that uses a neural network architecture that uses a neu
+[018/100] core-eval-018: A database index is a set of columns for the next token. A database index is a set of columns for on
+[019/100] core-eval-019: A neural network is a model that uses a model to process and make predictions.
+[020/100] core-eval-020: A list of the following are three most popular sports in the United States are the United States and
+[021/100] core-eval-021: A good idea could be used to help people learn patterns and make informed decisions.
+[022/100] core-eval-022: A database is a database that stores records as document-like objects. It helps the system answer or
+[023/100] core-eval-023: Artificial intelligence is the field of Artificial intelligence that focuses on the field of Artific
+[024/100] core-eval-024: A machine learning algorithm to detect spam emails and then use the input to the input data to the i
+[025/100] core-eval-025: A neural network is a model that uses a neural network to process data and make predictions.
+[026/100] core-eval-026: A neural network is used to learn patterns and make predictions based on the data.
+[027/100] core-eval-027: A virtual assistant can be used to improve customer service and provide personalized recommendations
+[028/100] core-eval-028: A neural network is a model made of layers of learned weights. It is useful for building models that
+[029/100] core-eval-029: A database is a database that stores records as a database that stores records as document-like obje
+[030/100] core-eval-030: A database is a set of records as a sequence. A database is a set of data structure that stores each
+[031/100] core-eval-031: A neural network is a model made of learned weights. It is useful for building models that work beyo
+[032/100] core-eval-032: A database index is a set of columns for a database. A database is a database that stores records as
+[033/100] core-eval-033: A virtual assistant to answer data from one task at a task. The user can also be used to install dep
+[034/100] core-eval-034: Regression is predicting a number for an input. It is useful for building models that work beyond on
+[035/100] core-eval-035: A database index is a lookup structure that uses a training step. A database is a lookup structure t
+[036/100] core-eval-036: A group of different types of data are used to create predictive models. A data set of data can be u
+[037/100] core-eval-037: A neural network is a model that uses a neural network to process and make predictions.
+[038/100] core-eval-038: A database index is a lookup structure that helps keep data useful, reliable, or fast to access.
+[039/100] core-eval-039: A good idea could be used to improve customer data such as data and video.
+[040/100] core-eval-040: A database index is a lookup structure that helps find rows faster.
+[041/100] core-eval-041: A program should be the program to the program to the program to the program to the program to the p
+[042/100] core-eval-042: A database rules for data from data from a database. A database index is a set of rows and column.
+[043/100] core-eval-043: A database index is a set of data to store data from a database. A database index optimized columns 
+[044/100] core-eval-044: A neural network is a way for one program to request data or actions from another program.
+[045/100] core-eval-045: A neural network is a type of computer that uses a computer to perform a computer to perform a compu
+[046/100] core-eval-046: A database index is a lookup structure that helps find rows faster.
+[047/100] core-eval-047: A program to build a program to store the program to identify the program to the program to the prog
+[048/100] core-eval-048: A rule for a variety of methods such as keyword or a field. It should also be used to create a varie
+[049/100] core-eval-049: A database index is a set of data to store data from a database. A database is a database that store
+[050/100] core-eval-050: A small group is that makes me more easier. It is useful for building models that work beyond one ex
+[051/100] core-eval-051: A database system can be used to store and retrieved data from a database. A database is a database 
+[052/100] core-eval-052: A database index is a rule that prevents duplicate values from a field. It helps keep data useful, r
+[053/100] core-eval-053: A program should be the program should be able to check the program to the program should be able to
+[054/100] core-eval-054: A database index is a set of rules for each other. It is useful for building models that work beyond
+[055/100] core-eval-055: A database index is a set of columns for the next value of the next value of the next value of the n
+[056/100] core-eval-056: A neural network is a way for building models that work beyond one example.
+[057/100] core-eval-057: A situation is a tool that allows users to search for a search engine results. A search engine optim
+[058/100] core-eval-058: A transformer can be used to sort a model. It is part of how language models read prompts and produc
+[059/100] core-eval-059: A program should be the program should be able to check the model the model should be able to compar
+[060/100] core-eval-060: A database index is a set of columns for the following steps: FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[061/100] core-eval-061: A database table to store the input data from a database. This data is used to store data from a dat
+[062/100] core-eval-062: A small group of examples for a variety of tasks such as hashing, hashing, and hashing.
+[063/100] core-eval-063: A database is a field that uses a model to process a sequence. A database is a trained model to make
+[064/100] core-eval-064: A database index is a lookup structure that helps find rows faster.
+[065/100] core-eval-065: A program is the program to make a program follows: 1. A loop to the program to the program to the p
+[066/100] core-eval-066: A rule for a field. It should also include the user interface and the user interface to the user int
+[067/100] core-eval-067: A database index is a table that stores records as document-like objects, and incorrect class object
+[068/100] core-eval-068: A neural network is a model that uses a token sequences or weights. It is useful for building models
+[069/100] core-eval-069: A virtual assistant is an input that uses a model to a branch of an answer. It is useful for buildin
+[070/100] core-eval-070: A database index is a lookup structure that helps find rows faster.
+[071/100] core-eval-071: A database index is a set of columns for selecting data from a database. A database index is a set o
+[072/100] core-eval-072: A database index is a set of columns for the following steps: A phone number, a phone number, a phon
+[073/100] core-eval-073: A database index is a set of columns for the structure of the structure of the column column (ns, an
+[074/100] core-eval-074: A simple rules for a search toward would be to find the next token from the next token from the high
+[075/100] core-eval-075: A database index is a set of rules that can be changed. A database index is a set of columns for rel
+[076/100] core-eval-076: A good idea for a project is to store information and identifies on the data. A data is to store inf
+[077/100] core-eval-077: A program should be the program to check the program to the program to the program to the program to
+[078/100] core-eval-078: A database index is a set of instructions for building models that work beyond one example.
+[079/100] core-eval-079: A database is a database that stores records as document-like objects, and a database to store the d
+[080/100] core-eval-080: Batch is a small group of examples processed together. It is useful for building models that work be
+[081/100] core-eval-081: A database index is a lookup structure that helps find rows faster. A database reads but can make wr
+[082/100] core-eval-082: A simple solution is to repositorous training examples that may help you understand the desired outc
+[083/100] core-eval-083: A program should be the program to check the program to the program to the program to the program to
+[084/100] core-eval-084: A database index should include a table that stores records as a table to the input and the data. It
+[085/100] core-eval-085: A database index is a set of columns for the next value of the next value of the next value of the n
+[086/100] core-eval-086: A simple rules for a general pattern. This can be used to create visual and create a variety of task
+[087/100] core-eval-087: A virtual assistant can help with a virtual assistant answers on a virtual assistant to answer or ac
+[088/100] core-eval-088: A database index is a table that stores records as document-like objects. It helps Python code stay 
+[089/100] core-eval-089: A database index is a set of instructions that can be used to sort the next value of each item to th
+[090/100] core-eval-090: A database index is a set of columns for the following steps: FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[091/100] core-eval-091: A database index is a set of data from another database to store data from a database. A database in
+[092/100] core-eval-092: A database is a type of rules that reads through simple rules and objects. It is useful for building
+[093/100] core-eval-093: A database is a database that stores records as document-like objects. It helps keep data useful, re
+[094/100] core-eval-094: A database index is a lookup structure that helps find rows faster. A database index is a lookup str
+[095/100] core-eval-095: A program should be the program to the program to the program to the program to the program to the p
+[096/100] core-eval-096: A database index is a set of records as a set of step. A database index is a set of columns for the 
+[097/100] core-eval-097: A database index is a set of columns for the next value of the next value of the next value of the n
+[098/100] core-eval-098: A bulleted list of the most popular sports include the most popular sports include the Sweake, Sweak
+[099/100] core-eval-099: A database is a field that stores data stored on a network and retrieves the data from a network to 
+[100/100] core-eval-100: A list of items that can be used to store a user interface for a user interface for a user interface
+Concept accuracy:     11.0%
+Routing accuracy:     6.0%
+Exact answer overlap: 0.0%
+Keyword overlap:      4.5%
+Hallucination rate:   96.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_core_after_teacher.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_core_after_teacher.md
+Exact answer overlap: 0.0%
+Keyword overlap:      4.5%
+Hallucination rate:   96.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_core_after_teacher.json
+Markdown report: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z/18j_core_after_teacher.md
+/Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/reports/archive/run_20260620T101650Z
+Best routing: 13.0%
+Done iteration run_20260620T101650Z
+Done iteration run_20260620T101650Z
+=== Teacher continue 400 from best_score ===
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.567514
+  first embedding norm after:   0.550127
+  first embedding norm delta:   -0.017387
+Loading SFT data: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    decoded:  <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    decoded:  <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. It helps the system answer or act more usefully. <END>
+    decoded:  <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. It helps the system answer or act more usefully. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            teacher
+Device:          mps
+Base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt
+Base step:       400
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher.jsonl
+Train examples:  237
+Val examples:    13
+Learning rate:   2.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+
+Existing teacher best val loss: 0.3451
+Existing teacher best keyword score: 1.0000
+step     1 | train loss 0.7470 | 3,539 tok/s
+step    10 | train loss 0.4976 | 19,183 tok/s
+step    20 | train loss 0.2039 | 19,283 tok/s
+step    30 | train loss 0.5157 | 19,266 tok/s
+step    40 | train loss 0.4662 | 19,241 tok/s
+step    50 | train loss 0.5736 | 19,081 tok/s
+step    60 | train loss 0.3962 | 19,083 tok/s
+step    70 | train loss 0.2847 | 19,187 tok/s
+step    80 | train loss 0.5294 | 19,341 tok/s
+step    90 | train loss 0.3584 | 19,166 tok/s
+step   100 | train loss 0.4005 | 19,230 tok/s
+  running eval...
+  eval step 100 | train loss 0.0926 | val loss 0.4469 | best val 0.3451 | avg 17,318 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+step   110 | train loss 0.3780 | 19,151 tok/s
+step   120 | train loss 0.6309 | 18,992 tok/s
+step   130 | train loss 0.2384 | 19,009 tok/s
+step   140 | train loss 0.5315 | 19,054 tok/s
+step   150 | train loss 0.2584 | 19,152 tok/s
+step   160 | train loss 0.4539 | 19,133 tok/s
+step   170 | train loss 0.3351 | 19,084 tok/s
+step   180 | train loss 0.3919 | 19,127 tok/s
+step   190 | train loss 0.3546 | 19,154 tok/s
+step   200 | train loss 0.2737 | 18,589 tok/s
+  running eval...
+  eval step 200 | train loss 0.0788 | val loss 0.4469 | best val 0.3451 | avg 15,539 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+step   210 | train loss 0.2335 | 19,236 tok/s
+step   220 | train loss 0.4024 | 19,105 tok/s
+step   230 | train loss 0.2238 | 19,025 tok/s
+step   240 | train loss 0.3808 | 19,250 tok/s
+step   250 | train loss 0.2925 | 19,261 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   260 | train loss 0.4532 | 19,134 tok/s
+step   270 | train loss 0.4321 | 19,065 tok/s
+step   280 | train loss 0.3909 | 19,052 tok/s
+step   290 | train loss 0.6899 | 19,127 tok/s
+step   300 | train loss 0.5420 | 19,112 tok/s
+  running eval...
+  eval step 300 | train loss 0.0668 | val loss 0.5699 | best val 0.3451 | avg 15,451 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+step   310 | train loss 0.4782 | 19,238 tok/s
+step   320 | train loss 0.3785 | 19,141 tok/s
+step   330 | train loss 0.3134 | 19,015 tok/s
+step   340 | train loss 0.1823 | 18,713 tok/s
+step   350 | train loss 0.3214 | 18,767 tok/s
+step   360 | train loss 0.7192 | 18,627 tok/s
+step   370 | train loss 0.4228 | 18,651 tok/s
+step   380 | train loss 0.2947 | 18,679 tok/s
+step   390 | train loss 0.2386 | 18,443 tok/s
+step   400 | train loss 0.4709 | 18,647 tok/s
+  running eval...
+  saving teacher best val checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt (631.9 MB)
+  eval step 400 | train loss 0.0584 | val loss 0.3416 | best val 0.3416 | avg 15,335 tok/s
+  generation eval step 400:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Attention lets a model choose which earlier tokens matter most when producing the next token.
+    exact_start_match: True
+    keyword_overlap:   12/12 (1.00) ['attention', 'choose', 'earlier', 'let', 'matter', 'model', 'most', 'next', 'producing', 'token', 'when', 'which']
+    repeated_3gram:    False
+  teacher keyword score: 1.0000
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt

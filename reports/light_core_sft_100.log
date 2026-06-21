@@ -1,0 +1,70 @@
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.579122
+  first embedding norm after:   0.550108
+  first embedding norm delta:   -0.029014
+Loading SFT data: 18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    decoded:  <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    decoded:  <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    decoded:  <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            train
+Device:          mps
+Base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+Base step:       800
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Train examples:  1,140
+Val examples:    60
+Learning rate:   5.00e-07
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+step     1 | train loss 3.6488 | 3,404 tok/s
+step    10 | train loss 2.8376 | 19,114 tok/s
+step    20 | train loss 3.7389 | 19,107 tok/s
+step    30 | train loss 3.6549 | 19,084 tok/s
+step    40 | train loss 3.5099 | 19,073 tok/s
+step    50 | train loss 3.6186 | 19,170 tok/s
+step    60 | train loss 3.0979 | 19,035 tok/s
+step    70 | train loss 3.5576 | 19,199 tok/s
+step    80 | train loss 3.4930 | 18,914 tok/s
+step    90 | train loss 3.8865 | 19,114 tok/s
+step   100 | train loss 3.5623 | 19,074 tok/s
+  running eval...
+  eval step 100 | train loss 3.1539 | val loss 3.1293 | best val 3.1293 | avg 17,289 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: Tokenization is the process of using a sequence to another task.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that speeds rows but can make writes slightly slower.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt

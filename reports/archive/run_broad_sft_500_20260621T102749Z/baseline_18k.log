@@ -1,0 +1,7 @@
+=== Baseline 18K (best_18j_routing) ===
+Keyword recall:           2.2%
+Reference token overlap:  10.5%
+Domain score:             21.8%
+Hallucination proxy:      68.2%
+JSON results: reports/archive/run_broad_sft_500_20260621T102749Z/18k_baseline_best.json
+Markdown report: reports/archive/run_broad_sft_500_20260621T102749Z/18k_baseline_best.md

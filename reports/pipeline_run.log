@@ -1,0 +1,578 @@
+=== Marshmello instruct pipeline ===
+Started: Sat Jun 20 08:48:41 UTC 2026
+
+--- Step 2: Teacher SFT (18E) ---
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.542657
+  first embedding norm after:   0.550422
+  first embedding norm delta:   +0.007764
+Loading SFT data: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    decoded:  <USER> What is AI? <ASSISTANT> AI is software that helps computers do tasks that usually need human thinking. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    decoded:  <USER> Who are you? <ASSISTANT> I am Marshmello, a small assistant trained to answer clearly and directly. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. It helps the system answer or act more usefully. <END>
+    decoded:  <USER> What does artificial intelligence mean in AI? <ASSISTANT> Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use. It helps the system answer or act more usefully. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            teacher
+Device:          mps
+Base checkpoint: 13_gpt_pretraining/checkpoints/large_50m/latest.pt
+Base step:       8500
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/data/teacher.jsonl
+Train examples:  237
+Val examples:    13
+Learning rate:   5.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+
+Existing teacher best val loss: 0.9751
+Existing teacher best keyword score: 0.4167
+step     1 | train loss 1.1349 | 2,878 tok/s
+step    10 | train loss 0.8095 | 19,044 tok/s
+step    20 | train loss 1.0328 | 19,129 tok/s
+step    30 | train loss 1.0041 | 19,051 tok/s
+step    40 | train loss 1.0076 | 19,047 tok/s
+step    50 | train loss 0.7115 | 19,068 tok/s
+step    60 | train loss 1.0491 | 19,053 tok/s
+step    70 | train loss 1.1083 | 19,018 tok/s
+step    80 | train loss 1.1316 | 19,022 tok/s
+step    90 | train loss 0.7567 | 18,999 tok/s
+step   100 | train loss 0.7763 | 19,045 tok/s
+  running eval...
+  saving teacher best val checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt (631.9 MB)
+  eval step 100 | train loss 0.5735 | val loss 0.5131 | best val 0.5131 | avg 15,955 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is software that helps teams build software that is easier to change and operate.
+    exact_start_match: False
+    keyword_overlap:   2/8 (0.25) ['help', 'software']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmelon is a small assistant trained to answer clearly and directly.
+    exact_start_match: False
+    keyword_overlap:   6/7 (0.86) ['answer', 'assistant', 'clearly', 'directly', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Embedding is a learned vector representation of a token. It helps keep data useful, reliable, or fast to access.
+    exact_start_match: False
+    keyword_overlap:   1/12 (0.08) ['token']
+    repeated_3gram:    False
+  teacher keyword score: 0.5476
+  teacher keyword score improved 0.4167 -> 0.5476
+  saving teacher best score checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt (631.9 MB)
+step   110 | train loss 0.9125 | 19,196 tok/s
+step   120 | train loss 0.6027 | 18,948 tok/s
+step   130 | train loss 0.6489 | 19,092 tok/s
+step   140 | train loss 0.4177 | 19,030 tok/s
+step   150 | train loss 0.7489 | 19,207 tok/s
+step   160 | train loss 0.7306 | 19,197 tok/s
+step   170 | train loss 0.9400 | 19,185 tok/s
+step   180 | train loss 0.3260 | 19,177 tok/s
+step   190 | train loss 0.6380 | 19,103 tok/s
+step   200 | train loss 0.6071 | 19,203 tok/s
+  running eval...
+  saving teacher best val checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt (631.9 MB)
+  eval step 200 | train loss 0.2959 | val loss 0.4988 | best val 0.4988 | avg 13,818 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Classification is predicting a category for an input. It is useful for building models that work beyond one example.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am a small assistant trained to answer clearly and directly.
+    exact_start_match: False
+    keyword_overlap:   6/7 (0.86) ['answer', 'assistant', 'clearly', 'directly', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Embedding is a learned vector representation of a token. It is part of how language models read prompts and produce answers.
+    exact_start_match: False
+    keyword_overlap:   2/12 (0.17) ['model', 'token']
+    repeated_3gram:    False
+  teacher keyword score: 0.5060
+step   210 | train loss 0.9500 | 19,216 tok/s
+step   220 | train loss 0.3294 | 19,041 tok/s
+step   230 | train loss 0.6404 | 19,366 tok/s
+step   240 | train loss 0.9038 | 18,886 tok/s
+step   250 | train loss 0.5643 | 19,177 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+step   260 | train loss 0.5780 | 19,128 tok/s
+step   270 | train loss 0.4783 | 18,960 tok/s
+step   280 | train loss 0.6125 | 19,135 tok/s
+step   290 | train loss 0.9390 | 19,103 tok/s
+step   300 | train loss 0.6226 | 19,126 tok/s
+  running eval...
+  saving teacher best val checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_val.pt (631.9 MB)
+  eval step 300 | train loss 0.2312 | val loss 0.4683 | best val 0.4683 | avg 13,933 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Classification is predicting a category for an input. It is useful for building models that work beyond one example.
+    exact_start_match: False
+    keyword_overlap:   0/8 (0.00) []
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Embedding is a learned vector representation of a token. It is part of how language models read prompts and produce answers.
+    exact_start_match: False
+    keyword_overlap:   2/12 (0.17) ['model', 'token']
+    repeated_3gram:    False
+  teacher keyword score: 0.5417
+step   310 | train loss 0.5139 | 19,032 tok/s
+step   320 | train loss 0.6834 | 19,248 tok/s
+step   330 | train loss 0.5544 | 19,271 tok/s
+step   340 | train loss 0.4852 | 18,978 tok/s
+step   350 | train loss 0.7619 | 19,254 tok/s
+step   360 | train loss 0.7013 | 19,032 tok/s
+step   370 | train loss 0.6223 | 18,963 tok/s
+step   380 | train loss 0.8088 | 19,189 tok/s
+step   390 | train loss 0.5323 | 19,131 tok/s
+step   400 | train loss 0.5732 | 19,136 tok/s
+  running eval...
+  eval step 400 | train loss 0.2060 | val loss 0.6351 | best val 0.4683 | avg 14,368 tok/s
+  generation eval step 400:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: Model is software that helps teams build software that is easier to change and operate.
+    exact_start_match: False
+    keyword_overlap:   2/8 (0.25) ['help', 'software']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Regression is predicting a number for an input. It is useful for building models that work beyond one example.
+    exact_start_match: False
+    keyword_overlap:   1/12 (0.08) ['model']
+    repeated_3gram:    False
+  teacher keyword score: 0.5833
+  teacher keyword score improved 0.5476 -> 0.5833
+  saving teacher best score checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt (631.9 MB)
+step   410 | train loss 0.3713 | 19,047 tok/s
+step   420 | train loss 0.6091 | 19,126 tok/s
+step   430 | train loss 0.3519 | 18,702 tok/s
+step   440 | train loss 0.6775 | 18,860 tok/s
+step   450 | train loss 0.4814 | 18,834 tok/s
+step   460 | train loss 0.6410 | 18,548 tok/s
+step   470 | train loss 0.4739 | 18,707 tok/s
+step   480 | train loss 0.4451 | 18,524 tok/s
+step   490 | train loss 0.2646 | 18,403 tok/s
+step   500 | train loss 0.5904 | 18,583 tok/s
+  running eval...
+  eval step 500 | train loss 0.0966 | val loss 0.5425 | best val 0.4683 | avg 14,496 tok/s
+  generation eval step 500:
+    Q: What is AI?
+    Target:    AI is software that helps computers do tasks that usually need human thinking.
+    Generated: AI is software that helps computers do tasks that usually need human thinking.
+    exact_start_match: True
+    keyword_overlap:   8/8 (1.00) ['computer', 'help', 'human', 'need', 'software', 'task', 'thinking', 'usually']
+    repeated_3gram:    False
+    Q: Who are you?
+    Target:    I am Marshmello, a small assistant trained to answer clearly and directly.
+    Generated: I am Marshmello, a small assistant trained to answer clearly and directly.
+    exact_start_match: True
+    keyword_overlap:   7/7 (1.00) ['answer', 'assistant', 'clearly', 'directly', 'marshmello', 'small', 'trained']
+    repeated_3gram:    False
+    Q: Explain database indexes.
+    Target:    A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    Generated: A database index is a lookup structure that helps find rows faster. It speeds reads but can make writes slightly slower.
+    exact_start_match: True
+    keyword_overlap:   14/14 (1.00) ['database', 'faster', 'find', 'help', 'index', 'lookup', 'make', 'read', 'row', 'slightly', 'slower', 'speed', 'structure', 'write']
+    repeated_3gram:    False
+    Q: What is attention?
+    Target:    Attention lets a model choose which earlier tokens matter most when producing the next token.
+    Generated: Embedding is a learned vector representation of a token. It is useful for building models that work beyond one example.
+    exact_start_match: False
+    keyword_overlap:   2/12 (0.17) ['model', 'token']
+    repeated_3gram:    False
+  teacher keyword score: 0.7917
+  teacher keyword score improved 0.5833 -> 0.7917
+  saving teacher best score checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_best_score.pt (631.9 MB)
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+
+--- Step 3: Routing fix (18I) ---
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.547629
+  first embedding norm after:   0.550398
+  first embedding norm delta:   +0.002769
+Loading SFT data: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/data/routing_teacher.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> What is AI? <ASSISTANT> AI is software that performs tasks that normally need human thinking. <END>
+    decoded:  <USER> What is AI? <ASSISTANT> AI is software that performs tasks that normally need human thinking. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Define artificial intelligence. <ASSISTANT> AI lets computers do tasks that usually need human intelligence. <END>
+    decoded:  <USER> Define artificial intelligence. <ASSISTANT> AI lets computers do tasks that usually need human intelligence. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> What does AI mean? <ASSISTANT> Artificial intelligence is the field of building machines that can reason. <END>
+    decoded:  <USER> What does AI mean? <ASSISTANT> Artificial intelligence is the field of building machines that can reason. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            routing
+Device:          mps
+Base checkpoint: 18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+Base step:       500
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/data/routing_teacher.jsonl
+Train examples:  256
+Val examples:    14
+Learning rate:   3.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt
+
+step     1 | train loss 4.2136 | 2,893 tok/s
+step    10 | train loss 5.3161 | 19,173 tok/s
+step    20 | train loss 2.8755 | 19,241 tok/s
+step    30 | train loss 2.4720 | 18,409 tok/s
+step    40 | train loss 3.3383 | 19,066 tok/s
+step    50 | train loss 3.0062 | 19,120 tok/s
+step    60 | train loss 3.1969 | 19,137 tok/s
+step    70 | train loss 1.8424 | 19,114 tok/s
+step    80 | train loss 2.2870 | 19,067 tok/s
+step    90 | train loss 2.1357 | 18,949 tok/s
+step   100 | train loss 3.0349 | 19,072 tok/s
+  running eval...
+  eval step 100 | train loss 2.0751 | val loss 2.8419 | best val 2.8419 | avg 17,066 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   110 | train loss 2.8346 | 18,636 tok/s
+step   120 | train loss 2.4109 | 18,928 tok/s
+step   130 | train loss 1.3859 | 18,952 tok/s
+step   140 | train loss 2.3365 | 18,681 tok/s
+step   150 | train loss 2.3441 | 19,153 tok/s
+step   160 | train loss 1.4702 | 19,100 tok/s
+step   170 | train loss 1.5419 | 19,086 tok/s
+step   180 | train loss 3.4112 | 18,943 tok/s
+step   190 | train loss 1.6330 | 18,981 tok/s
+step   200 | train loss 2.3522 | 19,009 tok/s
+  running eval...
+  eval step 200 | train loss 1.5908 | val loss 2.5036 | best val 2.5036 | avg 16,237 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   210 | train loss 3.2955 | 19,080 tok/s
+step   220 | train loss 1.5387 | 19,013 tok/s
+step   230 | train loss 1.3212 | 18,656 tok/s
+step   240 | train loss 2.5453 | 18,776 tok/s
+step   250 | train loss 1.5577 | 18,857 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt (631.9 MB)
+step   260 | train loss 2.5504 | 18,951 tok/s
+step   270 | train loss 2.1354 | 19,059 tok/s
+step   280 | train loss 1.3689 | 19,112 tok/s
+step   290 | train loss 1.5549 | 19,052 tok/s
+step   300 | train loss 1.4474 | 19,110 tok/s
+  running eval...
+  eval step 300 | train loss 1.3893 | val loss 2.5668 | best val 2.5036 | avg 16,239 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that usually need human thinking.
+    Q: Explain database indexes.
+    A: A database index database index built from rows to store data.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18I_routing_teacher_fix/checkpoints/routing_latest.pt
+
+--- Step 4: Core SFT (18J) ---
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18I_routing_teacher_fix/checkpoints/routing_latest.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.558661
+  first embedding norm after:   0.550384
+  first embedding norm delta:   -0.008277
+Loading SFT data: 18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    decoded:  <USER> Explain AI in simple terms. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    decoded:  <USER> How is artificial intelligence different from database? <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. A database stores and retrieves information...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    decoded:  <USER> Compare artificial intelligence with machine learning. <ASSISTANT> Artificial intelligence is the field of building systems that perform tasks requiring reasoning, perception, learning, or decision-making. AI is the broader field; machine learning is...
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            train
+Device:          mps
+Base checkpoint: 18I_routing_teacher_fix/checkpoints/routing_latest.pt
+Base step:       300
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18J_marshmello_core_sft/data/marshmello_core_sft.jsonl
+Train examples:  1,140
+Val examples:    60
+Learning rate:   1.00e-06
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+step     1 | train loss 5.1740 | 2,928 tok/s
+step    10 | train loss 4.6363 | 19,209 tok/s
+step    20 | train loss 4.9990 | 19,215 tok/s
+step    30 | train loss 5.2518 | 18,935 tok/s
+step    40 | train loss 5.0640 | 19,136 tok/s
+step    50 | train loss 5.1195 | 18,981 tok/s
+step    60 | train loss 4.7367 | 19,101 tok/s
+step    70 | train loss 4.4802 | 19,058 tok/s
+step    80 | train loss 5.0052 | 19,132 tok/s
+step    90 | train loss 4.3901 | 19,072 tok/s
+step   100 | train loss 4.8238 | 18,965 tok/s
+  running eval...
+  eval step 100 | train loss 4.3472 | val loss 4.4176 | best val 4.4176 | avg 17,148 tok/s
+  generation eval step 100:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   110 | train loss 3.7754 | 19,219 tok/s
+step   120 | train loss 3.9280 | 18,924 tok/s
+step   130 | train loss 4.7380 | 19,031 tok/s
+step   140 | train loss 4.4026 | 18,995 tok/s
+step   150 | train loss 4.5181 | 19,093 tok/s
+step   160 | train loss 4.7364 | 19,026 tok/s
+step   170 | train loss 4.1353 | 19,038 tok/s
+step   180 | train loss 3.5344 | 18,931 tok/s
+step   190 | train loss 3.7503 | 19,134 tok/s
+step   200 | train loss 4.1404 | 17,860 tok/s
+  running eval...
+  eval step 200 | train loss 4.1202 | val loss 4.1466 | best val 4.1466 | avg 16,361 tok/s
+  generation eval step 200:
+    Q: What is AI?
+    A: AI is software that helps computers do tasks that need human thinking.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   210 | train loss 3.9095 | 18,712 tok/s
+step   220 | train loss 3.7468 | 19,071 tok/s
+step   230 | train loss 4.1322 | 19,116 tok/s
+step   240 | train loss 3.9701 | 18,783 tok/s
+step   250 | train loss 5.0604 | 18,937 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+step   260 | train loss 3.8520 | 19,048 tok/s
+step   270 | train loss 4.2542 | 19,044 tok/s
+step   280 | train loss 4.2429 | 19,156 tok/s
+step   290 | train loss 4.2037 | 19,129 tok/s
+step   300 | train loss 4.0754 | 19,195 tok/s
+  running eval...
+  eval step 300 | train loss 4.2466 | val loss 4.1186 | best val 4.1186 | avg 16,351 tok/s
+  generation eval step 300:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   310 | train loss 3.9674 | 19,221 tok/s
+step   320 | train loss 4.4074 | 18,776 tok/s
+step   330 | train loss 3.9302 | 18,968 tok/s
+step   340 | train loss 4.1456 | 19,108 tok/s
+step   350 | train loss 4.4975 | 19,024 tok/s
+step   360 | train loss 3.5788 | 19,063 tok/s
+step   370 | train loss 4.3273 | 19,110 tok/s
+step   380 | train loss 4.1150 | 19,044 tok/s
+step   390 | train loss 4.3702 | 19,154 tok/s
+step   400 | train loss 4.5710 | 19,149 tok/s
+  running eval...
+  eval step 400 | train loss 3.9394 | val loss 3.9578 | best val 3.9578 | avg 16,609 tok/s
+  generation eval step 400:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning or pattern use.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   410 | train loss 3.9334 | 19,013 tok/s
+step   420 | train loss 4.2768 | 19,029 tok/s
+step   430 | train loss 4.6592 | 19,058 tok/s
+step   440 | train loss 4.2368 | 18,923 tok/s
+step   450 | train loss 3.9658 | 18,925 tok/s
+step   460 | train loss 3.7404 | 18,493 tok/s
+step   470 | train loss 3.9015 | 18,431 tok/s
+step   480 | train loss 4.3983 | 18,431 tok/s
+step   490 | train loss 3.8019 | 18,468 tok/s
+step   500 | train loss 3.9588 | 18,386 tok/s
+  running eval...
+  eval step 500 | train loss 3.6692 | val loss 3.8947 | best val 3.8947 | avg 16,676 tok/s
+  generation eval step 500:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning, or pattern use.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+step   510 | train loss 3.8181 | 18,881 tok/s
+step   520 | train loss 4.0393 | 19,206 tok/s
+step   530 | train loss 3.6783 | 19,042 tok/s
+step   540 | train loss 3.9305 | 18,926 tok/s
+step   550 | train loss 4.3306 | 18,997 tok/s
+step   560 | train loss 4.0574 | 18,452 tok/s
+step   570 | train loss 3.6380 | 18,484 tok/s
+step   580 | train loss 4.1076 | 18,225 tok/s
+step   590 | train loss 3.8022 | 17,588 tok/s
+step   600 | train loss 4.0155 | 18,142 tok/s
+  running eval...
+  eval step 600 | train loss 3.7475 | val loss 3.7573 | best val 3.7573 | avg 16,540 tok/s
+  generation eval step 600:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   610 | train loss 4.0687 | 18,902 tok/s
+step   620 | train loss 3.4148 | 18,550 tok/s
+step   630 | train loss 3.9290 | 18,503 tok/s
+step   640 | train loss 3.9302 | 18,355 tok/s
+step   650 | train loss 4.3423 | 18,247 tok/s
+step   660 | train loss 4.0174 | 18,096 tok/s
+step   670 | train loss 3.6013 | 18,253 tok/s
+step   680 | train loss 3.9462 | 18,213 tok/s
+step   690 | train loss 3.5612 | 18,247 tok/s
+step   700 | train loss 3.8610 | 18,146 tok/s
+  running eval...
+  eval step 700 | train loss 3.7154 | val loss 3.8029 | best val 3.7573 | avg 16,574 tok/s
+  generation eval step 700:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+step   710 | train loss 3.4667 | 18,661 tok/s
+step   720 | train loss 3.7119 | 18,308 tok/s
+step   730 | train loss 3.9912 | 18,256 tok/s
+step   740 | train loss 4.2204 | 17,983 tok/s
+step   750 | train loss 3.9943 | 18,120 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+step   760 | train loss 3.7511 | 19,034 tok/s
+step   770 | train loss 3.7681 | 18,770 tok/s
+step   780 | train loss 3.7248 | 18,397 tok/s
+step   790 | train loss 4.1150 | 18,181 tok/s
+step   800 | train loss 3.3794 | 17,825 tok/s
+  running eval...
+  eval step 800 | train loss 3.7643 | val loss 3.5034 | best val 3.5034 | avg 16,474 tok/s
+  generation eval step 800:
+    Q: What is AI?
+    A: Artificial intelligence is the field of making computers solve tasks that need reasoning, or pattern use.
+    Q: Explain database indexes.
+    A: A database index is a lookup structure that helps find rows faster.
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+Finished training: Sat Jun 20 08:52:32 UTC 2026
+Checkpoints:
+  Chat base:  13_gpt_pretraining/checkpoints/large_50m/latest.pt
+  Teacher:    18E_tiny_teacher_sft/checkpoints/teacher_latest.pt
+  Routing:    18I_routing_teacher_fix/checkpoints/routing_latest.pt
+  Core SFT:   18B_marshmello_instruct/checkpoints/latest.pt

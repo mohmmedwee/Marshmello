@@ -1,0 +1,7 @@
+=== Baseline 18J (best_18j_routing) ===
+Exact answer overlap: 0.0%
+Keyword overlap:      11.8%
+Hallucination rate:   78.0%
+Conclusion: Model capacity is likely the bottleneck and scaling to 300M–500M is justified.
+JSON results: reports/archive/run_broad_sft_500_20260621T102749Z/18j_baseline_best.json
+Markdown report: reports/archive/run_broad_sft_500_20260621T102749Z/18j_baseline_best.md

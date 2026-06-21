@@ -1,0 +1,13 @@
+{
+  "run_id": "run_20260620T095759Z",
+  "label": "baseline_before_improve",
+  "archived_at": "2026-06-20T09:58:08.002438+00:00",
+  "files": [
+    "marshmello_core_eval_comparison.md",
+    "marshmello_core_eval_fix_report.md",
+    "marshmello_core_eval_teacher_best_score_report.md",
+    "marshmello_core_eval_report.md",
+    "marshmello_pipeline_report.md"
+  ],
+  "metrics": {}
+}

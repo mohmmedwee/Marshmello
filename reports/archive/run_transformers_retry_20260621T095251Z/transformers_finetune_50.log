@@ -1,0 +1,60 @@
+Loading tokenizer: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+Building model on mps...
+Loading base checkpoint: 18B_marshmello_instruct/checkpoints/best_18j_routing.pt
+Tokenizer/checkpoint compatibility:
+  tokenizer vocab size:          8,000
+  model vocab size:              8,000
+  checkpoint token_emb.weight:   (8000, 768)
+  checkpoint lm_head.weight:     (8000, 768)
+Checkpoint load verification:
+  missing keys:                 none
+  unexpected keys:              none
+  first embedding norm before:  0.557749
+  first embedding norm after:   0.550108
+  first embedding norm delta:   -0.007641
+Loading SFT data: 18E_tiny_teacher_sft/data/teacher_transformers_routing.jsonl
+Decode sanity check:
+  example 1:
+    original: <USER> What is a transformer? <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    decoded:  <USER> What is a transformer? <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 2:
+    original: <USER> Explain what a transformer is in one sentence. <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    decoded:  <USER> Explain what a transformer is in one sentence. <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+  example 3:
+    original: <USER> State a precise one-sentence definition of a transformer. <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    decoded:  <USER> State a precise one-sentence definition of a transformer. <ASSISTANT> A transformer is a neural architecture that processes sequences with attention and feed-forward layers. <END>
+    tags:     <USER>=ok <ASSISTANT>=ok <END>=ok
+Encoding SFT datasets...
+Trainable parameters: 55,209,984 / 55,209,984 (100.00%)
+Phase 18B: Marshmello-45M-Instruct SFT
+============================================================
+Config:          large_50m
+Mode:            train
+Device:          mps
+Base checkpoint: 18B_marshmello_instruct/checkpoints/best_18j_routing.pt
+Base step:       800
+Tokenizer:       /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/13_gpt_pretraining/tokenizer/tokenizer.json
+SFT data:        18E_tiny_teacher_sft/data/teacher_transformers_routing.jsonl
+Train examples:  38
+Val examples:    2
+Learning rate:   2.00e-07
+Grad clip norm:  1.0
+Parameters:      55,209,984
+Trainable:       55,209,984
+Checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
+
+step     1 | train loss 2.1044 | 2,879 tok/s
+step    10 | train loss 1.0135 | 18,536 tok/s
+step    20 | train loss 1.9063 | 19,066 tok/s
+step    30 | train loss 2.2614 | 19,085 tok/s
+step    40 | train loss 2.3422 | 18,818 tok/s
+step    50 | train loss 2.1010 | 18,955 tok/s
+  running eval...
+  eval step 50 | train loss 2.1185 | val loss 3.3525 | best val 3.3525 | avg 15,429 tok/s
+  saving latest checkpoint...
+  checkpoint path: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt (631.9 MB)
+
+Training complete.
+Latest checkpoint: /Users/ehabshobaki/Documents/myproject/learning/mini-transformer-from-scratch/18B_marshmello_instruct/checkpoints/latest.pt
