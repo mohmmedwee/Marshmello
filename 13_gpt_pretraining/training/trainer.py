@@ -448,7 +448,7 @@ def main() -> None:
         "--config",
         type=str,
         default="default",
-        help="Model config: default | large_50m",
+        help="Model config: default | large_50m | large_300m",
     )
     parser.add_argument("--resume", type=str, default=None, help="Checkpoint path")
     parser.add_argument("--quick", action="store_true", help="Short run for smoke tests")

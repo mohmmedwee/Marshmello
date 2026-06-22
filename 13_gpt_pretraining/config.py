@@ -78,10 +78,38 @@ LARGE_50M_CONFIG = GPTConfig(
     target_vocab_size=8000,
 )
 
+# Phase 19A — Marshmello-300M. 45M/55M plateaued (best 18J routing 18%,
+# best 18K domain 21.8%); scale model capacity while reusing the v2 BPE
+# tokenizer (vocab_size=8000). Targets ~250M–350M params.
+LARGE_300M_CONFIG = GPTConfig(
+    config_name="large_300m",
+    d_model=1024,
+    # Suggested 18 layers lands at ~244M (just under the 250M floor); 20
+    # layers reaches ~269M, comfortably inside the 250M–350M target.
+    num_layers=20,
+    num_heads=16,
+    d_ff=4096,
+    block_size=512,
+    # Smaller micro-batch + more accumulation: a 300M model needs far more
+    # memory per sample than large_50m, especially on Mac MPS.
+    batch_size=2,
+    gradient_accumulation_steps=16,
+    learning_rate=1.5e-4,
+    weight_decay=0.1,
+    max_steps=10_000,
+    eval_every=200,
+    log_every=10,
+    checkpoint_every=500,
+    grad_clip=1.0,
+    dropout=LARGE_50M_CONFIG.dropout,
+    target_vocab_size=8000,
+)
+
 CONFIGS: dict[str, GPTConfig] = {
     "default": DEFAULT_CONFIG,
     "v1": DEFAULT_CONFIG,
     "large_50m": LARGE_50M_CONFIG,
+    "large_300m": LARGE_300M_CONFIG,
 }
 
 

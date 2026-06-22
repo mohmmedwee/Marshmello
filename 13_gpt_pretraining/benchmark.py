@@ -342,7 +342,12 @@ def print_report(result: BenchmarkResult, cfg: GPTConfig, model: GPT) -> None:
     estimated = estimate_for_gpt_model(model, cfg.__dict__)
     tied = model.lm_head.weight is model.token_emb.weight
     lm_head_bias = model.lm_head.bias is not None
-    phase_label = "Phase 15 GPT 50M Benchmark" if cfg.config_name == "large_50m" else "Phase 13 GPT Benchmark"
+    if cfg.config_name == "large_300m":
+        phase_label = "Phase 19A GPT 300M Benchmark"
+    elif cfg.config_name == "large_50m":
+        phase_label = "Phase 15 GPT 50M Benchmark"
+    else:
+        phase_label = "Phase 13 GPT Benchmark"
 
     print(phase_label)
     print("=" * 44)
@@ -376,11 +381,16 @@ def print_report(result: BenchmarkResult, cfg: GPTConfig, model: GPT) -> None:
         lm_head_bias=lm_head_bias,
     )
     print()
-    if cfg.config_name == "large_50m":
+    if cfg.config_name == "large_300m":
+        print("Compare with 50M: python 13_gpt_pretraining/benchmark.py --config large_50m")
+        print("Phase 19A docs: 19A_scale_to_300m/README.md")
+    elif cfg.config_name == "large_50m":
         print("Compare with Phase 13 baseline: python 13_gpt_pretraining/benchmark.py --config default")
+        print("Scale up: python 13_gpt_pretraining/benchmark.py --config large_300m")
+        print("Phase 15 docs: 15_scale_to_50m/README.md")
     else:
         print("Scale up: python 13_gpt_pretraining/benchmark.py --config large_50m")
-    print("Phase 15 docs: 15_scale_to_50m/README.md")
+        print("Phase 15 docs: 15_scale_to_50m/README.md")
 
 
 def main() -> None:
@@ -389,7 +399,7 @@ def main() -> None:
         "--config",
         type=str,
         default="default",
-        help="Model config: default | large_50m",
+        help="Model config: default | large_50m | large_300m",
     )
     parser.add_argument("--steps", type=int, default=20, help="Timed benchmark steps")
     parser.add_argument("--warmup", type=int, default=5, help="Warmup steps before timing")
