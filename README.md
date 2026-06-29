@@ -1,76 +1,79 @@
 # Marshmello
 
-**Train a GPT from one weight to a ~45M decoder-only language model — entirely in readable Python.**
+An educational open-source language model family built from scratch.
 
-This repository is both a **hands-on transformer course** (Phases 01–18) and the home of the **Marshmello** model family: small GPT models built from scratch, trained on Apple Silicon (MPS), and published on Hugging Face.
-
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-ee4c2c.svg)](https://pytorch.org/)
-[![Hugging Face](https://img.shields.io/badge/🤗%20Models-Marshmello-yellow)](https://huggingface.co/ostah-1010/Marshmello)
+[![Hugging Face Model](https://img.shields.io/badge/Hugging%20Face-model-yellow.svg)](https://huggingface.co/ostah-1010/Marshmello)
+[![Hugging Face Dataset](https://img.shields.io/badge/Hugging%20Face-dataset-orange.svg)](https://huggingface.co/datasets/ostah-1010/Marshmello-SFT)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
----
+Marshmello is a from-scratch transformer learning project and a small open model family. The repository walks from a single trainable weight to decoder-only GPT pretraining, instruction tuning, evaluation, and early 300M-scale experiments.
 
-## Table of contents
+The code favors readable PyTorch over framework magic. The models are useful for education, benchmarking project checkpoints, and understanding how language model training pieces connect. They are not production LLMs.
 
-- [Marshmello models](#marshmello-models)
-- [Quick start](#quick-start)
-- [Recommended path to an instruct model](#recommended-path-to-an-instruct-model)
-- [What you will learn](#what-you-will-learn)
-- [Learning path](#learning-path)
-- [Architecture](#architecture)
-- [SFT training modes](#sft-training-modes-phase-18b)
-- [Dual benchmarks: 18J + 18K](#dual-benchmarks-18j--18k)
-- [Project layout](#project-layout)
-- [Full training pipeline](#full-training-pipeline)
-- [How the pieces connect](#how-the-pieces-connect)
-- [Requirements](#requirements)
-- [Limitations](#limitations)
-- [License](#license)
+## Model Family
 
----
+| Model           | Parameters | Status                    |
+| --------------- | ---------: | ------------------------- |
+| Marshmello-8M   |         8M | Stable                    |
+| Marshmello-55M  |        55M | Stable baseline           |
+| Marshmello-300M |     268.8M | Phase 19A smoke/benchmark |
 
-## Marshmello models
+More detail: [MODEL_FAMILY.md](MODEL_FAMILY.md)
 
-Two decoder-only GPT checkpoints trained in this repo. **Weights are not stored in Git** (~2 GB); download them from Hugging Face after cloning.
+## Benchmarks
 
-| Model | Params | Context | Hugging Face | Config key |
-|-------|--------|---------|--------------|------------|
-| **Marshmello-8M** | ~8M | 256 tokens | [ostah-1010/Marshmello-8M](https://huggingface.co/ostah-1010/Marshmello-8M) | `default` |
-| **Marshmello-45M** | ~46M | 512 tokens | [ostah-1010/Marshmello](https://huggingface.co/ostah-1010/Marshmello) | `large_50m` |
+Current honest internal results for the Marshmello-55M line:
 
-**Marshmello-45M (latest base)** was pretrained on a ~1M-word local corpus (Phase 18A) covering AI/ML, databases, software engineering, cybersecurity, and Python APIs.
+| Benchmark                | Marshmello-55M |
+| ------------------------ | -------------: |
+| 18J Core Routing         |            18% |
+| 18K General Domain Score |          22.5% |
+| 18K Hallucination        |          64.2% |
 
-The training stack also includes later phases for chat-format adaptation (18C), tokenizer v2 (18D), tiny-teacher SFT (18E), instruct tuning (18B), core routing eval (18J), and general assistant benchmark (18K).
+These are educational internal benchmarks for comparing Marshmello checkpoints, not commercial LLM benchmarks.
 
-**Deploy checkpoint (local, not on Hub):** `18B_marshmello_instruct/checkpoints/best_18j_routing.pt` — best ~18% **18J** core routing after teacher SFT.
+Evaluation details: [EVALUATION.md](EVALUATION.md)
 
-Both published Hub models use the custom PyTorch GPT in this repo — not `transformers` AutoModel.
+## Project Timeline
 
----
+| Phase | Milestone |
+| ----- | --------- |
+| Phase 13 | GPT pretraining |
+| Phase 18E | Teacher SFT |
+| Phase 18H | Chat-only adaptation |
+| Phase 18I | Routing experiments |
+| Phase 18J | Core routing benchmark |
+| Phase 18K | General assistant benchmark |
+| Phase 19A | 300M scaling |
 
-## Quick start
+Milestone history: [CHANGELOG.md](CHANGELOG.md)
 
-### 1. Clone and install
+## Quick Start
 
 ```bash
 git clone https://github.com/mohmmedwee/Marshmello.git
 cd Marshmello
 python3.11 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Download weights from Hugging Face
+Download published weights:
 
 ```bash
-# Marshmello-45M (recommended)
-python 13_gpt_pretraining/hub/download_from_hub.py --repo-id ostah-1010/Marshmello
+# Marshmello-55M baseline
+python 13_gpt_pretraining/hub/download_from_hub.py \
+  --repo-id ostah-1010/Marshmello
 
-# Marshmello-8M (smaller, faster)
-python 13_gpt_pretraining/hub/download_from_hub.py --repo-id ostah-1010/Marshmello-8M --config default
+# Marshmello-8M small baseline
+python 13_gpt_pretraining/hub/download_from_hub.py \
+  --repo-id ostah-1010/Marshmello-8M \
+  --config default
 ```
 
-### 3. Generate text
+Generate with the 55M-class config:
 
 ```bash
 python 13_gpt_pretraining/generate.py \
@@ -81,9 +84,7 @@ python 13_gpt_pretraining/generate.py \
   --max-new-tokens 100
 ```
 
-### 4. Chat with an instruct checkpoint (Phase 18B)
-
-After teacher SFT (see [Recommended path](#recommended-path-to-an-instruct-model)):
+Chat with a local instruct/routing checkpoint after Phase 18E/18J training:
 
 ```bash
 python 18B_marshmello_instruct/chat.py \
@@ -92,414 +93,168 @@ python 18B_marshmello_instruct/chat.py \
   --greedy
 ```
 
-### 5. Start from lesson 1 (no GPU required)
+Start the educational path from the beginning:
 
 ```bash
 python 01_linear_model/train.py
 ```
 
----
-
-## Recommended path to an instruct model
-
-The later phases build on each other. This is the order that works best in practice:
+## Recommended Training Path
 
 ```text
 18A  larger base corpus
   ↓
-13   pretrain Marshmello-45M base
+13   GPT pretraining
   ↓
-18C  continued pretraining on raw text + chat boundaries (not SFT)
+18H  chat-only adaptation
   ↓
-18E  tiny teacher SFT (short direct answers, ~1590 examples incl. math)
+18E  tiny teacher SFT
   ↓
-18B  curated or full SFT (optional — broad SFT regressed on 45M)
+18I  routing experiments
   ↓
-18J  core routing benchmark  |  18K  general assistant benchmark
+18J  core routing benchmark
+  ↓
+18K  general assistant benchmark
+  ↓
+19A  300M smoke/benchmark
 ```
 
-| Step | Phase | What it teaches |
-|------|-------|-----------------|
-| 1 | [18A](18A_large_pretraining_corpus/) | ~1M-word technical corpus |
-| 2 | [13](13_gpt_pretraining/) | Causal LM on raw paragraphs |
-| 3 | [18C](18C_base_chat_adaptation/) | `<USER>` / `<ASSISTANT>` / `<END>` as text boundaries |
-| 4 | [18E](18E_tiny_teacher_sft/) | Short, on-topic answers (+ math basics) before broad SFT |
-| 5 | [18B](18B_marshmello_instruct/) | Masked SFT on assistant responses |
-| 6 | [18J](18J_marshmello_core_sft/) | Core concept **routing** eval (AI, transformers, databases) |
-| 7 | [18K](18K_general_benchmark/) | General assistant QA eval (500 held-out, 5 buckets) |
+The 55M line currently plateaus on internal evaluation: more broad SFT data improved some behaviors but regressed key 18J/18K gates. Phase 19A exists to test whether extra model capacity is the right next lever.
 
-**Optional:** [18D](18D_tokenizer_v2/) trains `tokenizer_v2.json` with punctuation and chat markers. It changes vocab size and token IDs — **old checkpoints are incompatible** until you re-pretrain the base model with the new tokenizer.
-
----
-
-## What you will learn
-
-Each phase folder is a self-contained lesson. Read the code top to bottom — comments explain every step.
-
-| Topic | Phases |
-|-------|--------|
-| Gradients and backprop | 01–03 |
-| Embeddings and attention | 04–05 |
-| Transformer blocks | 06 |
-| Language modeling (char → word → BPE) | 07–10 |
-| Parameter scaling | 11 |
-| Instruction tuning | 12, 17–18E |
-| GPT pretraining (causal LM) | 13, 15, 18A, 18C |
-| Tokenizer engineering | 09, 18D |
-| Data engineering | 14, 17 |
-| Evaluation and memorization | 16 |
-
-**Design principle:** clarity over performance. No hidden abstractions, no production shortcuts — just the ideas behind modern LLMs.
-
----
-
-## Learning path
+## Learning Path
 
 | Phase | What you learn | Libraries |
-|-------|----------------|-----------|
-| [01_linear_model](01_linear_model/) | One parameter `w`, loss, gradient descent | Pure Python |
-| [02_neuron_layer](02_neuron_layer/) | Weighted sum, bias, ReLU, Sigmoid | Pure Python |
+| ----- | -------------- | --------- |
+| [01_linear_model](01_linear_model/) | One parameter, loss, gradient descent | Pure Python |
+| [02_neuron_layer](02_neuron_layer/) | Weighted sum, bias, activations | Pure Python |
 | [03_tiny_neural_network](03_tiny_neural_network/) | Forward pass, MSE loss, backprop | NumPy |
-| [04_embeddings](04_embeddings/) | Tokenizer, token IDs, embedding vectors | NumPy |
-| [05_attention](05_attention/) | Q, K, V, attention scores, softmax | NumPy |
-| [06_mini_transformer](06_mini_transformer/) | Transformer block (embed, pos, attn, FFN, residual, norm) | PyTorch |
-| [07_mini_language_model](07_mini_language_model/) | Next-character prediction | PyTorch |
-| [08_word_level_language_model](08_word_level_language_model/) | Next-word prediction | PyTorch |
-| [09_bpe_tokenizer_demo](09_bpe_tokenizer_demo/) | BPE subword tokenization | Pure Python |
-| [10_bpe_language_model](10_bpe_language_model/) | LM on BPE tokens | PyTorch |
-| [11_scale_model](11_scale_model/) | Parameter count scaling (~500K → 50M) | Pure Python |
-| [12_instruction_tuning_demo](12_instruction_tuning_demo/) | Base LM → simple assistant | PyTorch |
-| [13_gpt_pretraining](13_gpt_pretraining/) | Causal decoder-only GPT pretraining | PyTorch |
-| [14_dataset_pipeline](14_dataset_pipeline/) | Ingest → clean → dedupe → quality → shards | Pure Python |
-| [15_scale_to_50m](15_scale_to_50m/) | ~50M training on MPS (grad accum, OOM fallback) | PyTorch |
-| [16_evaluation_suite](16_evaluation_suite/) | Compare 8M vs 45M; detect memorization | PyTorch |
-| [17_instruction_dataset](17_instruction_dataset/) | Build instruction JSONL for SFT | Pure Python |
-| [18A_large_pretraining_corpus](18A_large_pretraining_corpus/) | Larger corpus for Marshmello-45M-Base-v2 | Pure Python |
-| [18B_marshmello_instruct](18B_marshmello_instruct/) | SFT + chat CLI + eval | PyTorch |
-| [18C_base_chat_adaptation](18C_base_chat_adaptation/) | Continued base pretraining on raw + chat text | PyTorch |
-| [18D_tokenizer_v2](18D_tokenizer_v2/) | BPE v2 with punctuation + chat markers | Pure Python |
-| [18E_tiny_teacher_sft](18E_tiny_teacher_sft/) | Tiny teacher dataset builders + math + eval | Pure Python |
-| [18G_checkpoint_and_corpus_expansion](18G_checkpoint_and_corpus_expansion/) | Compare checkpoints; build expanded mixed corpus | Pure Python |
-| [18J_marshmello_core_sft](18J_marshmello_core_sft/) | Core SFT data + **routing** benchmark (100 held-out) | PyTorch |
-| [18K_general_benchmark](18K_general_benchmark/) | General assistant benchmark (500 held-out) | PyTorch |
-
-Work through the folders in order. Each phase reuses ideas from the previous one.
-
----
+| [04_embeddings](04_embeddings/) | Token IDs and embedding vectors | NumPy |
+| [05_attention](05_attention/) | Q, K, V attention | NumPy |
+| [06_mini_transformer](06_mini_transformer/) | Transformer block components | PyTorch |
+| [07_mini_language_model](07_mini_language_model/) | Character-level next-token prediction | PyTorch |
+| [08_word_level_language_model](08_word_level_language_model/) | Word-level language modeling | PyTorch |
+| [09_bpe_tokenizer_demo](09_bpe_tokenizer_demo/) | BPE tokenization | Pure Python |
+| [10_bpe_language_model](10_bpe_language_model/) | BPE language modeling | PyTorch |
+| [11_scale_model](11_scale_model/) | Parameter count scaling | Pure Python |
+| [12_instruction_tuning_demo](12_instruction_tuning_demo/) | Simple instruction tuning | PyTorch |
+| [13_gpt_pretraining](13_gpt_pretraining/) | Decoder-only GPT pretraining | PyTorch |
+| [14_dataset_pipeline](14_dataset_pipeline/) | Ingest, clean, dedupe, quality, shards | Pure Python |
+| [15_scale_to_50m](15_scale_to_50m/) | 50M-class scaling on MPS | PyTorch |
+| [16_evaluation_suite](16_evaluation_suite/) | Scaling and memorization evaluation | PyTorch |
+| [17_instruction_dataset](17_instruction_dataset/) | Instruction JSONL processing | Pure Python |
+| [18A_large_pretraining_corpus](18A_large_pretraining_corpus/) | Larger local corpus | Pure Python |
+| [18B_marshmello_instruct](18B_marshmello_instruct/) | SFT, chat CLI, eval | PyTorch |
+| [18C_base_chat_adaptation](18C_base_chat_adaptation/) | Mixed raw/chat continued pretraining | PyTorch |
+| [18D_tokenizer_v2](18D_tokenizer_v2/) | Tokenizer v2 experiments | Pure Python |
+| [18E_tiny_teacher_sft](18E_tiny_teacher_sft/) | Teacher SFT data and eval | Pure Python |
+| [18G_checkpoint_and_corpus_expansion](18G_checkpoint_and_corpus_expansion/) | Checkpoint comparison and corpus expansion | Pure Python |
+| [18H_chat_only_pretraining](18H_chat_only_pretraining/) | Chat-only corpus adaptation | Pure Python |
+| [18I_routing_teacher_fix](18I_routing_teacher_fix/) | Routing data experiments | Pure Python |
+| [18J_marshmello_core_sft](18J_marshmello_core_sft/) | Core routing benchmark | PyTorch |
+| [18K_general_benchmark](18K_general_benchmark/) | General assistant benchmark | PyTorch |
+| [19A_scale_to_300m](19A_scale_to_300m/) | 300M scaling smoke test | PyTorch |
 
 ## Architecture
 
-Marshmello-45M (`large_50m` config):
+Marshmello models use the custom decoder-only GPT implementation in [13_gpt_pretraining](13_gpt_pretraining/), not `transformers` AutoModel.
 
-| Component | Value |
-|-----------|-------|
-| Type | Decoder-only GPT (causal self-attention) |
-| Layers | 6 |
-| Hidden size (`d_model`) | 768 |
-| Attention heads | 12 |
-| FFN dimension | 3072 |
-| Context length | 512 tokens |
-| Positional embeddings | Learned |
-| Tokenizer | BPE (`tokenizer.json` or optional `tokenizer_v2.json`) |
-| LM head | Tied to token embeddings |
+| Component | Marshmello-8M | Marshmello-55M | Marshmello-300M |
+| --------- | ------------- | -------------- | --------------- |
+| Config key | `default` | `large_50m` | `large_300m` |
+| Layers | 4 | 6 | 20 |
+| Hidden size | 384 | 768 | 1024 |
+| Attention heads | 6 | 12 | 16 |
+| FFN dimension | 1536 | 3072 | 4096 |
+| Context length | 256 | 512 | 512 |
+| Tokenizer | BPE | BPE | BPE v2 / 8000 vocab target |
+| Positional embeddings | Learned | Learned | Learned |
 
-Marshmello-8M (`default` config): 4 layers, `d_model=384`, context 256 — same codebase, smaller scale.
+Parameter counts are vocabulary-dependent for the smaller configurations. The 300M Phase 19A config has an exact count of 268,834,816 parameters with the current 8000-token vocabulary target.
 
-**Tokenizers in this repo:**
+## Evaluation
 
-| File | Role |
-|------|------|
-| `tokenizer.json` | Default BPE used by trainer and Hub export |
-| `tokenizer_v2.json` | Expanded vocab (~8k) with `?`, `'`, chat tags; requires re-pretrain |
-
-The trainer and SFT scripts use **safe encoding** (`corpus_to_ids_safe`) so unknown characters are stripped instead of crashing during training.
-
----
-
-## SFT training modes (Phase 18B)
-
-`train_instruct.py` supports multiple fine-tuning strategies:
-
-| Mode | Data | Default LR | Checkpoint |
-|------|------|------------|------------|
-| `train` | Full `chat.jsonl` | `1e-5` | `18B_marshmello_instruct/checkpoints/latest.pt` |
-| `curated` | Filtered balanced subset (~2k) | `2e-6` | `checkpoints/curated_latest.pt` |
-| `teacher` | Phase 18E `teacher_extended_short.jsonl` (~1590) | `5e-6` | `18E_tiny_teacher_sft/checkpoints/teacher_latest.pt` |
-| `overfit` | 20 examples (diagnostic) | `1e-5` | `latest.pt` |
-
-Use `--first-token-weight 30` when fine-tuning from a routing checkpoint on core SFT
-to help preserve **18J** routing (default: 8 for train/teacher, 30 for routing mode).
-
-Use `--freeze-backbone` to train only the LM head and final transformer block. The trainer verifies tokenizer/checkpoint vocab compatibility and runs a decode sanity check on chat tags before training.
-
----
-
-## Dual benchmarks: 18J + 18K
-
-Use **both** benchmarks — they measure different things:
-
-| Phase | Question | Deploy gate |
-|-------|----------|-------------|
-| **[18J](18J_marshmello_core_sft/)** | Does the model route to the correct **core concept** (AI, transformer, DB index)? | Routing accuracy ~18% best on 45M (`best_18j_routing.pt`) |
-| **[18K](18K_general_benchmark/)** | Does it answer **general assistant** questions (SQL, programming, daily life)? | Domain score; broad SFT at 500 steps **regressed** 21.8%→12% |
+Run the core routing benchmark:
 
 ```bash
-# 18J — core routing
 python 18J_marshmello_core_sft/evaluate_core_routing.py \
-  --checkpoint 18B_marshmello_instruct/checkpoints/best_18j_routing.pt --no-baseline
+  --checkpoint 18B_marshmello_instruct/checkpoints/best_18j_routing.pt \
+  --no-baseline
+```
 
-# 18K — general assistant
+Run the general assistant comparison:
+
+```bash
 python 18K_general_benchmark/compare_checkpoints.py
 ```
 
-Summary reports: `reports/latest_eval_summary.md`, `18K_general_benchmark/reports/comparison.md`.
+Important reports:
 
-**Do not use** `18B_marshmello_instruct/checkpoints/latest.pt` after failed broad SFT — keep `best_18j_routing.pt`.
+| Report | Purpose |
+| ------ | ------- |
+| [reports/latest_eval_summary.md](reports/latest_eval_summary.md) | Latest broad SFT comparison |
+| [18J_marshmello_core_sft/data/reports/marshmello_core_eval_comparison.md](18J_marshmello_core_sft/data/reports/marshmello_core_eval_comparison.md) | 18J routing comparison |
+| [18K_general_benchmark/reports/comparison.md](18K_general_benchmark/reports/comparison.md) | 18K general benchmark comparison |
+| [PHASE_19A.md](PHASE_19A.md) | 300M benchmark snapshot |
 
----
+## Hugging Face Drafts
 
-## Project layout
+Draft cards are included for publishing polish:
+
+| Draft | File |
+| ----- | ---- |
+| Model card | [huggingface/MODEL_CARD.md](huggingface/MODEL_CARD.md) |
+| Dataset card | [huggingface/DATASET_CARD.md](huggingface/DATASET_CARD.md) |
+
+These are drafts for Hugging Face repository pages. They do not upload or change any weights or datasets.
+
+## Repository Layout
 
 ```text
 Marshmello/
-├── 01_linear_model/ … 12_instruction_tuning_demo/   # Foundations → SFT demo
-├── 13_gpt_pretraining/                              # GPT core (model, trainer, generate)
-│   ├── model/                                       # Causal attention + GPT
-│   ├── training/trainer.py                          # Pretraining loop (--corpus, --resume)
-│   ├── tokenizer/encode.py                          # Safe BPE encoding
-│   ├── generate.py                                  # Sampling CLI
-│   ├── hub/                                         # Hugging Face upload/download
-│   └── checkpoints/                                 # Weights (gitignored — use Hub)
-├── 14_dataset_pipeline/                             # Data engineering
-├── 15_scale_to_50m/                                 # 50M scaling notes + scripts
-├── 16_evaluation_suite/                             # 8M vs 45M eval + memorization
-├── 17_instruction_dataset/                          # Alpaca-style JSONL builder
-├── 18A_large_pretraining_corpus/                    # ~1M-word base corpus
-├── 18B_marshmello_instruct/                         # SFT, chat, eval
-├── 18C_base_chat_adaptation/                        # Mixed raw+chat continued pretrain
-├── 18D_tokenizer_v2/                                # BPE v2 trainer + comparison
-├── 18E_tiny_teacher_sft/                            # Teacher builders + math data + eval
-├── 18G_checkpoint_and_corpus_expansion/             # Checkpoint compare + expanded corpus
-├── 18J_marshmello_core_sft/                         # Core SFT data + routing benchmark
-├── 18K_general_benchmark/                           # General assistant benchmark (500 eval)
-├── reports/                                         # Run summaries + eval archives
+├── 01_linear_model/ ... 12_instruction_tuning_demo/
+├── 13_gpt_pretraining/                  # GPT model, tokenizer, trainer, generation, Hub helpers
+├── 14_dataset_pipeline/                 # Local data processing pipeline
+├── 15_scale_to_50m/                     # 50M-class scaling notes
+├── 16_evaluation_suite/                 # Scaling and memorization checks
+├── 17_instruction_dataset/              # Instruction dataset processing
+├── 18A_large_pretraining_corpus/        # Larger local pretraining corpus
+├── 18B_marshmello_instruct/             # SFT and chat CLI
+├── 18C_base_chat_adaptation/            # Mixed raw/chat continued pretraining
+├── 18D_tokenizer_v2/                    # Tokenizer v2 experiments
+├── 18E_tiny_teacher_sft/                # Teacher SFT data
+├── 18G_checkpoint_and_corpus_expansion/ # Checkpoint comparison and corpus expansion
+├── 18H_chat_only_pretraining/           # Chat-only adaptation
+├── 18I_routing_teacher_fix/             # Routing experiment data
+├── 18J_marshmello_core_sft/             # Core routing benchmark
+├── 18K_general_benchmark/               # General assistant benchmark
+├── 19A_scale_to_300m/                   # 300M scaling smoke test
+├── huggingface/                         # Draft Hub cards
+├── reports/                             # Evaluation reports and archives
 └── requirements.txt
 ```
 
----
+## Roadmap
 
-## Full training pipeline
-
-End-to-end path from raw text to an instruct model:
-
-```bash
-# Phase 18A — build larger base corpus (~1M words)
-python 18A_large_pretraining_corpus/build_corpus.py --target-words 1000000
-
-# Train BPE on expanded corpus
-python 13_gpt_pretraining/tokenizer/train_bpe.py
-
-# Pretrain Marshmello-45M base
-python 13_gpt_pretraining/training/trainer.py --config large_50m --steps 1000
-
-# Optional Phase 18D — tokenizer v2 (then re-pretrain base from scratch)
-python 18D_tokenizer_v2/train_tokenizer_v2.py
-python 18D_tokenizer_v2/compare_tokenizers.py
-
-# Phase 17 — prepare instruction data (requires `datasets` + network)
-python 17_instruction_dataset/import_hf_datasets.py --max-examples 50000
-python 17_instruction_dataset/process_instructions.py
-
-# Phase 18G — compare checkpoints and build expanded mixed corpus (optional, before long pretrain)
-python 18G_checkpoint_and_corpus_expansion/compare_checkpoints.py
-python 18G_checkpoint_and_corpus_expansion/build_expanded_corpus.py \
-  --target-words 5000000 \
-  --chat-ratio 0.2
-
-# Phase 18C — adapt base to chat boundary tokens (continued pretraining, not SFT)
-python 18C_base_chat_adaptation/build_chat_mixed_corpus.py \
-  --chat-ratio 0.2 \
-  --max-chat-examples 10000
-python 13_gpt_pretraining/training/trainer.py \
-  --config large_50m \
-  --resume 13_gpt_pretraining/checkpoints/large_50m/latest.pt \
-  --corpus 13_gpt_pretraining/data/corpus_chat_mixed.txt \
-  --steps 1000 \
-  --lr 5e-5
-python 18C_base_chat_adaptation/eval_chat_format.py
-
-# Phase 18E — tiny teacher SFT (short direct answers first)
-python 18E_tiny_teacher_sft/build_teacher_extended_short.py
-python 18E_tiny_teacher_sft/build_teacher_math.py
-python 18B_marshmello_instruct/train_instruct.py \
-  --mode teacher \
-  --config large_50m \
-  --base-checkpoint 13_gpt_pretraining/checkpoints/large_50m/latest.pt \
-  --data 18E_tiny_teacher_sft/data/teacher_extended_short.jsonl \
-  --steps 800 \
-  --lr 5e-6
-python 18E_tiny_teacher_sft/eval_teacher.py
-python 18J_marshmello_core_sft/evaluate_core_routing.py \
-  --checkpoint 18E_tiny_teacher_sft/checkpoints/teacher_latest.pt --no-baseline
-
-# Phase 18B — curated SFT (recommended before full chat.jsonl)
-python 18B_marshmello_instruct/train_instruct.py \
-  --mode curated \
-  --config large_50m \
-  --base-checkpoint 13_gpt_pretraining/checkpoints/large_50m/latest.pt \
-  --steps 500 \
-  --freeze-backbone
-
-# Or full SFT on all chat examples
-python 18B_marshmello_instruct/train_instruct.py \
-  --config large_50m \
-  --base-checkpoint 13_gpt_pretraining/checkpoints/large_50m/latest.pt \
-  --steps 500 \
-  --lr 1e-5 \
-  --freeze-backbone
-
-# Overfit diagnostic — verify the model can memorize 20 examples
-python 18B_marshmello_instruct/train_instruct.py \
-  --mode overfit \
-  --max-examples 20 \
-  --steps 300
-
-# Chat and compare base vs instruct
-python 18B_marshmello_instruct/chat.py --prompt "What is a database index?"
-python 18B_marshmello_instruct/eval_instruct.py
-```
-
-**Smoke test** (1 step, skip eval/save):
-
-```bash
-python 18B_marshmello_instruct/train_instruct.py \
-  --config large_50m \
-  --base-checkpoint 13_gpt_pretraining/checkpoints/large_50m/latest.pt \
-  --steps 1 --no-eval --no-save
-```
-
-**Evaluate scaling vs memorization:**
-
-```bash
-python 16_evaluation_suite/evaluate.py
-```
-
-**Push updated weights to Hugging Face** (requires write token):
-
-```bash
-hf auth login
-# Base weights + model card
-python 13_gpt_pretraining/hub/push_to_hub.py \
-  --config large_50m \
-  --repo-id ostah-1010/Marshmello \
-  --checkpoint 13_gpt_pretraining/checkpoints/large_50m/latest.pt
-
-# Model card only (no weight upload)
-python 13_gpt_pretraining/hub/push_to_hub.py --all --readme-only
-```
-
----
-
-## How the pieces connect
-
-```
-1 weight (w)          →  learns a line: y = w·x
-     ↓
-1 neuron              →  many inputs + bias + activation
-     ↓
-tiny network          →  layers + loss + gradients
-     ↓
-embeddings            →  discrete tokens become continuous vectors
-     ↓
-attention             →  tokens look at each other (Q, K, V)
-     ↓
-transformer block     →  attention + FFN + residuals + layer norm
-     ↓
-language model        →  predict next token (char → word → BPE)
-     ↓
-scale model           →  count params: 500K → 8M → 45M
-     ↓
-GPT pretraining       →  causal decoder-only LM on raw text
-     ↓
-dataset pipeline      →  ingest, clean, dedupe, quality, shard
-     ↓
-evaluation suite      →  8M vs 45M, memorization metrics
-     ↓
-instruction dataset   →  instruction/response JSONL for SFT
-     ↓
-larger base corpus    →  Marshmello-45M-Base-v2
-     ↓
-tokenizer v2          →  punctuation + chat tags (optional, re-pretrain required)
-     ↓
-base chat adaptation  →  next-token pretraining on raw text + chat boundaries
-     ↓
-tiny teacher SFT      →  short direct answers (~1590 examples, incl. math)
-     ↓
-instruct fine-tuning  →  Marshmello-45M-Instruct
-     ↓
-18J routing eval      →  core concept discrimination
-     ↓
-18K general benchmark →  broad assistant QA (500 held-out)
-```
-
----
-
-## Character-level vs word-level (Phases 07 vs 08)
-
-Both phases train the same idea: predict the next token with a tiny transformer. The difference is **what a token is**.
-
-| | Phase 07 (character) | Phase 08 (word) |
-|--|----------------------|-----------------|
-| Token | One letter or punctuation mark | One word, punctuation mark, or newline |
-| Vocab size | ~50 characters | ~500–800 words |
-| Failure mode | Letter loops (`rrrr`) | Word loops (`the the`) |
-| Readability | Hard to read | More readable broken sentences |
-
-Phase 08 uses a regex tokenizer and decoding with temperature, top-k, and repetition penalty — the same sampling ideas used in later phases at BPE granularity.
-
----
-
-## Requirements
-
-| Requirement | Notes |
-|-------------|-------|
-| Python | 3.11+ recommended |
-| PyTorch | Phases 06–18; MPS on Apple Silicon, CUDA optional |
-| NumPy | Phases 03–05 |
-| `huggingface_hub` | Download/upload Marshmello weights |
-| `datasets` | Phase 17 HF dataset import only |
-| Disk | ~3 GB free for checkpoints + venv |
-| RAM | 16 GB+ comfortable for 45M training on MPS |
-
-Phases 01–02 need no extra packages. Phases 09, 11, and 18D are pure Python.
-
----
+See [ROADMAP.md](ROADMAP.md).
 
 ## Limitations
 
-Marshmello is an **educational model**, not a production LLM.
-
-- Trained on a **small local corpus**, not web-scale data
-- Outputs may **memorize** training paragraphs (see Phase 16 evaluation)
-- Default BPE may strip rare punctuation; use Phase 18D tokenizer v2 + re-pretrain for better coverage
-- Custom PyTorch implementation — not compatible with `transformers` pipelines out of the box
-- Not safety-aligned or RLHF-tuned
-
-For learning how transformers work, this is a feature. For production chat, use larger open models.
-
----
+- Educational model family, not a production assistant.
+- Trained on small local and synthetic/curated educational datasets, not web-scale corpora.
+- Outputs can be repetitive, incorrect, or hallucinated.
+- No RLHF, safety tuning, tool use, retrieval, or production serving stack.
+- Custom PyTorch model code is not directly compatible with `transformers` pipelines.
+- Benchmarks are internal project checks, not public leaderboard scores.
 
 ## License
 
-Model weights and code are published under **Apache 2.0** on Hugging Face. See individual model cards for details.
-
----
+Code and published model artifacts are documented as Apache 2.0. See Hugging Face model cards and repository metadata before redistribution.
 
 ## Links
 
 | Resource | URL |
-|----------|-----|
+| -------- | --- |
 | GitHub | https://github.com/mohmmedwee/Marshmello |
-| Marshmello-45M | https://huggingface.co/ostah-1010/Marshmello |
+| Marshmello-55M | https://huggingface.co/ostah-1010/Marshmello |
 | Marshmello-8M | https://huggingface.co/ostah-1010/Marshmello-8M |
-| Hub scripts | [13_gpt_pretraining/hub/](13_gpt_pretraining/hub/) |
+| Marshmello-SFT draft dataset page | https://huggingface.co/datasets/ostah-1010/Marshmello-SFT |
